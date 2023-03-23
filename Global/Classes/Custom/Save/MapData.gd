@@ -9,12 +9,14 @@ class_name MapData
 # VARIABLES
 ### ----------------------------------------------------
 
+var Saver := ObjectSaver.new(self, ["Data", "TS_CONTROL", "MapName"])
+
 # Stores map data
-# { posV3:TileData }
-var Data := Dictionary()
+@export var Data := Dictionary() # { posV3:Tile }
+
 # Stores information about used tilemaps
-var TS_CONTROL := Dictionary()
-var MapName := "Default"
+@export var TS_CONTROL := Dictionary()
+@export var MapName := "Default"
 
 ### ----------------------------------------------------
 # FUNCTIONS
@@ -62,15 +64,15 @@ func check_compatible(TileMaps:Array) -> bool:
 # API
 ### ----------------------------------------------------
 
-# Sets TileData in Data on posV3
-func set_on(posV3:Vector3, tileData:TileData) -> void:
-	Data[posV3] = str(tileData)
+# Sets Tile in Data on posV3
+func set_on(posV3:Vector3, tile:Tile) -> void:
+	Data[posV3] = str(tile)
 
-# Gets TileData on position from Data
-func get_on(posV3:Vector3) -> TileData:
+# Gets Tile on position from Data
+func get_on(posV3:Vector3) -> Tile:
 	if(not Data.has(posV3)):
-		return TileData.new()
-	return TileData.new().from_str(Data[posV3])
+		return Tile.new()
+	return Tile.new().from_str(Data[posV3])
 
 # Removes position from Data
 func rem_on(posV3:Vector3) -> bool:
@@ -82,32 +84,16 @@ func get_chunk(chunkPosV3:Vector3, chunkSize:int) -> Array:
 	for posV3 in LibK.vec3_get_pos_in_chunk(chunkPosV3, chunkSize):
 		if(not Data.has(posV3)):
 			continue
-		result.append(TileData.new().from_str(Data[posV3]))
+		result.append(Tile.new().from_str(Data[posV3]))
 	return result
 
 ### ----------------------------------------------------
-# UTIL
+# SAVE
 ### ----------------------------------------------------
 
-# Creates a copy of DataType from its data string
-func from_str(s:String):
-	return from_array(str_to_var(s))
-
-# Creates copy of DataType data as string
 func _to_string() -> String:
-	return var_to_str(to_array())
+	return Saver.get_properties_str()
 
-# Converts DataType data to an array
-func to_array() -> Array:
-	var arr := []
-	for propertyInfo in get_script().get_script_property_list():
-		arr.append(get(propertyInfo.name))
-	return arr
-
-# Creates copy of DataType data as Array
-func from_array(arr:Array):
-	var index := 0
-	for propertyInfo in get_script().get_script_property_list():
-		set(propertyInfo.name, arr[index])
-		index+=1
+func from_string(data:String) -> MapData:
+	Saver.set_properties_str(data)
 	return self

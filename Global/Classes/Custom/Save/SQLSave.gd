@@ -1,11 +1,11 @@
 ### ----------------------------------------------------
 # Manages SQLite
-#
+# 	SQLSave is a main save file that stores save data which consists of:
+# 	- PlayerData (GAMEDATA_TABLE -> PLAYER_DATA)
+# 	- EditedMaps (GAMEDATA_TABLE -> MapName)
 # To setup a save use create_new_save() and initialize()
-# To load save use only initialize()
-#
-# Before saving use save_to_sqlDB() to unload all data from cache (MapDataCache variable)
-#
+# To load use load()
+# To save use save()
 ### ----------------------------------------------------
 
 extends "res://Global/Classes/Custom/Save/SQLSaveBase.gd"
@@ -66,7 +66,7 @@ func get_PlayerEntity() -> PlayerEntity:
 
 # Saves Player Entity
 func set_PlayerEntity(Player:PlayerEntity) -> bool:
-	_sql_save_compressed(
+	_sql_save_compressed( 
 		Player.to_string(),
 		TABLE_NAMES.keys()[TABLE_NAMES.GAMEDATA_TABLE],
 		GAMEDATA_KEYS.keys()[GAMEDATA_KEYS.PLAYER_DATA])
@@ -81,7 +81,6 @@ func get_map(MapName:String) -> MapData:
 		TABLE_NAMES.keys()[TABLE_NAMES.GAMEDATA_TABLE],
 		MapName)
 	if(loadStr.is_empty()):
-		Logger.logMS(["Failed to load MapData, key doesnt exist or is empty: ", MapName], get_stack())
 		return null
 	return MapData.new().from_str(loadStr)
 

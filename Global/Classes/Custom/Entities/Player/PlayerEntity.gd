@@ -11,10 +11,14 @@ class_name PlayerEntity
 
 var PlayerStateMachine := StateMachine.new()
 var Movement := PlayerMove.new(self, "PlayerMove")
+var Inventory := {}
 
 ### ----------------------------------------------------
 # FUNCTIONS
 ### ----------------------------------------------------
+
+func _init() -> void:
+	Saver = ObjectSaver.new(self, ["MapPosition", "Inventory"])
 
 func _on_entity_ready() -> void:
 	set_sprite(TexturePos, GLOBAL.TEXTURES.ENTITY_SET_PATH)

@@ -1,6 +1,7 @@
 Temp/
 addons/gut
 addons/godot-sqlite
+./vscode
 
 # Godot 4+ specific ignores
 .godot/

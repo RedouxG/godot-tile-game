@@ -9,8 +9,7 @@ class_name GameEntity
 # VARIABLES
 ### ----------------------------------------------------
 
-# List of property names that are meant to be saved
-const PROPERTY_TO_SAVE = ["MapPosition"]
+var Saver := ObjectSaver.new(self, ["MapPosition"])
 
 # Position on the game map
 var MapPosition := Vector3i(0,0,0): set = _set_MapPosition
@@ -54,25 +53,9 @@ func save_entity() -> bool:
 # Utils
 ### ----------------------------------------------------
 
-# Creates a copy of entity from its data string
-func from_str(s:String):
-	return from_array(str_to_var(s))
-
-# Creates copy of entity data as string
 func _to_string() -> String:
-	return var_to_str(to_array())
+	return Saver.get_properties_str()
 
-# Converts entity data to an array
-func to_array() -> Array[String]:
-	var arr:Array[String] = []
-	for propertyName in PROPERTY_TO_SAVE:
-		arr.append(get(propertyName))
-	return arr
-
-# Creates copy of entity data as Array
-func from_array(arr:Array):
-	var index := 0
-	for propertyName in PROPERTY_TO_SAVE:
-		set(propertyName, arr[index])
-		index+=1
+func from_string(data:String) -> GameEntity:
+	Saver.set_properties_str(data)
 	return self

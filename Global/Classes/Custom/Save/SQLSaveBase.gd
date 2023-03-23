@@ -48,7 +48,7 @@ func _setupDB(fileName:String, fileDir:String, verbose = false):
 func close() -> bool:
 	return (LibK.Files.delete_file(TEMP_PATH) != OK)
 
-func init_GAMEDATA_TABLE() -> void:
+func _init_GAMEDATA_TABLE() -> void:
 	var TemplatePlayer := PlayerEntity.new()
 	_sql_save_compressed(
 		TemplatePlayer.to_string(),
@@ -91,7 +91,7 @@ func create_new_save() -> bool:
 		var tableName:String = TABLE_NAMES.keys()[TID]
 		isOK = isOK and add_table(tableName, TABLE_CONTENT)
 	
-	init_GAMEDATA_TABLE()
+	_init_GAMEDATA_TABLE()
 	SQL_DB_GLOBAL.path = TEMP_PATH
 
 	if(not isOK): Logger.logErr(["Failed to create tables: ", DEST_PATH], get_stack())
