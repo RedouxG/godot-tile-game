@@ -43,6 +43,7 @@ func _setupDB(fileName:String, fileDir:String, verbose = false):
 
 	SQL_DB_GLOBAL = SQLite.new()
 	SQL_DB_GLOBAL.verbosity_level = 0
+	SQL_DB_GLOBAL.path = TEMP_PATH
 
 # Deletes TEMP file
 func close() -> bool:
