@@ -23,7 +23,7 @@ func _init(fileName:String, fileDir:String, verbose = false) -> void:
 	_setupDB(fileName, fileDir, verbose)
 
 # Should be called after init before trying to acess data from save
-func load() -> bool:
+func load_save() -> bool:
 	if(not LibK.Files.file_exist(DEST_PATH)):
 		Logger.logErr(["Tried to init non existing save: ", DEST_PATH], get_stack())
 		return false

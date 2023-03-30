@@ -17,6 +17,7 @@ config/features=PackedStringArray("4.0")
 
 GLOBAL="*res://Global/Singletons/GLOBAL.gd"
 Logger="*res://Global/Singletons/Logger.gd"
+SaveManager="*res://Global/Singletons/SaveManager.gd"
 
 [debug]
 
@@ -27,6 +28,10 @@ gdscript/warnings/integer_division=false
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg", "res://addons/gut/plugin.cfg")
+
+[filesystem]
+
+import/blender/enabled=false
 
 [global]
 

@@ -1,4 +1,3 @@
-@tool
 ### ----------------------------------------------------
 ### Singleton for storing game data
 ### Stores general data like seed for map gen, chunk size ect
@@ -10,7 +9,6 @@ extends Node
 ### ----------------------------------------------------
 # VARIABLES
 ### ----------------------------------------------------
-
 
 # Stores data regarding all meterial types
 # Material types define color and properties of objects and tiles in the game
@@ -45,24 +43,6 @@ class TILEMAPS: # Stores data regardning map, TileMaps ect
 
 class TEXTURES:
 	const ENTITY_SET_PATH = "res://Resources/Textures/EntitySet.png"
-
-const INPUT_MAP = {
-	"W" : "Up",
-	"A" : "Left",
-	"S" : "Down",
-	"D" : "Right",
-	"E" : "E",
-	"Q" : "Q",
-	"Z" : "Z",
-	"X" : "X",
-	"LAlt" : "LAlt",
-	"LCtrl" : "LCtrl",
-	"ESC" : "ESC",
-	"F" : "F",
-	"G" : "G",
-	"=" : "Equal",
-	"-" : "Minus",
-}
 
 ### ----------------------------------------------------
 # FUNCTIONS
