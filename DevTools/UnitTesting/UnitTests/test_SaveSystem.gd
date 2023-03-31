@@ -17,9 +17,9 @@ const SAV_NAME := "UnitTest"
 
 func test_MapData() -> void:
 	var MD := MapData.new()
-	var path := SAV_FOLDER + SAV_NAME
+	var path := SAV_FOLDER + SAV_NAME + ".res"
 	assert_true(
-		SaveManager.save_MapData_to_path(path, MD),
+		OK == SaveManager.save_MapData_to_path(path, MD),
 		"Failed to save MapData: " + path)
 	
 	var LMD := SaveManager.load_MapData_from_path(path)
