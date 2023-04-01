@@ -1,12 +1,5 @@
-[gd_scene load_steps=2 format=3 uid="uid://b6a38wqb40pqy"]
+[gd_scene load_steps=2 format=3 uid="uid://c65xsntlavsxs"]
 
-[ext_resource type="Script" path="res://DevTools/UnitTesting/TestRunner.gd" id="1_bf406"]
+[ext_resource type="PackedScene" uid="uid://bqy3ikt6vu4b5" path="res://addons/gut/gui/GutRunner.tscn" id="1_4wnd2"]
 
-[node name="TestRunner" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("1_bf406")
+[node name="GutRunner" instance=ExtResource("1_4wnd2")]
