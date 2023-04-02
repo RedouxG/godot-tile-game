@@ -44,3 +44,6 @@ func test_MapData() -> void:
 
 func test_SQLSave() -> void:
 	var SQLS := SQLSave.new(SAV_FOLDER, SAV_NAME)
+	assert_true(SQLS.create_new_save(), "Failed to create new save file")
+	assert_true(SQLS.Load(), "Failed to load save")
+	assert_true(SQLS.delete_save() == OK, "Failed to delete save file")

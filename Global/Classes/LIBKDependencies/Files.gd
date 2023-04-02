@@ -16,6 +16,8 @@ const FILE_TAB = "\t"
 # FUNCTIONS
 ### ----------------------------------------------------
 
+static func get_dir_from_path(path:String) -> String:
+	return path.get_base_dir() + '/'
 
 # Saving resource from string
 static func save_res_str(content:String,path:String) -> int:
@@ -37,7 +39,7 @@ static func copy_file(from:String, to:String) -> int:
 # Creates empty file
 static func create_empty_file(path:String) -> int:
 	var file := FileAccess.open(path, FileAccess.WRITE)
-	return file.get_error()
+	return FileAccess.get_open_error()
 
 static func create_dir(path:String) -> int:
 	return DirAccess.make_dir_absolute(path)

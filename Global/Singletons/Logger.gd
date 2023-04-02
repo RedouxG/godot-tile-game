@@ -8,6 +8,12 @@ extends Node
 # VARIABLES
 ### ----------------------------------------------------
 
+var LOG_PATH:String = "res://Temp/log.txt":
+	set(path):
+		if(LibK.Files.dir_exist(LibK.Files.get_dir_from_path(path))):
+			logErr(["Tried to set log file path to incorrect path: ", path])
+			return
+		LOG_PATH = path
 var logTime := false
 
 ### ----------------------------------------------------
@@ -15,14 +21,49 @@ var logTime := false
 ### ----------------------------------------------------
 
 func _enter_tree() -> void:
+	_handle_log()
 	draw_line(false)
-	logMS(["LOG SESSION START"], false)
-	logMS(["Platform: ", OS.get_name()], false)
-	logMS([get_date(), get_time()], false)
+	LogMsg(["LOG SESSION START"], false)
+	LogMsg(["Platform: ", OS.get_name()], false)
+	LogMsg([get_date(), get_time()], false)
 	draw_line(false)
 
+# Function handles logs, if error detected save logs otherwise delete log file
+func _handle_log() -> void:
+	if(not LibK.Files.file_exist(LOG_PATH)):
+		return
+	
+	var file := FileAccess.open(LOG_PATH, FileAccess.READ)
+	if(file == null):
+		logErr(["Failed to open log file: ", LOG_PATH])
+		return
+	
+	print("logger lines <")
+	var line:String
+	while(file.get_position() < file.get_length()):
+		line = file.get_line()
+		print(line)
+	print("logger lines >")
+	
+	file.close()
+	var err := LibK.Files.delete_file(LOG_PATH)
+	if(err != OK):
+		logErr(["Failed to delete log file: ", LOG_PATH, ", err: ", err])
+
 func draw_line(logIndicator:bool = true) -> void:
-	logMS(["-----------------------------------------"], logIndicator)
+	LogMsg(["-----------------------------------------"], logIndicator)
+
+func LogMsg(message:Array, logIndicator = true) -> void:
+	if logTime: message.push_front(get_time())
+	if logIndicator: message.push_front("[LOG] ")
+	_save_LOG(_format_LOG(message))
+
+# logErr(["This is an error message])
+func logErr(message:Array) -> void:
+	if logTime: message.push_front(get_time())
+	
+	message.push_front("[ERR] ")
+	_save_LOG(_format_LOG(message), true)
 
 func get_date() -> String:
 	var dateDict := Time.get_datetime_dict_from_system()
@@ -40,48 +81,13 @@ func get_time() -> String:
 	if second.length() == 1: second = "0" + second
 	return "[" + str(timeDict.hour) + ":" + minute + ":" + second + "] "
 
-func logMS(message:Array, logIndicator = true):
-	if logTime: message.push_front(get_time())
-	if logIndicator: message.push_front("[LOG] ")
-	print(_format_LOG(message))
-
-# logErr(["This is an error message], get_stack())
-func logErr(message:Array, frame:Array) -> void:
-	if not frame.is_empty():
-		message.push_front("[L:" + str(frame[0]["line"]) + ", S:" + frame[0]["source"] + ", F:" + frame[0]["function"] +"] ")
-	if logTime: message.push_front(get_time())
-	
-	message.push_front("[ERR] ")
-	var formattedLog := _format_LOG(message)
-	print(formattedLog)
-	push_error(formattedLog)
-
 func _format_LOG(message:Array) -> String:
 	var output:String = ""
 	for part in message:
 		part = str(part)
-		
-		# Modifiers to log
-		if "[B]" in part: 
-			part = part.replace("[B]","")
-			part = part.to_upper()
-		if "[TAB]" in part: 
-			part = part.replace("[TAB]","")
-			output = output.insert(5,"	")
 		output += part
 	return output
 
-# Tries to execute a method, if fails pushes an error
-func try_execute(methodReturn, expectedOK, errMSG:String = "Generic error") -> bool:
-	if(methodReturn != expectedOK):
-		logErr([errMSG, " | ", "Expected: ", str(expectedOK), ", Got: ", methodReturn], [])
-		return false
-	return true
-
-# Tries to execute a method that returns an error code, if fails pushes an error
-func try_execute_err(errCode:int, errMSG:String = "Generic error") -> bool:
-	if(errCode != OK):
-		logErr([errMSG, " | ", "Error: ", errCode], [])
-		return false
-	return true
-
+func _save_LOG(message:String, isErr = false) -> void:
+	if(isErr): push_error(message)
+	print(message)

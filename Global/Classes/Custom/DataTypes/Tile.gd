@@ -40,11 +40,11 @@ func check_DB_compatible(TSControl:Dictionary) -> bool:
 	var isOK := true
 	for TSName in DB:
 		if(not TSControl.has(TSName)):
-			Logger.logErr(["Check check_DB_compatible failed! TSControl is missing TSName: ", TSName],[])
+			Logger.logErr(["Check check_DB_compatible failed! TSControl is missing TSName: ", TSName])
 			isOK = false
 			break
 		if(not TSControl[TSName].has(DB[TSName])): 
-			Logger.logErr(["Check check_DB_compatible failed! TSControl is missing tile from DB: ", DB[TSName]],[])
+			Logger.logErr(["Check check_DB_compatible failed! TSControl is missing tile from DB: ", DB[TSName]])
 			isOK = false
 			break
 	return isOK

@@ -244,7 +244,7 @@ class NORM_STATE extends SMState:
 			T.EditedMap.remove_tile_from_TileData(TMName,posV3)
 		else:
 			if(not T.EditedMap.add_tile_to_TileData_on(posV3, TMName, tileID)):
-				Logger.logErr(["Failed to set tile: ", [posV3, TMName, tileID]], get_stack())
+				Logger.logErr(["Failed to set tile: ", [posV3, TMName, tileID]])
 		TileMapManager.refresh_tile_on(posV3, T.EditedMap.get_TileData_on(posV3))
 	
 	func change_elevation(direction:int) -> void:
@@ -306,7 +306,7 @@ class SAVE_STATE extends SMState:
 	
 	func save_map(mapName:String) -> void:
 		if(not Caller.EditedMap.save(SaveManager.MAP_FOLDER + mapName + ".db")):
-			Logger.logErr(["Failed to save: ", mapName], get_stack())
+			Logger.logErr(["Failed to save: ", mapName])
 	
 	func end_state() -> void:
 		Caller._hide_lineEdit(Caller.UIElement.SaveEdit)
@@ -332,7 +332,7 @@ class LOAD_STATE extends SMState:
 		if(Temp.load(Caller.TileSelect.allTileMaps)):
 			Caller.EditedMap = Temp
 		else:
-			Logger.logErr(["Failed to load: ", mapName], get_stack())
+			Logger.logErr(["Failed to load: ", mapName])
 	
 	func end_state() -> void:
 		Caller.get_node("TileMapManager").unload_all_chunks()

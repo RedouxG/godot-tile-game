@@ -40,7 +40,7 @@ func check_compatible(TileMaps:Array) -> bool:
 		var tileSet:TileSet = tileMap.tile_set
 		
 		if not TS_CONTROL.has(TSName):
-			Logger.logErr(["TS_CONTROL is missing TSName: " + TSName], get_stack())
+			Logger.logErr(["TS_CONTROL is missing TSName: " + TSName])
 			isOK = false
 			continue
 		
@@ -49,13 +49,12 @@ func check_compatible(TileMaps:Array) -> bool:
 			var tileName:String = tileNamesIDs[index][0]
 			var tileID:int = tileNamesIDs[index][1]
 			if not TS_CONTROL[TSName].has(tileID):
-				Logger.logErr(["TS_CONTROL is missing tileID: ", tileID], get_stack())
+				Logger.logErr(["TS_CONTROL is missing tileID: ", tileID])
 				isOK = false
 				continue
 			
 			if TS_CONTROL[TSName][tileID] != tileName:
-				Logger.logErr(["TileName doesn't match for tileID: ", tileID, " | ", tileName, " != ", TS_CONTROL[TSName][tileID]],
-					get_stack())
+				Logger.logErr(["TileName doesn't match for tileID: ", tileID, " | ", tileName, " != ", TS_CONTROL[TSName][tileID]])
 				isOK = false
 				continue
 	return isOK

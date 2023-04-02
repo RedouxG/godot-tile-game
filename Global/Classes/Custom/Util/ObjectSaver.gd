@@ -36,7 +36,7 @@ func get_properties() -> Array:
 func set_properties(props:Array) -> void:
 	if(props.size() != PropertyNames.size()):
 		Logger.logErr(["Tried to set properties when props and PropertyNames are different size: ",
-		props.size(), " != ", PropertyNames.size()], get_stack())
+		props.size(), " != ", PropertyNames.size()])
 		return
 	
 	var index:int = 0

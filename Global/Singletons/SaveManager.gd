@@ -28,10 +28,10 @@ func load_MapTemp(MapName:String) -> bool:
 	var path := TEMP_FOLDER + MapName + ".res"
 	var TempResult := load_MapData_from_path(path)
 	if(TempResult == null):
-		Logger.logErr(["Failed to load MapTemp from path: ", path], get_stack())
+		Logger.logErr(["Failed to load MapTemp from path: ", path])
 		return false
 	MapTemp = TempResult
-	Logger.logMS(["Loaded MapTemp: ", MapTemp.MapName])
+	Logger.LogMsg(["Loaded MapTemp: ", MapTemp.MapName])
 	return true
 
 func load_MapEdit(MapName:String) -> bool:
@@ -42,7 +42,7 @@ func save_MapTemp() -> bool:
 	var path := TEMP_FOLDER + MapTemp.MapName + ".res"
 	var result := save_MapData_to_path(path, MapTemp)
 	if(result != OK):
-		Logger.logErr(["Failed to save MapTemp to path: ", path], get_stack())
+		Logger.logErr(["Failed to save MapTemp to path: ", path])
 		return false
 	return true
 
@@ -53,14 +53,14 @@ func save_MapEdit() -> bool:
 func load_save(SaveName:String) -> bool:
 	var TempSave := SQLSave.new(SaveName, EDIT_FOLDER)
 	if(not TempSave.load()):
-		Logger.logErr(["Failed to load save: ", SaveName], get_stack())
+		Logger.logErr(["Failed to load save: ", SaveName])
 		return false
 	SQLSaveDB = TempSave
 	return true
 
 func save_save(savePath:String = "") -> bool:
 	if(not SQLSaveDB.save(savePath)):
-		Logger.logErr(["Failed to save save: ", SQLSaveDB.FILE_NAME], get_stack())
+		Logger.logErr(["Failed to save save: ", SQLSaveDB.FILE_NAME])
 		return false
 	return true
 

@@ -30,7 +30,7 @@ class MATERIALS:
 		for keyVal in TYPES.values():
 			if not keyVal in DB:
 				isOK = false
-				Logger.logErr(["GLOBAL.MATERIALS - ", TYPES.keys()[keyVal], " missing in DB"], get_stack())
+				Logger.logErr(["GLOBAL.MATERIALS - ", TYPES.keys()[keyVal], " missing in DB"])
 		
 		return isOK
 
@@ -50,4 +50,4 @@ class TEXTURES:
 
 func _ready() -> void:
 	if get_tree().get_root().has_node("Logger"):
-		Logger.logMS(["Materials correction check: ", MATERIALS.CHECK_TYPES()])
+		Logger.LogMsg(["Materials correction check: ", MATERIALS.CHECK_TYPES()])
