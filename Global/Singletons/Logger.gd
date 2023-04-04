@@ -8,13 +8,14 @@ extends Node
 # VARIABLES
 ### ----------------------------------------------------
 
-var LOG_PATH:String = "res://Temp/log.txt":
-	set(path):
-		if(LibK.Files.dir_exist(LibK.Files.get_dir_from_path(path))):
-			logErr(["Tried to set log file path to incorrect path: ", path])
-			return
-		LOG_PATH = path
+const LOG_FOLDER = "res://Temp/"
+const LOF_FILE = "log.txt"
+const LOG_PATH = LOG_FOLDER + LOF_FILE
+const LOG_MARK = "[LOG] "
+const ERR_MARK = "[ERR] "
+
 var logTime := false
+var logFile := false
 
 ### ----------------------------------------------------
 # FUNCTIONS
@@ -27,43 +28,6 @@ func _enter_tree() -> void:
 	LogMsg(["Platform: ", OS.get_name()], false)
 	LogMsg([get_date(), get_time()], false)
 	draw_line(false)
-
-# Function handles logs, if error detected save logs otherwise delete log file
-func _handle_log() -> void:
-	if(not LibK.Files.file_exist(LOG_PATH)):
-		return
-	
-	var file := FileAccess.open(LOG_PATH, FileAccess.READ)
-	if(file == null):
-		logErr(["Failed to open log file: ", LOG_PATH])
-		return
-	
-	print("logger lines <")
-	var line:String
-	while(file.get_position() < file.get_length()):
-		line = file.get_line()
-		print(line)
-	print("logger lines >")
-	
-	file.close()
-	var err := LibK.Files.delete_file(LOG_PATH)
-	if(err != OK):
-		logErr(["Failed to delete log file: ", LOG_PATH, ", err: ", err])
-
-func draw_line(logIndicator:bool = true) -> void:
-	LogMsg(["-----------------------------------------"], logIndicator)
-
-func LogMsg(message:Array, logIndicator = true) -> void:
-	if logTime: message.push_front(get_time())
-	if logIndicator: message.push_front("[LOG] ")
-	_save_LOG(_format_LOG(message))
-
-# logErr(["This is an error message])
-func logErr(message:Array) -> void:
-	if logTime: message.push_front(get_time())
-	
-	message.push_front("[ERR] ")
-	_save_LOG(_format_LOG(message), true)
 
 func get_date() -> String:
 	var dateDict := Time.get_datetime_dict_from_system()
@@ -81,6 +45,43 @@ func get_time() -> String:
 	if second.length() == 1: second = "0" + second
 	return "[" + str(timeDict.hour) + ":" + minute + ":" + second + "] "
 
+# Function handles logs, if error detected save logs otherwise delete log file
+func _handle_log() -> void:
+	if(not LibK.Files.file_exist(LOG_PATH)):
+		return
+	
+	var file := FileAccess.open(LOG_PATH, FileAccess.READ)
+	if(file == null):
+		logErr(["Failed to open log file: ", LOG_PATH])
+		return
+	
+	var line:String
+	while(file.get_position() < file.get_length()):
+		line = file.get_line()
+		if(ERR_MARK in line):
+			file.close()
+			# Err report has time and date in name to avoid overwrite
+			var reportPath:String = LOG_FOLDER + "ErrorReport" + get_date().replace(":","-") + get_time().replace(":","-") + ".txt"
+			LibK.Files.copy_file(LOG_PATH, reportPath.replace(" ",""))
+			break
+	file.close()
+	LibK.Files.delete_file(LOG_PATH)
+
+func draw_line(logIndicator:bool = true) -> void:
+	LogMsg(["-----------------------------------------"], logIndicator)
+
+func LogMsg(message:Array, logIndicator = true) -> void:
+	if logTime: message.push_front(get_time())
+	if logIndicator: message.push_front(LOG_MARK)
+	_process_LOG(_format_LOG(message))
+
+# logErr(["This is an error message])
+func logErr(message:Array) -> void:
+	if logTime: message.push_front(get_time())
+	
+	message.push_front(ERR_MARK)
+	_process_LOG(_format_LOG(message), true)
+
 func _format_LOG(message:Array) -> String:
 	var output:String = ""
 	for part in message:
@@ -88,6 +89,12 @@ func _format_LOG(message:Array) -> String:
 		output += part
 	return output
 
-func _save_LOG(message:String, isErr = false) -> void:
+func _process_LOG(message:String, isErr = false) -> void:
 	if(isErr): push_error(message)
 	print(message)
+	
+	if(not logFile):
+		return
+	if(not LibK.Files.file_exist(LOG_PATH)):
+		LibK.Files.create_empty_file(LOG_PATH)
+	LibK.Files.file_append_line(LOG_PATH, message)

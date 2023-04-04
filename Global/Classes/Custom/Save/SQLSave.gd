@@ -126,10 +126,12 @@ func close() -> int:
 	return result
 
 func delete_save() -> int:
-	var result := close()
-	if(result != OK):
-		Logger.logErr(["Failed to delete SQLSave on close: ", SQL_DB_DEST.path, ", err: ", result])
-		return result
+	var result:int
+	if(LibK.Files.file_exist(SQL_DB_TEMP.path)):
+		result = close()
+		if(result != OK):
+			Logger.logErr(["Failed to delete SQLSave on close: ", SQL_DB_DEST.path, ", err: ", result])
+			return result
 	
 	result = SQL_DB_DEST.delete_file()
 	if(result != OK):
@@ -169,7 +171,7 @@ func get_map(MapName:String) -> MapData:
 	if(loadStr.is_empty()):
 		Logger.LogMsg(["Map: ", MapName, ", doesn't exist, return new empty."])
 		return MapData.new()
-	return MapData.new().from_str(loadStr)
+	return MapData.new().from_string(loadStr)
 
 func set_map(MapRef:MapData) -> void:
 	SQL_DB_TEMP.sql_save_compressed(

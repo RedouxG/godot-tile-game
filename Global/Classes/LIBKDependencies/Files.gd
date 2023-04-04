@@ -19,6 +19,15 @@ const FILE_TAB = "\t"
 static func get_dir_from_path(path:String) -> String:
 	return path.get_base_dir() + '/'
 
+static func file_append_line(path:String, line:String) -> int:
+	var file := FileAccess.open(path, FileAccess.READ_WRITE)
+	if(file == null):
+		return FileAccess.get_open_error()
+	
+	file.seek_end()
+	file.store_line(line)
+	return OK
+
 # Saving resource from string
 static func save_res_str(content:String,path:String) -> int:
 	var file := FileAccess.open(path, FileAccess.WRITE)

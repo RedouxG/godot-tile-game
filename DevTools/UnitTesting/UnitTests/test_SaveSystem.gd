@@ -46,4 +46,21 @@ func test_SQLSave() -> void:
 	var SQLS := SQLSave.new(SAV_FOLDER, SAV_NAME)
 	assert_true(SQLS.create_new_save(), "Failed to create new save file")
 	assert_true(SQLS.Load(), "Failed to load save")
+	
+	# Simulate creating save
+	var MD := MapData.new()
+	MD.MapName = "Test"
+	var SaveData := fill_MapData(MD,16)
+	SQLS.set_map(MD)
+	
+	assert_true(SQLS.Save(), "Failed to save")
+	assert_true(SQLS.close() == OK, "Failed to close")
+	
+	# Simulate loading save
+	SQLS = SQLSave.new(SAV_FOLDER, SAV_NAME)
+	assert_true(SQLS.Load(), "Failed to load save")
+	var LoadedMD := SQLS.get_map("Test")
+	assert_not_null(LoadedMD, "Loaded map is null")
+	assert_true(SaveData == LoadedMD.Data, "SaveData not equal to loaded data")
+	
 	assert_true(SQLS.delete_save() == OK, "Failed to delete save file")
