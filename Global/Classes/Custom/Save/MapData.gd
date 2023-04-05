@@ -96,3 +96,21 @@ func _to_string() -> String:
 func from_string(data:String) -> MapData:
 	Saver.set_properties_str(data)
 	return self
+
+### ----------------------------------------------------
+# Static util
+### ----------------------------------------------------
+
+static func load_MapData_from_path(path:String) -> MapData:
+	var TempRef = ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_REPLACE)
+	if(not TempRef is MapData):
+		return null
+	return TempRef
+
+static func save_MapData_to_path(path:String, Map:MapData) -> int:
+	return ResourceSaver.save(Map, path, ResourceSaver.FLAG_COMPRESS)
+
+static func get_new(name:String) -> MapData:
+	var NewMap := MapData.new()
+	NewMap.MapName = name
+	return NewMap

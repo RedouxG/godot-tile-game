@@ -163,16 +163,19 @@ func set_PlayerEntity(Player:PlayerEntity) -> bool:
 # MapData control
 ### ----------------------------------------------------
 
-# On fail just load empty
+# Returns saved or new map
 func get_map(MapName:String) -> MapData:
 	var loadStr := SQL_DB_TEMP.sql_load_compressed(
 		TABLE_NAMES.keys()[TABLE_NAMES.GAMEDATA_TABLE],
 		MapName)
 	if(loadStr.is_empty()):
 		Logger.LogMsg(["Map: ", MapName, ", doesn't exist, return new empty."])
-		return MapData.new()
+		var NewMap := MapData.new()
+		NewMap.MapName = MapName
+		return NewMap
 	return MapData.new().from_string(loadStr)
 
+# Saves a map
 func set_map(MapRef:MapData) -> void:
 	SQL_DB_TEMP.sql_save_compressed(
 		MapRef.to_string(),

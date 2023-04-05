@@ -24,9 +24,19 @@ var MapEdit:MapData
 # FUNCTIONS
 ### ----------------------------------------------------
 
-func load_MapTemp(MapName:String) -> bool:
+func make_new_MapTemp(MapName:String) -> bool:
 	var path := TEMP_FOLDER + MapName + ".res"
-	var TempResult := load_MapData_from_path(path)
+	var NewMapTemp := MapData.get_new(MapName)
+	var result := MapData.save_MapData_to_path(path, NewMapTemp)
+	if(result != OK):
+		Logger.logErr(["Failed to create new MapTemp, path: ", path])
+		return false
+	Logger.LogMsg(["Created new MapTemp: ", MapName])
+	return true
+
+func _load_MapTemp(MapName:String) -> bool:
+	var path := TEMP_FOLDER + MapName + ".res"
+	var TempResult := MapData.load_MapData_from_path(path)
 	if(TempResult == null):
 		Logger.logErr(["Failed to load MapTemp from path: ", path])
 		return false
@@ -34,45 +44,54 @@ func load_MapTemp(MapName:String) -> bool:
 	Logger.LogMsg(["Loaded MapTemp: ", MapTemp.MapName])
 	return true
 
-func load_MapEdit(MapName:String) -> bool:
-	MapEdit = SQLSaveDB.get_map(MapName)
-	return true
-
-func save_MapTemp() -> bool:
+func _save_MapTemp() -> bool:
 	var path := TEMP_FOLDER + MapTemp.MapName + ".res"
-	var result := save_MapData_to_path(path, MapTemp)
+	var result := MapData.save_MapData_to_path(path, MapTemp)
 	if(result != OK):
 		Logger.logErr(["Failed to save MapTemp to path: ", path])
 		return false
 	return true
 
-func save_MapEdit() -> bool:
-	SQLSaveDB.set_map(MapEdit)
+func _delete_MapTemp(MapName:String) -> bool:
+	var path := TEMP_FOLDER + MapName + ".res"
+	var result := LibK.Files.delete_file(path)
+	if(result != OK):
+		Logger.logErr(["Failed to delete MapTemp, path: ", path,", err: ", result])
+		return false
+	Logger.LogMsg(["Deleted MapTemp from path: ", path])
 	return true
 
+### ----------------------------------------------------
+# SQLSaveDB
+### ----------------------------------------------------
+
+# Creates a new save
+func make_new_save(SaveName:String) -> bool:
+	var TempSave := SQLSave.new(EDIT_FOLDER, SaveName)
+	return TempSave.create_new_save()
+
 func load_save(SaveName:String) -> bool:
-	var TempSave := SQLSave.new(SaveName, EDIT_FOLDER)
-	if(not TempSave.load()):
-		Logger.logErr(["Failed to load save: ", SaveName])
+	var TempSave := SQLSave.new(EDIT_FOLDER, SaveName)
+	if(not TempSave.Load()):
+		Logger.logErr(["Failed to load save to SaveManager: ", SaveName])
 		return false
+	if(SQLSaveDB != null):
+		SQLSaveDB.close()
 	SQLSaveDB = TempSave
 	return true
 
 func save_save(savePath:String = "") -> bool:
 	if(not SQLSaveDB.save(savePath)):
-		Logger.logErr(["Failed to save save: ", SQLSaveDB.FILE_NAME])
+		Logger.logErr(["Failed to save save in SaveManager: ", SQLSaveDB.SQL_DB_DEST.path])
 		return false
 	return true
 
-### ----------------------------------------------------
-# Static util
-### ----------------------------------------------------
-
-func load_MapData_from_path(path:String) -> MapData:
-	var TempRef = ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_REPLACE)
-	if(not TempRef is MapData):
-		return null
-	return TempRef
-
-func save_MapData_to_path(path:String, Map:MapData) -> int:
-	return ResourceSaver.save(Map, path, ResourceSaver.FLAG_COMPRESS)
+# Changes current map, saves MapEdit
+func change_map(MapName:String) -> bool:
+	if(not _load_MapTemp(MapName)):
+		Logger.logErr(["Failed to change map in SaveManager: ", MapName])
+		return false
+	if(MapEdit != null):
+		SQLSaveDB.set_map(MapEdit)
+	MapEdit = SQLSaveDB.get_map(MapName)
+	return true

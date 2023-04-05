@@ -32,12 +32,12 @@ func test_MapData() -> void:
 	var SavedDict := fill_MapData(MD, 5)
 	
 	assert_true(
-		OK == SaveManager.save_MapData_to_path(path, MD),
+		OK == MapData.save_MapData_to_path(path, MD),
 		"Failed to save MapData: " + path)
 	
 	MD = null
 	
-	var LMD := SaveManager.load_MapData_from_path(path)
+	var LMD := MapData.load_MapData_from_path(path)
 	assert_true(LMD is MapData, "Loaded MapData is not of type MapData")
 	assert_true(LMD.Data == SavedDict, "Saved dict differs from loaded")
 	assert_true(LibK.Files.delete_file(path) == OK)
@@ -64,3 +64,12 @@ func test_SQLSave() -> void:
 	assert_true(SaveData == LoadedMD.Data, "SaveData not equal to loaded data")
 	
 	assert_true(SQLS.delete_save() == OK, "Failed to delete save file")
+
+func test_SaveManager():
+	assert_true(SaveManager.make_new_MapTemp("Test"), "Faied to make new MapTemp")
+	assert_true(SaveManager.make_new_save("TestSave"), "Faied to make new Save")
+	assert_true(SaveManager.load_save("TestSave"), "Faied to load Save")
+	assert_true(SaveManager.change_map("Test"), "Failed to change map")
+	
+	assert_true(SaveManager._delete_MapTemp("Test"), "Failed to delete MapTemp")
+	assert_true(SaveManager.SQLSaveDB.delete_save() == OK, "Failed to delete save file")

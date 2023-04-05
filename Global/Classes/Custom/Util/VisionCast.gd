@@ -24,13 +24,13 @@ const MULT := [
 
 # WallMap { pos:isTransparent }
 static func get_visible_points(vantagePoint:Vector2, WallMap:Dictionary, maxDistance:int = 30) -> Array:
-	var losCache := [vantagePoint]
+	var losCache:Array[Vector2] = [vantagePoint]
 	for region in range(8):
 		_cast_light(losCache, WallMap, vantagePoint.x, vantagePoint.y, 1,
 		1.0, 0.0, maxDistance, region)
 	return losCache
 
-static func _cast_light(losCache:Array, WallMap:Dictionary, cx:float, cy:float, row:int, 
+static func _cast_light(losCache:Array[Vector2], WallMap:Dictionary, cx:float, cy:float, row:int, 
 	start:float, end:float, radius:int, region:int) -> void:
 	if(start < end): return
 	
