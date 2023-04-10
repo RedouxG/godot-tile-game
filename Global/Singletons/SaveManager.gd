@@ -8,8 +8,8 @@ extends Node
 # VARIABLES
 ### ----------------------------------------------------
 
-const TEMP_FOLDER := "res://Resources/Templates/"
-const EDIT_FOLDER := "res://Resources/Saves/"
+const TEMP_FOLDER := "res://Resources/Maps/Templates/"
+const EDIT_FOLDER := "res://Resources/Maps/Saves/"
 
 # Currently loaded save
 var SQLSaveDB:SQLSave
