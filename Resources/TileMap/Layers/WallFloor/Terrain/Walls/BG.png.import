@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bwunj085s2emg"
-path="res://.godot/imported/Outline.png-958c7457f098e8f751d148e4e080958a.ctex"
+uid="uid://dgi7f00q6mac5"
+path="res://.godot/imported/BG.png-86eb3d8c79f7d31c93e45a26e6bb35fa.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Resources/TileMap/Terrain/Walls/Outline.png"
-dest_files=["res://.godot/imported/Outline.png-958c7457f098e8f751d148e4e080958a.ctex"]
+source_file="res://Resources/TileMap/Layers/WallFloor/Terrain/Walls/BG.png"
+dest_files=["res://.godot/imported/BG.png-86eb3d8c79f7d31c93e45a26e6bb35fa.ctex"]
 
 [params]
 

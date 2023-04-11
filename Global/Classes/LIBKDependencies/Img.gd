@@ -45,3 +45,9 @@ static func get_sprite_from_texture(spritePos:Vector2, spriteSize:Vector2, setTe
 	atlas_texture.set_atlas(setTexture)
 	atlas_texture.set_region_enabled(Rect2(spritePos, spriteSize))
 	return atlas_texture
+
+# Returns image size as array [width,height], empty Array on fail
+static func get_png_size(path:String) -> Array[int]:
+	var image := Image.new()
+	if(not image.load(path) == OK): return []
+	return [image.get_width(), image.get_height()]

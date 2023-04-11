@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ss3ntxtetgxd"
-path="res://.godot/imported/Outline.png-6afc24e2926c2bd23955c2d6f2cc8db9.ctex"
+uid="uid://k32y770qmthc"
+path="res://.godot/imported/Template.png-0b497f1f63776b5a4de13e0f5ca1131d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Resources/TileMap/Single/Floor/Outline.png"
-dest_files=["res://.godot/imported/Outline.png-6afc24e2926c2bd23955c2d6f2cc8db9.ctex"]
+source_file="res://Resources/TileMap/Layers/WallFloor/Terrain/Walls/Template.png"
+dest_files=["res://.godot/imported/Template.png-0b497f1f63776b5a4de13e0f5ca1131d.ctex"]
 
 [params]
 
@@ -23,7 +23,7 @@ compress/normal_map=0
 compress/channel_pack=0
 mipmaps/generate=false
 mipmaps/limit=-1
-roughness/mode=0
+roughness/mode=1
 roughness/src_normal=""
 process/fix_alpha_border=true
 process/premult_alpha=false
@@ -31,4 +31,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

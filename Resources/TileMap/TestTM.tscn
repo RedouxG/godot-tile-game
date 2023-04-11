@@ -1,7 +1,10 @@
-[gd_scene format=3 uid="uid://w6hghmokh5tv"]
+[gd_scene load_steps=2 format=3 uid="uid://w6hghmokh5tv"]
+
+[sub_resource type="TileSet" id="TileSet_8ou87"]
 
 [node name="" type="TileMap"]
 texture_filter = 1
+tile_set = SubResource("TileSet_8ou87")
 format = 2
 layer_0/name = "WallFloor"
 layer_1/name = "Enviroment"
