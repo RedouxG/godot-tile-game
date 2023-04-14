@@ -2,6 +2,7 @@
 Temp/
 addons/gut
 addons/godot-sqlite
+addons/better-terrain
 ./vscode
 .gut_editor_config.json
 
