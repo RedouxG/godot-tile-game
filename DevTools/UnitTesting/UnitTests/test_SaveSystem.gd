@@ -40,7 +40,7 @@ func test_MapData() -> void:
 	var LMD := MapData.load_MapData_from_path(path)
 	assert_true(LMD is MapData, "Loaded MapData is not of type MapData")
 	assert_true(LMD.Data == SavedDict, "Saved dict differs from loaded")
-	assert_true(LibK.Files.delete_file(path) == OK)
+	assert_true(FileManager.delete_file(path) == OK)
 
 func test_SQLSave() -> void:
 	var SQLS := SQLSave.new(SAV_FOLDER, SAV_NAME)

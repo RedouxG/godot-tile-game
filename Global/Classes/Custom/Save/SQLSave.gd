@@ -93,7 +93,7 @@ func Load() -> bool:
 	if(not SQL_DB_DEST.has_file()):
 		Logger.logErr(["Tried to init non existing save: ", SQL_DB_DEST.path])
 		return false
-	if(LibK.Files.copy_file(SQL_DB_DEST.path, SQL_DB_TEMP.path) != OK):
+	if(FileManager.copy_file(SQL_DB_DEST.path, SQL_DB_TEMP.path) != OK):
 		Logger.logErr(["Failed to copy db from dest to temp: ", SQL_DB_DEST.path, " -> ", SQL_DB_TEMP.path])
 		return false
 	Logger.LogMsg(["Loaded SQLSave: ", SQL_DB_DEST.path])
@@ -102,12 +102,12 @@ func Load() -> bool:
 # Save everything, leave savePath empty if you want to overwrite save
 func Save(savePath:String = "") -> bool:
 	if(savePath == ""): savePath = SQL_DB_DEST.path
-	if(LibK.Files.file_exist(savePath)):
+	if(FileManager.file_exist(savePath)):
 		if(OS.move_to_trash(ProjectSettings.globalize_path(savePath)) != OK):
 			Logger.logErr(["Unable to delete SQLSave save file: ", savePath])
 			return false
 	
-	var result := LibK.Files.copy_file(SQL_DB_TEMP.path, savePath)
+	var result := FileManager.copy_file(SQL_DB_TEMP.path, savePath)
 	if(not result == OK):
 		Logger.logErr(["Failed to copy db from temp to save: ", SQL_DB_TEMP.path, " -> ", savePath, ", result: ", result])
 		return false
@@ -127,7 +127,7 @@ func close() -> int:
 
 func delete_save() -> int:
 	var result:int
-	if(LibK.Files.file_exist(SQL_DB_TEMP.path)):
+	if(FileManager.file_exist(SQL_DB_TEMP.path)):
 		result = close()
 		if(result != OK):
 			Logger.logErr(["Failed to delete SQLSave on close: ", SQL_DB_DEST.path, ", err: ", result])
@@ -189,9 +189,9 @@ func set_map(MapRef:MapData) -> void:
 # Cleans all temp files from save folders (Dont call when a save is used!)
 static func clean_TEMP(folderPath:String) -> bool:
 	var isOK := true
-	for packed in LibK.Files.get_file_list_at_dir(folderPath):
+	for packed in FileManager.get_file_list_at_dir(folderPath):
 		var filepath:String = packed[0]
 		var fileName:String = packed[1]
 		if TEMP_MARKER in fileName:
-			isOK = isOK and (LibK.Files.delete_file(filepath) == OK)
+			isOK = isOK and (FileManager.delete_file(filepath) == OK)
 	return isOK

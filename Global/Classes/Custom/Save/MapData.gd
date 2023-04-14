@@ -28,7 +28,7 @@ func create_new(TileMaps:Array) -> void:
 		var tileSet:TileSet = tileMap.tile_set
 		
 		TS_CONTROL[TSName] = {}
-		var tileNamesIDs = LibK.TS.get_tile_names_and_IDs(tileSet)
+		var tileNamesIDs = TileMapTools.get_tile_names_and_IDs(tileSet)
 		for index in range(tileNamesIDs.size()):
 			TS_CONTROL[TSName][tileNamesIDs[index][1]] = tileNamesIDs[index][0]
 
@@ -44,7 +44,7 @@ func check_compatible(TileMaps:Array) -> bool:
 			isOK = false
 			continue
 		
-		var tileNamesIDs = LibK.TS.get_tile_names_and_IDs(tileSet)
+		var tileNamesIDs = TileMapTools.get_tile_names_and_IDs(tileSet)
 		for index in range(tileNamesIDs.size()):
 			var tileName:String = tileNamesIDs[index][0]
 			var tileID:int = tileNamesIDs[index][1]

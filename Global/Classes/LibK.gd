@@ -13,7 +13,6 @@ class_name LibK
 const Vectors =      preload("res://Global/Classes/LIBKDependencies/Vectors.gd")
 const Optimization = preload("res://Global/Classes/LIBKDependencies/Optimization.gd")
 const UI =           preload("res://Global/Classes/LIBKDependencies/UI.gd")
-const TS =           preload("res://Global/Classes/LIBKDependencies/TS.gd")
 const ScriptGen =    preload("res://Global/Classes/LIBKDependencies/ScriptGen.gd")
 const Compression =  preload("res://Global/Classes/LIBKDependencies/Compression.gd")
 const Img =          preload("res://Global/Classes/LIBKDependencies/Img.gd")

@@ -54,7 +54,7 @@ func _save_MapTemp() -> bool:
 
 func _delete_MapTemp(MapName:String) -> bool:
 	var path := TEMP_FOLDER + MapName + ".res"
-	var result := LibK.Files.delete_file(path)
+	var result := FileManager.delete_file(path)
 	if(result != OK):
 		Logger.logErr(["Failed to delete MapTemp, path: ", path,", err: ", result])
 		return false

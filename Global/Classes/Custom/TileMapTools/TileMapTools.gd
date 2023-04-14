@@ -1,11 +1,12 @@
 ### ----------------------------------------------------
-### Helps with TileSets
+### Wrapper around godot built in TileMap
 ### ----------------------------------------------------
 
 extends Script
+class_name TileMapTools
 
 ### ----------------------------------------------------
-### FUNCTIONS
+# FUNCTIONS
 ### ----------------------------------------------------
 
 static func get_sources(TS:TileSet) -> Array[TileSetAtlasSource]:

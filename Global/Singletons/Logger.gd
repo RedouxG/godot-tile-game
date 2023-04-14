@@ -47,7 +47,7 @@ func get_time() -> String:
 
 # Function handles logs, if error detected save logs otherwise delete log file
 func _handle_log() -> void:
-	if(not LibK.Files.file_exist(LOG_PATH)):
+	if(not FileManager.file_exists(LOG_PATH)):
 		return
 	
 	var file := FileAccess.open(LOG_PATH, FileAccess.READ)
@@ -62,10 +62,10 @@ func _handle_log() -> void:
 			file.close()
 			# Err report has time and date in name to avoid overwrite
 			var reportPath:String = LOG_FOLDER + "ErrorReport" + get_date().replace(":","-") + get_time().replace(":","-") + ".txt"
-			LibK.Files.copy_file(LOG_PATH, reportPath.replace(" ",""))
+			FileManager.copy_file(LOG_PATH, reportPath.replace(" ",""))
 			break
 	file.close()
-	LibK.Files.delete_file(LOG_PATH)
+	FileManager.delete_file(LOG_PATH)
 
 func draw_line(logIndicator:bool = true) -> void:
 	LogMsg(["-----------------------------------------"], logIndicator)
@@ -95,6 +95,6 @@ func _process_LOG(message:String, isErr = false) -> void:
 	
 	if(not logFile):
 		return
-	if(not LibK.Files.file_exist(LOG_PATH)):
-		LibK.Files.create_empty_file(LOG_PATH)
-	LibK.Files.file_append_line(LOG_PATH, message)
+	if(not FileManager.file_exist(LOG_PATH)):
+		FileManager.create_empty_file(LOG_PATH)
+	FileManager.file_append_line(LOG_PATH, message)

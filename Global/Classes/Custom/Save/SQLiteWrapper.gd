@@ -24,13 +24,13 @@ func _init(pathToDB:String, verbosity:int) -> void:
 	path = pathToDB
 
 func has_file() -> bool:
-	return LibK.Files.file_exist(path)
+	return FileManager.file_exist(path)
 
 func delete_file() -> int:
-	return LibK.Files.delete_file(path)
+	return FileManager.delete_file(path)
 
 func create_new_file() -> int:
-	return LibK.Files.create_empty_file(path)
+	return FileManager.create_empty_file(path)
 
 # Compresses and saves data in sqlite db
 # Designed to compress big data chunks
@@ -112,7 +112,7 @@ func do_query(query:String) -> void:
 
 # Deletes an sql DB
 static func delete_SQLDB_file(folderPath:String ,dbName:String) -> int:
-	return LibK.Files.delete_file(folderPath + dbName + ".db")
+	return FileManager.delete_file(folderPath + dbName + ".db")
 
 static func do_query_on_path(pathToDB:String, query:String) -> void:
 	var sqlite = SQLite.new()

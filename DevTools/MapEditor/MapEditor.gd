@@ -95,7 +95,7 @@ func _init_TM_selection():
 
 func _init_tile_select():
 	for tileMap in TileSelect.allTileMaps:
-		TileSelect.tileData.append(LibK.TS.get_tile_names_and_IDs(tileMap.tile_set))
+		TileSelect.tileData.append(TileMapTools.get_tile_names_and_IDs(tileMap.tile_set))
 
 ### ----------------------------------------------------
 # Drawing
@@ -261,7 +261,7 @@ class NORM_STATE extends SMState:
 		for packed in T.TileSelect.tileData[T.TileSelect.TMIndex]:
 			var tileName:String = packed[0]
 			var tileID:int = packed[1]
-			var tileTexture:Texture2D = LibK.TS.get_tile_texture(tileID, tileMap.tile_set)
+			var tileTexture:Texture2D = TileMapTools.get_tile_texture(tileID, tileMap.tile_set)
 
 			if(T.TileSelect.filter != ""):
 				if(not T.TileSelect.filter.to_lower() in tileName.to_lower()): 
