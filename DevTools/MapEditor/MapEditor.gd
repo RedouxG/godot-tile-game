@@ -39,11 +39,11 @@ var TileSelect := {
 }
 
 var EditorStateMachine := StateMachine.new()
-@onready var NormalState := NORM_STATE.new(self)
-@onready var FilterState := FLTR_STATE.new(self)
-@onready var SaveState := SAVE_STATE.new(self)
-@onready var LoadState := LOAD_STATE.new(self)
-@onready var GoToState := GOTO_STATE.new(self)
+@onready var NormalState := NORM_STATE.new(self, "NORM_STATE")
+@onready var FilterState := FLTR_STATE.new(self, "FLTR_STATE")
+@onready var SaveState := SAVE_STATE.new(self, "SAVE_STATE")
+@onready var LoadState := LOAD_STATE.new(self, "LOAD_STATE")
+@onready var GoToState := GOTO_STATE.new(self, "GOTO_STATE")
 
 var inputActive := true
 
@@ -71,10 +71,7 @@ func _ready() -> void:
 	TileSelect.allTileMaps = $TileMapManager.TileMaps
 	
 	EditedMap = SQLSave.new(EDITOR_SAVE_NAME, SaveManager.MAP_FOLDER)
-	if(not EditedMap.create_new_save(TileSelect.allTileMaps)):
-		push_error("Failed to init MapEditor")
-		get_tree().quit()
-	if(not EditedMap.load(TileSelect.allTileMaps)):
+	if(not EditedMap.load()):
 		push_error("Failed to init MapEditor")
 		get_tree().quit()
 	
@@ -108,8 +105,8 @@ func _draw():
 
 # Draws a square to indicate current cell pointed by mouse cursor
 func _draw_selection_square(mousePos:Vector2):
-	var size = Vector2(GLOBAL.TILEMAPS.BASE_SCALE,GLOBAL.TILEMAPS.BASE_SCALE)
-	var cellPosV2:Vector2 = LibK.Vectors.scale_down_vec2(mousePos, GLOBAL.TILEMAPS.BASE_SCALE)
+	var size = Vector2(GLOBAL.TILEMAPS.BASE_SCALE, GLOBAL.TILEMAPS.BASE_SCALE)
+	var cellPosV2:Vector2 = VectorTools.scale_down_vec2i(mousePos, GLOBAL.TILEMAPS.BASE_SCALE)
 	var posV2:Vector2 = cellPosV2 * GLOBAL.TILEMAPS.BASE_SCALE
 	
 	var rect = Rect2(posV2,size)
@@ -120,7 +117,7 @@ func _draw_selection_square(mousePos:Vector2):
 # Draws a square to indicate current chunk pointed by mouse cursor
 func _draw_selection_chunk(mousePos:Vector2):
 	var chunkScale:int = GLOBAL.TILEMAPS.BASE_SCALE * GLOBAL.TILEMAPS.CHUNK_SIZE
-	var chunkV2:Vector2 = LibK.Vectors.scale_down_vec2(mousePos, GLOBAL.TILEMAPS.CHUNK_SIZE*GLOBAL.TILEMAPS.BASE_SCALE)
+	var chunkV2:Vector2 = VectorTools.scale_down_vec2i(mousePos, GLOBAL.TILEMAPS.CHUNK_SIZE*GLOBAL.TILEMAPS.BASE_SCALE)
 	var posV2:Vector2 = chunkV2 * chunkScale
 	var rect = Rect2(posV2, Vector2(chunkScale, chunkScale))
 	
@@ -131,7 +128,7 @@ func _draw_selection_chunk(mousePos:Vector2):
 func _draw_loaded_chunks():
 	for posV3 in $TileMapManager.RenderedChunks:
 		var chunkScale:int = GLOBAL.TILEMAPS.BASE_SCALE * GLOBAL.TILEMAPS.CHUNK_SIZE
-		var posV2:Vector2 = LibK.Vectors.vec3_vec2(posV3) * chunkScale
+		var posV2:Vector2 = VectorTools.vec3i_vec2i(posV3) * chunkScale
 		var rect = Rect2(posV2, Vector2(chunkScale, chunkScale))
 		draw_rect(rect, Color.RED, false, 1)
 
@@ -143,23 +140,18 @@ func _draw_loaded_chunks():
 func _input(event:InputEvent) -> void:
 	if(not inputActive): return
 	EditorStateMachine.update_state_input(event)
-	update()
+	queue_redraw()
 	update_EditedMap_chunks()
 
 # Default editor state
 class NORM_STATE extends SMState:
 	var TileMapManager:Node2D
 	var Cam:Camera2D
-	var T:Node2D # Short for caller
 	
-	func _init(caller:Node2D) -> void:
-		super(caller)
+	func _init(caller:Node, name:String) -> void:
+		super(caller, name)
 		TileMapManager = caller.get_node("TileMapManager")
 		Cam = caller.get_node("Cam")
-		T = caller
-
-	static func get_name() -> String:
-		return "NORM_STATE"
 	
 	func mouse_input(event:InputEvent) -> void:
 		if(event is InputEventMouseButton):
@@ -172,29 +164,29 @@ class NORM_STATE extends SMState:
 				Cam.position -= event.relative * Cam.zoom
 		
 		if(event is InputEventMouseButton or event is InputEventMouseMotion):
-			if(not T.TileSelect.shownTiles.size() > 0): 
+			if(not Caller.TileSelect.shownTiles.size() > 0): 
 				return
 			if event.button_mask == MOUSE_BUTTON_MASK_LEFT:  
-				var tileID:int = T.TileSelect.shownTiles[T.TileSelect.listIndex][1]
+				var tileID:int = Caller.TileSelect.shownTiles[Caller.TileSelect.listIndex][1]
 				set_selected_tile(tileID)
 			if event.button_mask == MOUSE_BUTTON_MASK_RIGHT: 
 				set_selected_tile(-1)
 	
 	# This could be an input map but doing it with ifs is good enough
 	func update_input(event:InputEvent) -> void:
-		if(not LibK.UI.is_mouse_on_ui(T.UIElement.TileScroll, T.UIElement.Parent)):
+		if(not LibK.UI.is_mouse_on_ui(Caller.UIElement.TileScroll, Caller.UIElement.Parent)):
 			mouse_input(event)
 		if not event is InputEventKey: 
 			return
 		
 		if(event.is_action_pressed(GLOBAL.INPUT_MAP["E"])): 
-			switch_TM_selection(T.TileSelect.TMIndex + 1)
+			switch_TM_selection(Caller.TileSelect.TMIndex + 1)
 		elif(event.is_action_pressed(GLOBAL.INPUT_MAP["Q"])): 
-			switch_TM_selection(T.TileSelect.TMIndex - 1)
+			switch_TM_selection(Caller.TileSelect.TMIndex - 1)
 		elif(event.is_action_pressed(GLOBAL.INPUT_MAP["X"])):
-			switch_tile_selection(T.TileSelect.listIndex + 1)
+			switch_tile_selection(Caller.TileSelect.listIndex + 1)
 		elif(event.is_action_pressed(GLOBAL.INPUT_MAP["Z"])): 
-			switch_tile_selection(T.TileSelect.listIndex - 1)
+			switch_tile_selection(Caller.TileSelect.listIndex - 1)
 		elif(event.is_action_pressed(GLOBAL.INPUT_MAP["-"])):
 			change_elevation(-1)
 		elif(event.is_action_pressed(GLOBAL.INPUT_MAP["="])):
@@ -209,73 +201,69 @@ class NORM_STATE extends SMState:
 			StateMaster.set_state(Caller.GoToState)
 	
 	func switch_TM_selection(value:int) -> void:
-		T.TileSelect.TMIndex = value
-		if(T.TileSelect.TMIndex > (T.TileSelect.allTileMaps.size() - 1)): 
-			T.TileSelect.TMIndex = 0
-		if(T.TileSelect.TMIndex < 0): 
-			T.TileSelect.TMIndex = (T.TileSelect.allTileMaps.size() - 1)
+		Caller.TileSelect.TMIndex = value
+		if(Caller.TileSelect.TMIndex > (Caller.TileSelect.allTileMaps.size() - 1)): 
+			Caller.TileSelect.TMIndex = 0
+		if(Caller.TileSelect.TMIndex < 0): 
+			Caller.TileSelect.TMIndex = (Caller.TileSelect.allTileMaps.size() - 1)
 		
-		T.TileSelect.listIndex = 0
+		Caller.TileSelect.listIndex = 0
 		fill_item_list()
 		
-		T.UIElement.TMSelect.select(T.TileSelect.TMIndex)
-		switch_tile_selection(T.TileSelect.listIndex)
+		Caller.UIElement.TMSelect.select(Caller.TileSelect.TMIndex)
+		switch_tile_selection(Caller.TileSelect.listIndex)
 	
 	func switch_tile_selection(value:int) -> void:
-		T.TileSelect.listIndex = value
-		if(T.TileSelect.listIndex > (T.UIElement.TileList.get_item_count() - 1)): 
-			T.TileSelect.listIndex = 0
-		if(T.TileSelect.listIndex < 0): 
-			T.TileSelect.listIndex = (T.UIElement.TileList.get_item_count() - 1)
+		Caller.TileSelect.listIndex = value
+		if(Caller.TileSelect.listIndex > (Caller.UIElement.TileList.get_item_count() - 1)): 
+			Caller.TileSelect.listIndex = 0
+		if(Caller.TileSelect.listIndex < 0): 
+			Caller.TileSelect.listIndex = (Caller.UIElement.TileList.get_item_count() - 1)
 		
-		T.UIElement.TileList.select(T.TileSelect.listIndex)
+		Caller.UIElement.TileList.select(Caller.TileSelect.listIndex)
 	
 	func set_selected_tile(tileID:int) -> void:
-		var tileMap:TileMap = T.TileSelect.allTileMaps[T.TileSelect.TMIndex]
+		var tileMap:TileMap = Caller.TileSelect.allTileMaps[Caller.TileSelect.TMIndex]
 		var mousePos:Vector2 = tileMap.local_to_map(Caller.get_global_mouse_position())
-		var posV3:Vector3 = LibK.Vectors.vec2_vec3(mousePos, Cam.currentElevation)
-		var chunkV3:Vector3 = LibK.Vectors.vec2_vec3(
-			LibK.Vectors.scale_down_vec2(mousePos, GLOBAL.TILEMAPS.CHUNK_SIZE),
+		var posV3:Vector3 = VectorTools.vec2i_vec3i(mousePos, Cam.currentElevation)
+		var chunkV3:Vector3 = VectorTools.vec2i_vec3i(
+			VectorTools.scale_down_vec2i(mousePos, GLOBAL.TILEMAPS.CHUNK_SIZE),
 			Cam.currentElevation)
 		if(not chunkV3 in TileMapManager.RenderedChunks): return
 		var TMName = tileMap.get_name()
 		
 		if(tileID == -1):
-			T.EditedMap.remove_tile_from_TileData(TMName,posV3)
+			Caller.EditedMap.remove_tile_from_TileData(TMName,posV3)
 		else:
-			if(not T.EditedMap.add_tile_to_TileData_on(posV3, TMName, tileID)):
+			if(not Caller.EditedMap.add_tile_to_TileData_on(posV3, TMName, tileID)):
 				Logger.logErr(["Failed to set tile: ", [posV3, TMName, tileID]])
-		TileMapManager.refresh_tile_on(posV3, T.EditedMap.get_TileData_on(posV3))
+		TileMapManager.refresh_tile_on(posV3, Caller.EditedMap.get_TileData_on(posV3))
 	
 	func change_elevation(direction:int) -> void:
 		Cam.currentElevation += direction
-		T.UIElement.ElevationLabel.text = "Elevation: " + str(Cam.currentElevation)
+		Caller.UIElement.ElevationLabel.text = "Elevation: " + str(Cam.currentElevation)
 		TileMapManager.unload_all_chunks()
 
 	# Fills item list with TileMap tiles
 	func fill_item_list() -> void:
-		T.UIElement.TileList.clear()
-		T.TileSelect.shownTiles.clear()
+		Caller.UIElement.TileList.clear()
+		Caller.TileSelect.shownTiles.clear()
 		
-		var tileMap:TileMap = T.TileSelect.allTileMaps[T.TileSelect.TMIndex]
-		for packed in T.TileSelect.tileData[T.TileSelect.TMIndex]:
+		var tileMap:TileMap = Caller.TileSelect.allTileMaps[Caller.TileSelect.TMIndex]
+		for packed in Caller.TileSelect.tileData[Caller.TileSelect.TMIndex]:
 			var tileName:String = packed[0]
 			var tileID:int = packed[1]
 			var tileTexture:Texture2D = TileMapTools.get_tile_texture(tileID, tileMap.tile_set)
 
-			if(T.TileSelect.filter != ""):
-				if(not T.TileSelect.filter.to_lower() in tileName.to_lower()): 
+			if(Caller.TileSelect.filter != ""):
+				if(not Caller.TileSelect.filter.to_lower() in tileName.to_lower()): 
 					continue
-			T.UIElement.TileList.add_item(tileName,tileTexture,true)
-			T.TileSelect.shownTiles.append([tileName,tileID])
+			Caller.UIElement.TileList.add_item(tileName,tileTexture,true)
+			Caller.TileSelect.shownTiles.append([tileName,tileID])
 
 class FLTR_STATE extends SMState:
-	func _init(caller:Node2D) -> void:
-		super(caller)
-		pass
-
-	static func get_name() -> String:
-		return "FLTR_STATE"
+	func _init(caller:Node, name:String) -> void:
+		super(caller, name)
 	
 	func _state_set() -> void:
 		Caller._show_lineEdit(Caller.UIElement.FilterEdit)
@@ -294,12 +282,8 @@ class FLTR_STATE extends SMState:
 			
 
 class SAVE_STATE extends SMState:
-	func _init(caller:Node) -> void:
-		super(caller)
-		pass
-
-	static func get_name() -> String:
-		return "SAVE_STATE"
+	func _init(caller:Node, name:String) -> void:
+		super(caller, name)
 	
 	func _state_set() -> void:
 		Caller._show_lineEdit(Caller.UIElement.SaveEdit)
@@ -317,12 +301,8 @@ class SAVE_STATE extends SMState:
 			end_state()
 
 class LOAD_STATE extends SMState:
-	func _init(caller:Node2D) -> void:
-		super(caller)
-		pass
-
-	static func get_name() -> String:
-		return "LOAD_STATE"
+	func _init(caller:Node, name:String) -> void:
+		super(caller, name)
 	
 	func _state_set() -> void:
 		Caller._show_lineEdit(Caller.UIElement.LoadEdit)
@@ -344,12 +324,8 @@ class LOAD_STATE extends SMState:
 			end_state()
 
 class GOTO_STATE extends SMState:
-	func _init(caller:Node2D) -> void:
-		super(caller)
-		pass
-
-	static func get_name() -> String:
-		return "GOTO_STATE"
+	func _init(caller:Node, name:String) -> void:
+		super(caller, name)
 
 	func _state_set() -> void:
 		Caller._show_lineEdit(Caller.UIElement.GotoEdit)
@@ -407,8 +383,8 @@ func _on_GOTO_text_entered(new_text:String) -> void:
 
 # Renders chunks as in normal game based on camera position (as simulated entity)
 func update_EditedMap_chunks() -> void:
-	var camChunk := LibK.Vectors.scale_down_vec2($Cam.global_position, GLOBAL.TILEMAPS.CHUNK_SIZE*GLOBAL.TILEMAPS.BASE_SCALE)
-	var chunksToRender := LibK.Vectors.vec3_get_range_2d(LibK.Vectors.vec2_vec3(camChunk, $Cam.currentElevation), 1)
+	var camChunk := VectorTools.scale_down_vec2i($Cam.global_position, GLOBAL.TILEMAPS.CHUNK_SIZE*GLOBAL.TILEMAPS.BASE_SCALE)
+	var chunksToRender := VectorTools.vec3i_get_range_2d(VectorTools.vec2i_vec3i(camChunk, $Cam.currentElevation), 1)
 
 	# Loading chunks that are not yet rendered
 	for chunkV3 in chunksToRender:

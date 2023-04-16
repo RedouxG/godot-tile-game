@@ -11,9 +11,9 @@ texture = ExtResource("1_rum4a")
 0:0/0/terrains_peering_bit/bottom_right_corner = 0
 0:0/0/terrains_peering_bit/bottom_side = 0
 0:0/0/metadata/_better_terrain = {
-0: [0, 1],
-3: [0, 1],
-4: [0, 1],
+0: [0, 1, 2],
+3: [0, 1, 2],
+4: [0, 1, 2],
 "type": 0
 }
 1:0/0 = 0
@@ -25,11 +25,11 @@ texture = ExtResource("1_rum4a")
 1:0/0/terrains_peering_bit/bottom_left_corner = 0
 1:0/0/terrains_peering_bit/left_side = 0
 1:0/0/metadata/_better_terrain = {
-0: [0, 1],
-3: [0, 1],
-4: [0, 1],
-7: [0, 1],
-8: [0, 1],
+0: [0, 1, 2],
+3: [0, 1, 2],
+4: [0, 1, 2],
+7: [0, 1, 2],
+8: [0, 1, 2],
 "type": 0
 }
 2:0/0 = 0
@@ -39,9 +39,9 @@ texture = ExtResource("1_rum4a")
 2:0/0/terrains_peering_bit/bottom_left_corner = 0
 2:0/0/terrains_peering_bit/left_side = 0
 2:0/0/metadata/_better_terrain = {
-4: [0, 1],
-7: [0, 1],
-8: [0, 1],
+4: [0, 1, 2],
+7: [0, 1, 2],
+8: [0, 1, 2],
 "type": 0
 }
 3:0/0 = 0
@@ -49,7 +49,7 @@ texture = ExtResource("1_rum4a")
 3:0/0/terrain = 0
 3:0/0/terrains_peering_bit/bottom_side = 0
 3:0/0/metadata/_better_terrain = {
-4: [0, 1],
+4: [0, 1, 2],
 "type": 0
 }
 4:0/0 = 0
@@ -63,13 +63,13 @@ texture = ExtResource("1_rum4a")
 4:0/0/terrains_peering_bit/top_side = 0
 4:0/0/terrains_peering_bit/top_right_corner = 0
 4:0/0/metadata/_better_terrain = {
-0: [0, 1],
-4: [0, 1],
-7: [0, 1],
-8: [0, 1],
-11: [0, 1],
-12: [0, 1],
-15: [0, 1],
+0: [0, 1, 2],
+4: [0, 1, 2],
+7: [0, 1, 2],
+8: [0, 1, 2],
+11: [0, 1, 2],
+12: [0, 1, 2],
+15: [0, 1, 2],
 "type": 0
 }
 5:0/0 = 0
@@ -83,13 +83,13 @@ texture = ExtResource("1_rum4a")
 5:0/0/terrains_peering_bit/top_side = 0
 5:0/0/terrains_peering_bit/top_right_corner = 0
 5:0/0/metadata/_better_terrain = {
-0: [0, 1],
-3: [0, 1],
-4: [0, 1],
-8: [0, 1],
-11: [0, 1],
-12: [0, 1],
-15: [0, 1],
+0: [0, 1, 2],
+3: [0, 1, 2],
+4: [0, 1, 2],
+8: [0, 1, 2],
+11: [0, 1, 2],
+12: [0, 1, 2],
+15: [0, 1, 2],
 "type": 0
 }
 7:0/0 = 0
@@ -100,10 +100,10 @@ texture = ExtResource("1_rum4a")
 7:0/0/terrains_peering_bit/left_side = 0
 7:0/0/terrains_peering_bit/top_side = 0
 7:0/0/metadata/_better_terrain = {
-0: [0, 1],
-4: [0, 1],
-8: [0, 1],
-12: [0, 1],
+0: [0, 1, 2],
+4: [0, 1, 2],
+8: [0, 1, 2],
+12: [0, 1, 2],
 "type": 0
 }
 0:1/0 = 0
@@ -115,11 +115,11 @@ texture = ExtResource("1_rum4a")
 0:1/0/terrains_peering_bit/top_side = 0
 0:1/0/terrains_peering_bit/top_right_corner = 0
 0:1/0/metadata/_better_terrain = {
-0: [0, 1],
-3: [0, 1],
-4: [0, 1],
-12: [0, 1],
-15: [0, 1],
+0: [0, 1, 2],
+3: [0, 1, 2],
+4: [0, 1, 2],
+12: [0, 1, 2],
+15: [0, 1, 2],
 "type": 0
 }
 1:1/0 = 0
@@ -134,14 +134,14 @@ texture = ExtResource("1_rum4a")
 1:1/0/terrains_peering_bit/top_side = 0
 1:1/0/terrains_peering_bit/top_right_corner = 0
 1:1/0/metadata/_better_terrain = {
-0: [0, 1],
-3: [0, 1],
-4: [0, 1],
-7: [0, 1],
-8: [0, 1],
-11: [0, 1],
-12: [0, 1],
-15: [0, 1],
+0: [0, 1, 2],
+3: [0, 1, 2],
+4: [0, 1, 2],
+7: [0, 1, 2],
+8: [0, 1, 2],
+11: [0, 1, 2],
+12: [0, 1, 2],
+15: [0, 1, 2],
 "type": 0
 }
 2:1/0 = 0
@@ -153,11 +153,11 @@ texture = ExtResource("1_rum4a")
 2:1/0/terrains_peering_bit/top_left_corner = 0
 2:1/0/terrains_peering_bit/top_side = 0
 2:1/0/metadata/_better_terrain = {
-4: [0, 1],
-7: [0, 1],
-8: [0, 1],
-11: [0, 1],
-12: [0, 1],
+4: [0, 1, 2],
+7: [0, 1, 2],
+8: [0, 1, 2],
+11: [0, 1, 2],
+12: [0, 1, 2],
 "type": 0
 }
 3:1/0 = 0
@@ -166,8 +166,8 @@ texture = ExtResource("1_rum4a")
 3:1/0/terrains_peering_bit/bottom_side = 0
 3:1/0/terrains_peering_bit/top_side = 0
 3:1/0/metadata/_better_terrain = {
-4: [0, 1],
-12: [0, 1],
+4: [0, 1, 2],
+12: [0, 1, 2],
 "type": 0
 }
 4:1/0 = 0
@@ -181,13 +181,13 @@ texture = ExtResource("1_rum4a")
 4:1/0/terrains_peering_bit/top_left_corner = 0
 4:1/0/terrains_peering_bit/top_side = 0
 4:1/0/metadata/_better_terrain = {
-0: [0, 1],
-3: [0, 1],
-4: [0, 1],
-7: [0, 1],
-8: [0, 1],
-11: [0, 1],
-12: [0, 1],
+0: [0, 1, 2],
+3: [0, 1, 2],
+4: [0, 1, 2],
+7: [0, 1, 2],
+8: [0, 1, 2],
+11: [0, 1, 2],
+12: [0, 1, 2],
 "type": 0
 }
 5:1/0 = 0
@@ -201,13 +201,13 @@ texture = ExtResource("1_rum4a")
 5:1/0/terrains_peering_bit/top_side = 0
 5:1/0/terrains_peering_bit/top_right_corner = 0
 5:1/0/metadata/_better_terrain = {
-0: [0, 1],
-3: [0, 1],
-4: [0, 1],
-7: [0, 1],
-8: [0, 1],
-12: [0, 1],
-15: [0, 1],
+0: [0, 1, 2],
+3: [0, 1, 2],
+4: [0, 1, 2],
+7: [0, 1, 2],
+8: [0, 1, 2],
+12: [0, 1, 2],
+15: [0, 1, 2],
 "type": 0
 }
 6:1/0 = 0
@@ -220,12 +220,12 @@ texture = ExtResource("1_rum4a")
 6:1/0/terrains_peering_bit/top_side = 0
 6:1/0/terrains_peering_bit/top_right_corner = 0
 6:1/0/metadata/_better_terrain = {
-0: [0, 1],
-4: [0, 1],
-7: [0, 1],
-8: [0, 1],
-12: [0, 1],
-15: [0, 1],
+0: [0, 1, 2],
+4: [0, 1, 2],
+7: [0, 1, 2],
+8: [0, 1, 2],
+12: [0, 1, 2],
+15: [0, 1, 2],
 "type": 0
 }
 7:1/0 = 0
@@ -238,12 +238,12 @@ texture = ExtResource("1_rum4a")
 7:1/0/terrains_peering_bit/top_left_corner = 0
 7:1/0/terrains_peering_bit/top_side = 0
 7:1/0/metadata/_better_terrain = {
-0: [0, 1],
-3: [0, 1],
-4: [0, 1],
-8: [0, 1],
-11: [0, 1],
-12: [0, 1],
+0: [0, 1, 2],
+3: [0, 1, 2],
+4: [0, 1, 2],
+8: [0, 1, 2],
+11: [0, 1, 2],
+12: [0, 1, 2],
 "type": 0
 }
 0:2/0 = 0
@@ -253,9 +253,9 @@ texture = ExtResource("1_rum4a")
 0:2/0/terrains_peering_bit/top_side = 0
 0:2/0/terrains_peering_bit/top_right_corner = 0
 0:2/0/metadata/_better_terrain = {
-0: [0, 1],
-12: [0, 1],
-15: [0, 1],
+0: [0, 1, 2],
+12: [0, 1, 2],
+15: [0, 1, 2],
 "type": 0
 }
 1:2/0 = 0
@@ -267,11 +267,11 @@ texture = ExtResource("1_rum4a")
 1:2/0/terrains_peering_bit/top_side = 0
 1:2/0/terrains_peering_bit/top_right_corner = 0
 1:2/0/metadata/_better_terrain = {
-0: [0, 1],
-8: [0, 1],
-11: [0, 1],
-12: [0, 1],
-15: [0, 1],
+0: [0, 1, 2],
+8: [0, 1, 2],
+11: [0, 1, 2],
+12: [0, 1, 2],
+15: [0, 1, 2],
 "type": 0
 }
 2:2/0 = 0
@@ -281,9 +281,9 @@ texture = ExtResource("1_rum4a")
 2:2/0/terrains_peering_bit/top_left_corner = 0
 2:2/0/terrains_peering_bit/top_side = 0
 2:2/0/metadata/_better_terrain = {
-8: [0, 1],
-11: [0, 1],
-12: [0, 1],
+8: [0, 1, 2],
+11: [0, 1, 2],
+12: [0, 1, 2],
 "type": 0
 }
 3:2/0 = 0
@@ -291,7 +291,7 @@ texture = ExtResource("1_rum4a")
 3:2/0/terrain = 0
 3:2/0/terrains_peering_bit/top_side = 0
 3:2/0/metadata/_better_terrain = {
-12: [0, 1],
+12: [0, 1, 2],
 "type": 0
 }
 4:2/0 = 0
@@ -304,12 +304,12 @@ texture = ExtResource("1_rum4a")
 4:2/0/terrains_peering_bit/left_side = 0
 4:2/0/terrains_peering_bit/top_side = 0
 4:2/0/metadata/_better_terrain = {
-0: [0, 1],
-3: [0, 1],
-4: [0, 1],
-7: [0, 1],
-8: [0, 1],
-12: [0, 1],
+0: [0, 1, 2],
+3: [0, 1, 2],
+4: [0, 1, 2],
+7: [0, 1, 2],
+8: [0, 1, 2],
+12: [0, 1, 2],
 "type": 0
 }
 5:2/0 = 0
@@ -322,12 +322,12 @@ texture = ExtResource("1_rum4a")
 5:2/0/terrains_peering_bit/top_left_corner = 0
 5:2/0/terrains_peering_bit/top_side = 0
 5:2/0/metadata/_better_terrain = {
-0: [0, 1],
-4: [0, 1],
-7: [0, 1],
-8: [0, 1],
-11: [0, 1],
-12: [0, 1],
+0: [0, 1, 2],
+4: [0, 1, 2],
+7: [0, 1, 2],
+8: [0, 1, 2],
+11: [0, 1, 2],
+12: [0, 1, 2],
 "type": 0
 }
 6:2/0 = 0
@@ -339,11 +339,11 @@ texture = ExtResource("1_rum4a")
 6:2/0/terrains_peering_bit/left_side = 0
 6:2/0/terrains_peering_bit/top_side = 0
 6:2/0/metadata/_better_terrain = {
-0: [0, 1],
-3: [0, 1],
-4: [0, 1],
-8: [0, 1],
-12: [0, 1],
+0: [0, 1, 2],
+3: [0, 1, 2],
+4: [0, 1, 2],
+8: [0, 1, 2],
+12: [0, 1, 2],
 "type": 0
 }
 7:2/0 = 0
@@ -355,11 +355,11 @@ texture = ExtResource("1_rum4a")
 7:2/0/terrains_peering_bit/left_side = 0
 7:2/0/terrains_peering_bit/top_side = 0
 7:2/0/metadata/_better_terrain = {
-0: [0, 1],
-4: [0, 1],
-7: [0, 1],
-8: [0, 1],
-12: [0, 1],
+0: [0, 1, 2],
+4: [0, 1, 2],
+7: [0, 1, 2],
+8: [0, 1, 2],
+12: [0, 1, 2],
 "type": 0
 }
 0:3/0 = 0
@@ -367,7 +367,7 @@ texture = ExtResource("1_rum4a")
 0:3/0/terrain = 0
 0:3/0/terrains_peering_bit/right_side = 0
 0:3/0/metadata/_better_terrain = {
-0: [0, 1],
+0: [0, 1, 2],
 "type": 0
 }
 1:3/0 = 0
@@ -376,8 +376,8 @@ texture = ExtResource("1_rum4a")
 1:3/0/terrains_peering_bit/right_side = 0
 1:3/0/terrains_peering_bit/left_side = 0
 1:3/0/metadata/_better_terrain = {
-0: [0, 1],
-8: [0, 1],
+0: [0, 1, 2],
+8: [0, 1, 2],
 "type": 0
 }
 2:3/0 = 0
@@ -385,7 +385,7 @@ texture = ExtResource("1_rum4a")
 2:3/0/terrain = 0
 2:3/0/terrains_peering_bit/left_side = 0
 2:3/0/metadata/_better_terrain = {
-8: [0, 1],
+8: [0, 1, 2],
 "type": 0
 }
 3:3/0 = 0
@@ -404,12 +404,12 @@ texture = ExtResource("1_rum4a")
 4:3/0/terrains_peering_bit/top_side = 0
 4:3/0/terrains_peering_bit/top_right_corner = 0
 4:3/0/metadata/_better_terrain = {
-0: [0, 1],
-4: [0, 1],
-8: [0, 1],
-11: [0, 1],
-12: [0, 1],
-15: [0, 1],
+0: [0, 1, 2],
+4: [0, 1, 2],
+8: [0, 1, 2],
+11: [0, 1, 2],
+12: [0, 1, 2],
+15: [0, 1, 2],
 "type": 0
 }
 5:3/0 = 0
@@ -422,12 +422,12 @@ texture = ExtResource("1_rum4a")
 5:3/0/terrains_peering_bit/top_side = 0
 5:3/0/terrains_peering_bit/top_right_corner = 0
 5:3/0/metadata/_better_terrain = {
-0: [0, 1],
-3: [0, 1],
-4: [0, 1],
-8: [0, 1],
-12: [0, 1],
-15: [0, 1],
+0: [0, 1, 2],
+3: [0, 1, 2],
+4: [0, 1, 2],
+8: [0, 1, 2],
+12: [0, 1, 2],
+15: [0, 1, 2],
 "type": 0
 }
 6:3/0 = 0
@@ -439,11 +439,11 @@ texture = ExtResource("1_rum4a")
 6:3/0/terrains_peering_bit/top_side = 0
 6:3/0/terrains_peering_bit/top_right_corner = 0
 6:3/0/metadata/_better_terrain = {
-0: [0, 1],
-4: [0, 1],
-8: [0, 1],
-12: [0, 1],
-15: [0, 1],
+0: [0, 1, 2],
+4: [0, 1, 2],
+8: [0, 1, 2],
+12: [0, 1, 2],
+15: [0, 1, 2],
 "type": 0
 }
 7:3/0 = 0
@@ -455,11 +455,11 @@ texture = ExtResource("1_rum4a")
 7:3/0/terrains_peering_bit/top_left_corner = 0
 7:3/0/terrains_peering_bit/top_side = 0
 7:3/0/metadata/_better_terrain = {
-0: [0, 1],
-4: [0, 1],
-8: [0, 1],
-11: [0, 1],
-12: [0, 1],
+0: [0, 1, 2],
+4: [0, 1, 2],
+8: [0, 1, 2],
+11: [0, 1, 2],
+12: [0, 1, 2],
 "type": 0
 }
 0:4/0 = 0
@@ -470,10 +470,10 @@ texture = ExtResource("1_rum4a")
 0:4/0/terrains_peering_bit/bottom_left_corner = 0
 0:4/0/terrains_peering_bit/left_side = 0
 0:4/0/metadata/_better_terrain = {
-0: [0, 1],
-4: [0, 1],
-7: [0, 1],
-8: [0, 1],
+0: [0, 1, 2],
+4: [0, 1, 2],
+7: [0, 1, 2],
+8: [0, 1, 2],
 "type": 0
 }
 1:4/0 = 0
@@ -484,10 +484,10 @@ texture = ExtResource("1_rum4a")
 1:4/0/terrains_peering_bit/bottom_side = 0
 1:4/0/terrains_peering_bit/left_side = 0
 1:4/0/metadata/_better_terrain = {
-0: [0, 1],
-3: [0, 1],
-4: [0, 1],
-8: [0, 1],
+0: [0, 1, 2],
+3: [0, 1, 2],
+4: [0, 1, 2],
+8: [0, 1, 2],
 "type": 0
 }
 2:4/0 = 0
@@ -498,10 +498,10 @@ texture = ExtResource("1_rum4a")
 2:4/0/terrains_peering_bit/top_side = 0
 2:4/0/terrains_peering_bit/top_right_corner = 0
 2:4/0/metadata/_better_terrain = {
-0: [0, 1],
-4: [0, 1],
-12: [0, 1],
-15: [0, 1],
+0: [0, 1, 2],
+4: [0, 1, 2],
+12: [0, 1, 2],
+15: [0, 1, 2],
 "type": 0
 }
 3:4/0 = 0
@@ -512,10 +512,10 @@ texture = ExtResource("1_rum4a")
 3:4/0/terrains_peering_bit/top_left_corner = 0
 3:4/0/terrains_peering_bit/top_side = 0
 3:4/0/metadata/_better_terrain = {
-4: [0, 1],
-8: [0, 1],
-11: [0, 1],
-12: [0, 1],
+4: [0, 1, 2],
+8: [0, 1, 2],
+11: [0, 1, 2],
+12: [0, 1, 2],
 "type": 0
 }
 4:4/0 = 0
@@ -524,8 +524,8 @@ texture = ExtResource("1_rum4a")
 4:4/0/terrains_peering_bit/right_side = 0
 4:4/0/terrains_peering_bit/bottom_side = 0
 4:4/0/metadata/_better_terrain = {
-0: [0, 1],
-4: [0, 1],
+0: [0, 1, 2],
+4: [0, 1, 2],
 "type": 0
 }
 5:4/0 = 0
@@ -534,8 +534,8 @@ texture = ExtResource("1_rum4a")
 5:4/0/terrains_peering_bit/bottom_side = 0
 5:4/0/terrains_peering_bit/left_side = 0
 5:4/0/metadata/_better_terrain = {
-4: [0, 1],
-8: [0, 1],
+4: [0, 1, 2],
+8: [0, 1, 2],
 "type": 0
 }
 6:4/0 = 0
@@ -545,9 +545,9 @@ texture = ExtResource("1_rum4a")
 6:4/0/terrains_peering_bit/bottom_side = 0
 6:4/0/terrains_peering_bit/left_side = 0
 6:4/0/metadata/_better_terrain = {
-0: [0, 1],
-4: [0, 1],
-8: [0, 1],
+0: [0, 1, 2],
+4: [0, 1, 2],
+8: [0, 1, 2],
 "type": 0
 }
 7:4/0 = 0
@@ -557,9 +557,9 @@ texture = ExtResource("1_rum4a")
 7:4/0/terrains_peering_bit/left_side = 0
 7:4/0/terrains_peering_bit/top_side = 0
 7:4/0/metadata/_better_terrain = {
-0: [0, 1],
-8: [0, 1],
-12: [0, 1],
+0: [0, 1, 2],
+8: [0, 1, 2],
+12: [0, 1, 2],
 "type": 0
 }
 0:5/0 = 0
@@ -570,10 +570,10 @@ texture = ExtResource("1_rum4a")
 0:5/0/terrains_peering_bit/top_left_corner = 0
 0:5/0/terrains_peering_bit/top_side = 0
 0:5/0/metadata/_better_terrain = {
-0: [0, 1],
-8: [0, 1],
-11: [0, 1],
-12: [0, 1],
+0: [0, 1, 2],
+8: [0, 1, 2],
+11: [0, 1, 2],
+12: [0, 1, 2],
 "type": 0
 }
 1:5/0 = 0
@@ -584,10 +584,10 @@ texture = ExtResource("1_rum4a")
 1:5/0/terrains_peering_bit/top_side = 0
 1:5/0/terrains_peering_bit/top_right_corner = 0
 1:5/0/metadata/_better_terrain = {
-0: [0, 1],
-8: [0, 1],
-12: [0, 1],
-15: [0, 1],
+0: [0, 1, 2],
+8: [0, 1, 2],
+12: [0, 1, 2],
+15: [0, 1, 2],
 "type": 0
 }
 2:5/0 = 0
@@ -598,10 +598,10 @@ texture = ExtResource("1_rum4a")
 2:5/0/terrains_peering_bit/bottom_side = 0
 2:5/0/terrains_peering_bit/top_side = 0
 2:5/0/metadata/_better_terrain = {
-0: [0, 1],
-3: [0, 1],
-4: [0, 1],
-12: [0, 1],
+0: [0, 1, 2],
+3: [0, 1, 2],
+4: [0, 1, 2],
+12: [0, 1, 2],
 "type": 0
 }
 3:5/0 = 0
@@ -612,10 +612,10 @@ texture = ExtResource("1_rum4a")
 3:5/0/terrains_peering_bit/left_side = 0
 3:5/0/terrains_peering_bit/top_side = 0
 3:5/0/metadata/_better_terrain = {
-4: [0, 1],
-7: [0, 1],
-8: [0, 1],
-12: [0, 1],
+4: [0, 1, 2],
+7: [0, 1, 2],
+8: [0, 1, 2],
+12: [0, 1, 2],
 "type": 0
 }
 4:5/0 = 0
@@ -624,8 +624,8 @@ texture = ExtResource("1_rum4a")
 4:5/0/terrains_peering_bit/right_side = 0
 4:5/0/terrains_peering_bit/top_side = 0
 4:5/0/metadata/_better_terrain = {
-0: [0, 1],
-12: [0, 1],
+0: [0, 1, 2],
+12: [0, 1, 2],
 "type": 0
 }
 5:5/0 = 0
@@ -634,8 +634,8 @@ texture = ExtResource("1_rum4a")
 5:5/0/terrains_peering_bit/left_side = 0
 5:5/0/terrains_peering_bit/top_side = 0
 5:5/0/metadata/_better_terrain = {
-8: [0, 1],
-12: [0, 1],
+8: [0, 1, 2],
+12: [0, 1, 2],
 "type": 0
 }
 6:5/0 = 0
@@ -645,9 +645,9 @@ texture = ExtResource("1_rum4a")
 6:5/0/terrains_peering_bit/bottom_side = 0
 6:5/0/terrains_peering_bit/top_side = 0
 6:5/0/metadata/_better_terrain = {
-0: [0, 1],
-4: [0, 1],
-12: [0, 1],
+0: [0, 1, 2],
+4: [0, 1, 2],
+12: [0, 1, 2],
 "type": 0
 }
 7:5/0 = 0
@@ -657,9 +657,9 @@ texture = ExtResource("1_rum4a")
 7:5/0/terrains_peering_bit/left_side = 0
 7:5/0/terrains_peering_bit/top_side = 0
 7:5/0/metadata/_better_terrain = {
-4: [0, 1],
-8: [0, 1],
-12: [0, 1],
+4: [0, 1, 2],
+8: [0, 1, 2],
+12: [0, 1, 2],
 "type": 0
 }
 0:6/0 = 0
@@ -669,9 +669,9 @@ texture = ExtResource("1_rum4a")
 0:6/0/terrains_peering_bit/bottom_right_corner = 1
 0:6/0/terrains_peering_bit/bottom_side = 1
 0:6/0/metadata/_better_terrain = {
-0: [1, 0],
-3: [1, 0],
-4: [1, 0],
+0: [1, 0, 2],
+3: [1, 0, 2],
+4: [1, 0, 2],
 "type": 1
 }
 1:6/0 = 0
@@ -683,11 +683,11 @@ texture = ExtResource("1_rum4a")
 1:6/0/terrains_peering_bit/bottom_left_corner = 1
 1:6/0/terrains_peering_bit/left_side = 1
 1:6/0/metadata/_better_terrain = {
-0: [1, 0],
-3: [1, 0],
-4: [1, 0],
-7: [1, 0],
-8: [1, 0],
+0: [1, 0, 2],
+3: [1, 0, 2],
+4: [1, 0, 2],
+7: [1, 0, 2],
+8: [1, 0, 2],
 "type": 1
 }
 2:6/0 = 0
@@ -697,9 +697,9 @@ texture = ExtResource("1_rum4a")
 2:6/0/terrains_peering_bit/bottom_left_corner = 1
 2:6/0/terrains_peering_bit/left_side = 1
 2:6/0/metadata/_better_terrain = {
-4: [1, 0],
-7: [1, 0],
-8: [1, 0],
+4: [1, 0, 2],
+7: [1, 0, 2],
+8: [1, 0, 2],
 "type": 1
 }
 3:6/0 = 0
@@ -707,7 +707,7 @@ texture = ExtResource("1_rum4a")
 3:6/0/terrain = 1
 3:6/0/terrains_peering_bit/bottom_side = 1
 3:6/0/metadata/_better_terrain = {
-4: [1, 0],
+4: [1, 0, 2],
 "type": 1
 }
 4:6/0 = 0
@@ -721,13 +721,13 @@ texture = ExtResource("1_rum4a")
 4:6/0/terrains_peering_bit/top_side = 1
 4:6/0/terrains_peering_bit/top_right_corner = 1
 4:6/0/metadata/_better_terrain = {
-0: [1, 0],
-4: [1, 0],
-7: [1, 0],
-8: [1, 0],
-11: [1, 0],
-12: [1, 0],
-15: [1, 0],
+0: [1, 0, 2],
+4: [1, 0, 2],
+7: [1, 0, 2],
+8: [1, 0, 2],
+11: [1, 0, 2],
+12: [1, 0, 2],
+15: [1, 0, 2],
 "type": 1
 }
 5:6/0 = 0
@@ -741,13 +741,13 @@ texture = ExtResource("1_rum4a")
 5:6/0/terrains_peering_bit/top_side = 1
 5:6/0/terrains_peering_bit/top_right_corner = 1
 5:6/0/metadata/_better_terrain = {
-0: [1, 0],
-3: [1, 0],
-4: [1, 0],
-8: [1, 0],
-11: [1, 0],
-12: [1, 0],
-15: [1, 0],
+0: [1, 0, 2],
+3: [1, 0, 2],
+4: [1, 0, 2],
+8: [1, 0, 2],
+11: [1, 0, 2],
+12: [1, 0, 2],
+15: [1, 0, 2],
 "type": 1
 }
 7:6/0 = 0
@@ -758,10 +758,10 @@ texture = ExtResource("1_rum4a")
 7:6/0/terrains_peering_bit/left_side = 1
 7:6/0/terrains_peering_bit/top_side = 1
 7:6/0/metadata/_better_terrain = {
-0: [1, 0],
-4: [1, 0],
-8: [1, 0],
-12: [1, 0],
+0: [1, 0, 2],
+4: [1, 0, 2],
+8: [1, 0, 2],
+12: [1, 0, 2],
 "type": 1
 }
 0:7/0 = 0
@@ -773,11 +773,11 @@ texture = ExtResource("1_rum4a")
 0:7/0/terrains_peering_bit/top_side = 1
 0:7/0/terrains_peering_bit/top_right_corner = 1
 0:7/0/metadata/_better_terrain = {
-0: [1, 0],
-3: [1, 0],
-4: [1, 0],
-12: [1, 0],
-15: [1, 0],
+0: [1, 0, 2],
+3: [1, 0, 2],
+4: [1, 0, 2],
+12: [1, 0, 2],
+15: [1, 0, 2],
 "type": 1
 }
 1:7/0 = 0
@@ -792,14 +792,14 @@ texture = ExtResource("1_rum4a")
 1:7/0/terrains_peering_bit/top_side = 1
 1:7/0/terrains_peering_bit/top_right_corner = 1
 1:7/0/metadata/_better_terrain = {
-0: [1, 0],
-3: [1, 0],
-4: [1, 0],
-7: [1, 0],
-8: [1, 0],
-11: [1, 0],
-12: [1, 0],
-15: [1, 0],
+0: [1, 0, 2],
+3: [1, 0, 2],
+4: [1, 0, 2],
+7: [1, 0, 2],
+8: [1, 0, 2],
+11: [1, 0, 2],
+12: [1, 0, 2],
+15: [1, 0, 2],
 "type": 1
 }
 2:7/0 = 0
@@ -811,11 +811,11 @@ texture = ExtResource("1_rum4a")
 2:7/0/terrains_peering_bit/top_left_corner = 1
 2:7/0/terrains_peering_bit/top_side = 1
 2:7/0/metadata/_better_terrain = {
-4: [1, 0],
-7: [1, 0],
-8: [1, 0],
-11: [1, 0],
-12: [1, 0],
+4: [1, 0, 2],
+7: [1, 0, 2],
+8: [1, 0, 2],
+11: [1, 0, 2],
+12: [1, 0, 2],
 "type": 1
 }
 3:7/0 = 0
@@ -824,8 +824,8 @@ texture = ExtResource("1_rum4a")
 3:7/0/terrains_peering_bit/bottom_side = 1
 3:7/0/terrains_peering_bit/top_side = 1
 3:7/0/metadata/_better_terrain = {
-4: [1, 0],
-12: [1, 0],
+4: [1, 0, 2],
+12: [1, 0, 2],
 "type": 1
 }
 4:7/0 = 0
@@ -839,13 +839,13 @@ texture = ExtResource("1_rum4a")
 4:7/0/terrains_peering_bit/top_left_corner = 1
 4:7/0/terrains_peering_bit/top_side = 1
 4:7/0/metadata/_better_terrain = {
-0: [1, 0],
-3: [1, 0],
-4: [1, 0],
-7: [1, 0],
-8: [1, 0],
-11: [1, 0],
-12: [1, 0],
+0: [1, 0, 2],
+3: [1, 0, 2],
+4: [1, 0, 2],
+7: [1, 0, 2],
+8: [1, 0, 2],
+11: [1, 0, 2],
+12: [1, 0, 2],
 "type": 1
 }
 5:7/0 = 0
@@ -859,13 +859,13 @@ texture = ExtResource("1_rum4a")
 5:7/0/terrains_peering_bit/top_side = 1
 5:7/0/terrains_peering_bit/top_right_corner = 1
 5:7/0/metadata/_better_terrain = {
-0: [1, 0],
-3: [1, 0],
-4: [1, 0],
-7: [1, 0],
-8: [1, 0],
-12: [1, 0],
-15: [1, 0],
+0: [1, 0, 2],
+3: [1, 0, 2],
+4: [1, 0, 2],
+7: [1, 0, 2],
+8: [1, 0, 2],
+12: [1, 0, 2],
+15: [1, 0, 2],
 "type": 1
 }
 6:7/0 = 0
@@ -878,12 +878,12 @@ texture = ExtResource("1_rum4a")
 6:7/0/terrains_peering_bit/top_side = 1
 6:7/0/terrains_peering_bit/top_right_corner = 1
 6:7/0/metadata/_better_terrain = {
-0: [1, 0],
-4: [1, 0],
-7: [1, 0],
-8: [1, 0],
-12: [1, 0],
-15: [1, 0],
+0: [1, 0, 2],
+4: [1, 0, 2],
+7: [1, 0, 2],
+8: [1, 0, 2],
+12: [1, 0, 2],
+15: [1, 0, 2],
 "type": 1
 }
 7:7/0 = 0
@@ -896,12 +896,12 @@ texture = ExtResource("1_rum4a")
 7:7/0/terrains_peering_bit/top_left_corner = 1
 7:7/0/terrains_peering_bit/top_side = 1
 7:7/0/metadata/_better_terrain = {
-0: [1, 0],
-3: [1, 0],
-4: [1, 0],
-8: [1, 0],
-11: [1, 0],
-12: [1, 0],
+0: [1, 0, 2],
+3: [1, 0, 2],
+4: [1, 0, 2],
+8: [1, 0, 2],
+11: [1, 0, 2],
+12: [1, 0, 2],
 "type": 1
 }
 0:8/0 = 0
@@ -911,9 +911,9 @@ texture = ExtResource("1_rum4a")
 0:8/0/terrains_peering_bit/top_side = 1
 0:8/0/terrains_peering_bit/top_right_corner = 1
 0:8/0/metadata/_better_terrain = {
-0: [1, 0],
-12: [1, 0],
-15: [1, 0],
+0: [1, 0, 2],
+12: [1, 0, 2],
+15: [1, 0, 2],
 "type": 1
 }
 1:8/0 = 0
@@ -925,11 +925,11 @@ texture = ExtResource("1_rum4a")
 1:8/0/terrains_peering_bit/top_side = 1
 1:8/0/terrains_peering_bit/top_right_corner = 1
 1:8/0/metadata/_better_terrain = {
-0: [1, 0],
-8: [1, 0],
-11: [1, 0],
-12: [1, 0],
-15: [1, 0],
+0: [1, 0, 2],
+8: [1, 0, 2],
+11: [1, 0, 2],
+12: [1, 0, 2],
+15: [1, 0, 2],
 "type": 1
 }
 2:8/0 = 0
@@ -939,9 +939,9 @@ texture = ExtResource("1_rum4a")
 2:8/0/terrains_peering_bit/top_left_corner = 1
 2:8/0/terrains_peering_bit/top_side = 1
 2:8/0/metadata/_better_terrain = {
-8: [1, 0],
-11: [1, 0],
-12: [1, 0],
+8: [1, 0, 2],
+11: [1, 0, 2],
+12: [1, 0, 2],
 "type": 1
 }
 3:8/0 = 0
@@ -949,7 +949,7 @@ texture = ExtResource("1_rum4a")
 3:8/0/terrain = 1
 3:8/0/terrains_peering_bit/top_side = 1
 3:8/0/metadata/_better_terrain = {
-12: [1, 0],
+12: [1, 0, 2],
 "type": 1
 }
 4:8/0 = 0
@@ -962,12 +962,12 @@ texture = ExtResource("1_rum4a")
 4:8/0/terrains_peering_bit/left_side = 1
 4:8/0/terrains_peering_bit/top_side = 1
 4:8/0/metadata/_better_terrain = {
-0: [1, 0],
-3: [1, 0],
-4: [1, 0],
-7: [1, 0],
-8: [1, 0],
-12: [1, 0],
+0: [1, 0, 2],
+3: [1, 0, 2],
+4: [1, 0, 2],
+7: [1, 0, 2],
+8: [1, 0, 2],
+12: [1, 0, 2],
 "type": 1
 }
 5:8/0 = 0
@@ -980,12 +980,12 @@ texture = ExtResource("1_rum4a")
 5:8/0/terrains_peering_bit/top_left_corner = 1
 5:8/0/terrains_peering_bit/top_side = 1
 5:8/0/metadata/_better_terrain = {
-0: [1, 0],
-4: [1, 0],
-7: [1, 0],
-8: [1, 0],
-11: [1, 0],
-12: [1, 0],
+0: [1, 0, 2],
+4: [1, 0, 2],
+7: [1, 0, 2],
+8: [1, 0, 2],
+11: [1, 0, 2],
+12: [1, 0, 2],
 "type": 1
 }
 6:8/0 = 0
@@ -997,11 +997,11 @@ texture = ExtResource("1_rum4a")
 6:8/0/terrains_peering_bit/left_side = 1
 6:8/0/terrains_peering_bit/top_side = 1
 6:8/0/metadata/_better_terrain = {
-0: [1, 0],
-3: [1, 0],
-4: [1, 0],
-8: [1, 0],
-12: [1, 0],
+0: [1, 0, 2],
+3: [1, 0, 2],
+4: [1, 0, 2],
+8: [1, 0, 2],
+12: [1, 0, 2],
 "type": 1
 }
 7:8/0 = 0
@@ -1013,11 +1013,11 @@ texture = ExtResource("1_rum4a")
 7:8/0/terrains_peering_bit/left_side = 1
 7:8/0/terrains_peering_bit/top_side = 1
 7:8/0/metadata/_better_terrain = {
-0: [1, 0],
-4: [1, 0],
-7: [1, 0],
-8: [1, 0],
-12: [1, 0],
+0: [1, 0, 2],
+4: [1, 0, 2],
+7: [1, 0, 2],
+8: [1, 0, 2],
+12: [1, 0, 2],
 "type": 1
 }
 0:9/0 = 0
@@ -1025,7 +1025,7 @@ texture = ExtResource("1_rum4a")
 0:9/0/terrain = 1
 0:9/0/terrains_peering_bit/right_side = 1
 0:9/0/metadata/_better_terrain = {
-0: [1, 0],
+0: [1, 0, 2],
 "type": 1
 }
 1:9/0 = 0
@@ -1034,8 +1034,8 @@ texture = ExtResource("1_rum4a")
 1:9/0/terrains_peering_bit/right_side = 1
 1:9/0/terrains_peering_bit/left_side = 1
 1:9/0/metadata/_better_terrain = {
-0: [1, 0],
-8: [1, 0],
+0: [1, 0, 2],
+8: [1, 0, 2],
 "type": 1
 }
 2:9/0 = 0
@@ -1043,7 +1043,7 @@ texture = ExtResource("1_rum4a")
 2:9/0/terrain = 1
 2:9/0/terrains_peering_bit/left_side = 1
 2:9/0/metadata/_better_terrain = {
-8: [1, 0],
+8: [1, 0, 2],
 "type": 1
 }
 3:9/0 = 0
@@ -1062,12 +1062,12 @@ texture = ExtResource("1_rum4a")
 4:9/0/terrains_peering_bit/top_side = 1
 4:9/0/terrains_peering_bit/top_right_corner = 1
 4:9/0/metadata/_better_terrain = {
-0: [1, 0],
-4: [1, 0],
-8: [1, 0],
-11: [1, 0],
-12: [1, 0],
-15: [1, 0],
+0: [1, 0, 2],
+4: [1, 0, 2],
+8: [1, 0, 2],
+11: [1, 0, 2],
+12: [1, 0, 2],
+15: [1, 0, 2],
 "type": 1
 }
 5:9/0 = 0
@@ -1080,12 +1080,12 @@ texture = ExtResource("1_rum4a")
 5:9/0/terrains_peering_bit/top_side = 1
 5:9/0/terrains_peering_bit/top_right_corner = 1
 5:9/0/metadata/_better_terrain = {
-0: [1, 0],
-3: [1, 0],
-4: [1, 0],
-8: [1, 0],
-12: [1, 0],
-15: [1, 0],
+0: [1, 0, 2],
+3: [1, 0, 2],
+4: [1, 0, 2],
+8: [1, 0, 2],
+12: [1, 0, 2],
+15: [1, 0, 2],
 "type": 1
 }
 6:9/0 = 0
@@ -1097,11 +1097,11 @@ texture = ExtResource("1_rum4a")
 6:9/0/terrains_peering_bit/top_side = 1
 6:9/0/terrains_peering_bit/top_right_corner = 1
 6:9/0/metadata/_better_terrain = {
-0: [1, 0],
-4: [1, 0],
-8: [1, 0],
-12: [1, 0],
-15: [1, 0],
+0: [1, 0, 2],
+4: [1, 0, 2],
+8: [1, 0, 2],
+12: [1, 0, 2],
+15: [1, 0, 2],
 "type": 1
 }
 7:9/0 = 0
@@ -1113,11 +1113,11 @@ texture = ExtResource("1_rum4a")
 7:9/0/terrains_peering_bit/top_left_corner = 1
 7:9/0/terrains_peering_bit/top_side = 1
 7:9/0/metadata/_better_terrain = {
-0: [1, 0],
-4: [1, 0],
-8: [1, 0],
-11: [1, 0],
-12: [1, 0],
+0: [1, 0, 2],
+4: [1, 0, 2],
+8: [1, 0, 2],
+11: [1, 0, 2],
+12: [1, 0, 2],
 "type": 1
 }
 0:10/0 = 0
@@ -1128,10 +1128,10 @@ texture = ExtResource("1_rum4a")
 0:10/0/terrains_peering_bit/bottom_left_corner = 1
 0:10/0/terrains_peering_bit/left_side = 1
 0:10/0/metadata/_better_terrain = {
-0: [1, 0],
-4: [1, 0],
-7: [1, 0],
-8: [1, 0],
+0: [1, 0, 2],
+4: [1, 0, 2],
+7: [1, 0, 2],
+8: [1, 0, 2],
 "type": 1
 }
 1:10/0 = 0
@@ -1142,10 +1142,10 @@ texture = ExtResource("1_rum4a")
 1:10/0/terrains_peering_bit/bottom_side = 1
 1:10/0/terrains_peering_bit/left_side = 1
 1:10/0/metadata/_better_terrain = {
-0: [1, 0],
-3: [1, 0],
-4: [1, 0],
-8: [1, 0],
+0: [1, 0, 2],
+3: [1, 0, 2],
+4: [1, 0, 2],
+8: [1, 0, 2],
 "type": 1
 }
 2:10/0 = 0
@@ -1156,10 +1156,10 @@ texture = ExtResource("1_rum4a")
 2:10/0/terrains_peering_bit/top_side = 1
 2:10/0/terrains_peering_bit/top_right_corner = 1
 2:10/0/metadata/_better_terrain = {
-0: [1, 0],
-4: [1, 0],
-12: [1, 0],
-15: [1, 0],
+0: [1, 0, 2],
+4: [1, 0, 2],
+12: [1, 0, 2],
+15: [1, 0, 2],
 "type": 1
 }
 3:10/0 = 0
@@ -1170,10 +1170,10 @@ texture = ExtResource("1_rum4a")
 3:10/0/terrains_peering_bit/top_left_corner = 1
 3:10/0/terrains_peering_bit/top_side = 1
 3:10/0/metadata/_better_terrain = {
-4: [1, 0],
-8: [1, 0],
-11: [1, 0],
-12: [1, 0],
+4: [1, 0, 2],
+8: [1, 0, 2],
+11: [1, 0, 2],
+12: [1, 0, 2],
 "type": 1
 }
 4:10/0 = 0
@@ -1182,8 +1182,8 @@ texture = ExtResource("1_rum4a")
 4:10/0/terrains_peering_bit/right_side = 1
 4:10/0/terrains_peering_bit/bottom_side = 1
 4:10/0/metadata/_better_terrain = {
-0: [1, 0],
-4: [1, 0],
+0: [1, 0, 2],
+4: [1, 0, 2],
 "type": 1
 }
 5:10/0 = 0
@@ -1192,8 +1192,8 @@ texture = ExtResource("1_rum4a")
 5:10/0/terrains_peering_bit/bottom_side = 1
 5:10/0/terrains_peering_bit/left_side = 1
 5:10/0/metadata/_better_terrain = {
-4: [1, 0],
-8: [1, 0],
+4: [1, 0, 2],
+8: [1, 0, 2],
 "type": 1
 }
 6:10/0 = 0
@@ -1203,9 +1203,9 @@ texture = ExtResource("1_rum4a")
 6:10/0/terrains_peering_bit/bottom_side = 1
 6:10/0/terrains_peering_bit/left_side = 1
 6:10/0/metadata/_better_terrain = {
-0: [1, 0],
-4: [1, 0],
-8: [1, 0],
+0: [1, 0, 2],
+4: [1, 0, 2],
+8: [1, 0, 2],
 "type": 1
 }
 7:10/0 = 0
@@ -1215,9 +1215,9 @@ texture = ExtResource("1_rum4a")
 7:10/0/terrains_peering_bit/left_side = 1
 7:10/0/terrains_peering_bit/top_side = 1
 7:10/0/metadata/_better_terrain = {
-0: [1, 0],
-8: [1, 0],
-12: [1, 0],
+0: [1, 0, 2],
+8: [1, 0, 2],
+12: [1, 0, 2],
 "type": 1
 }
 0:11/0 = 0
@@ -1228,10 +1228,10 @@ texture = ExtResource("1_rum4a")
 0:11/0/terrains_peering_bit/top_left_corner = 1
 0:11/0/terrains_peering_bit/top_side = 1
 0:11/0/metadata/_better_terrain = {
-0: [1, 0],
-8: [1, 0],
-11: [1, 0],
-12: [1, 0],
+0: [1, 0, 2],
+8: [1, 0, 2],
+11: [1, 0, 2],
+12: [1, 0, 2],
 "type": 1
 }
 1:11/0 = 0
@@ -1242,10 +1242,10 @@ texture = ExtResource("1_rum4a")
 1:11/0/terrains_peering_bit/top_side = 1
 1:11/0/terrains_peering_bit/top_right_corner = 1
 1:11/0/metadata/_better_terrain = {
-0: [1, 0],
-8: [1, 0],
-12: [1, 0],
-15: [1, 0],
+0: [1, 0, 2],
+8: [1, 0, 2],
+12: [1, 0, 2],
+15: [1, 0, 2],
 "type": 1
 }
 2:11/0 = 0
@@ -1256,10 +1256,10 @@ texture = ExtResource("1_rum4a")
 2:11/0/terrains_peering_bit/bottom_side = 1
 2:11/0/terrains_peering_bit/top_side = 1
 2:11/0/metadata/_better_terrain = {
-0: [1, 0],
-3: [1, 0],
-4: [1, 0],
-12: [1, 0],
+0: [1, 0, 2],
+3: [1, 0, 2],
+4: [1, 0, 2],
+12: [1, 0, 2],
 "type": 1
 }
 3:11/0 = 0
@@ -1270,10 +1270,10 @@ texture = ExtResource("1_rum4a")
 3:11/0/terrains_peering_bit/left_side = 1
 3:11/0/terrains_peering_bit/top_side = 1
 3:11/0/metadata/_better_terrain = {
-4: [1, 0],
-7: [1, 0],
-8: [1, 0],
-12: [1, 0],
+4: [1, 0, 2],
+7: [1, 0, 2],
+8: [1, 0, 2],
+12: [1, 0, 2],
 "type": 1
 }
 4:11/0 = 0
@@ -1282,8 +1282,8 @@ texture = ExtResource("1_rum4a")
 4:11/0/terrains_peering_bit/right_side = 1
 4:11/0/terrains_peering_bit/top_side = 1
 4:11/0/metadata/_better_terrain = {
-0: [1, 0],
-12: [1, 0],
+0: [1, 0, 2],
+12: [1, 0, 2],
 "type": 1
 }
 5:11/0 = 0
@@ -1292,8 +1292,8 @@ texture = ExtResource("1_rum4a")
 5:11/0/terrains_peering_bit/left_side = 1
 5:11/0/terrains_peering_bit/top_side = 1
 5:11/0/metadata/_better_terrain = {
-8: [1, 0],
-12: [1, 0],
+8: [1, 0, 2],
+12: [1, 0, 2],
 "type": 1
 }
 6:11/0 = 0
@@ -1303,9 +1303,9 @@ texture = ExtResource("1_rum4a")
 6:11/0/terrains_peering_bit/bottom_side = 1
 6:11/0/terrains_peering_bit/top_side = 1
 6:11/0/metadata/_better_terrain = {
-0: [1, 0],
-4: [1, 0],
-12: [1, 0],
+0: [1, 0, 2],
+4: [1, 0, 2],
+12: [1, 0, 2],
 "type": 1
 }
 7:11/0 = 0
@@ -1315,9 +1315,9 @@ texture = ExtResource("1_rum4a")
 7:11/0/terrains_peering_bit/left_side = 1
 7:11/0/terrains_peering_bit/top_side = 1
 7:11/0/metadata/_better_terrain = {
-4: [1, 0],
-8: [1, 0],
-12: [1, 0],
+4: [1, 0, 2],
+8: [1, 0, 2],
+12: [1, 0, 2],
 "type": 1
 }
 0:12/0 = 0
@@ -1326,6 +1326,12 @@ texture = ExtResource("1_rum4a")
 0:12/0/terrains_peering_bit/right_side = 2
 0:12/0/terrains_peering_bit/bottom_right_corner = 2
 0:12/0/terrains_peering_bit/bottom_side = 2
+0:12/0/metadata/_better_terrain = {
+0: [2, 1],
+3: [2, 1],
+4: [2, 1],
+"type": 2
+}
 1:12/0 = 0
 1:12/0/terrain_set = 0
 1:12/0/terrain = 2
@@ -1334,16 +1340,34 @@ texture = ExtResource("1_rum4a")
 1:12/0/terrains_peering_bit/bottom_side = 2
 1:12/0/terrains_peering_bit/bottom_left_corner = 2
 1:12/0/terrains_peering_bit/left_side = 2
+1:12/0/metadata/_better_terrain = {
+0: [2, 1],
+3: [2, 1],
+4: [2, 1],
+7: [2, 1],
+8: [2, 1],
+"type": 2
+}
 2:12/0 = 0
 2:12/0/terrain_set = 0
 2:12/0/terrain = 2
 2:12/0/terrains_peering_bit/bottom_side = 2
 2:12/0/terrains_peering_bit/bottom_left_corner = 2
 2:12/0/terrains_peering_bit/left_side = 2
+2:12/0/metadata/_better_terrain = {
+4: [2, 1],
+7: [2, 1],
+8: [2, 1],
+"type": 2
+}
 3:12/0 = 0
 3:12/0/terrain_set = 0
 3:12/0/terrain = 2
 3:12/0/terrains_peering_bit/bottom_side = 2
+3:12/0/metadata/_better_terrain = {
+4: [2, 1],
+"type": 2
+}
 4:12/0 = 0
 4:12/0/terrain_set = 0
 4:12/0/terrain = 2
@@ -1354,6 +1378,16 @@ texture = ExtResource("1_rum4a")
 4:12/0/terrains_peering_bit/top_left_corner = 2
 4:12/0/terrains_peering_bit/top_side = 2
 4:12/0/terrains_peering_bit/top_right_corner = 2
+4:12/0/metadata/_better_terrain = {
+0: [2, 1],
+4: [2, 1],
+7: [2, 1],
+8: [2, 1],
+11: [2, 1],
+12: [2, 1],
+15: [2, 1],
+"type": 2
+}
 5:12/0 = 0
 5:12/0/terrain_set = 0
 5:12/0/terrain = 2
@@ -1364,6 +1398,16 @@ texture = ExtResource("1_rum4a")
 5:12/0/terrains_peering_bit/top_left_corner = 2
 5:12/0/terrains_peering_bit/top_side = 2
 5:12/0/terrains_peering_bit/top_right_corner = 2
+5:12/0/metadata/_better_terrain = {
+0: [2, 1],
+3: [2, 1],
+4: [2, 1],
+8: [2, 1],
+11: [2, 1],
+12: [2, 1],
+15: [2, 1],
+"type": 2
+}
 7:12/0 = 0
 7:12/0/terrain_set = 0
 7:12/0/terrain = 2
@@ -1371,6 +1415,13 @@ texture = ExtResource("1_rum4a")
 7:12/0/terrains_peering_bit/bottom_side = 2
 7:12/0/terrains_peering_bit/left_side = 2
 7:12/0/terrains_peering_bit/top_side = 2
+7:12/0/metadata/_better_terrain = {
+0: [2, 1],
+4: [2, 1],
+8: [2, 1],
+12: [2, 1],
+"type": 2
+}
 0:13/0 = 0
 0:13/0/terrain_set = 0
 0:13/0/terrain = 2
@@ -1379,6 +1430,14 @@ texture = ExtResource("1_rum4a")
 0:13/0/terrains_peering_bit/bottom_side = 2
 0:13/0/terrains_peering_bit/top_side = 2
 0:13/0/terrains_peering_bit/top_right_corner = 2
+0:13/0/metadata/_better_terrain = {
+0: [2, 1],
+3: [2, 1],
+4: [2, 1],
+12: [2, 1],
+15: [2, 1],
+"type": 2
+}
 1:13/0 = 0
 1:13/0/terrain_set = 0
 1:13/0/terrain = 2
@@ -1390,6 +1449,17 @@ texture = ExtResource("1_rum4a")
 1:13/0/terrains_peering_bit/top_left_corner = 2
 1:13/0/terrains_peering_bit/top_side = 2
 1:13/0/terrains_peering_bit/top_right_corner = 2
+1:13/0/metadata/_better_terrain = {
+0: [2, 1],
+3: [2, 1],
+4: [2, 1],
+7: [2, 1],
+8: [2, 1],
+11: [2, 1],
+12: [2, 1],
+15: [2, 1],
+"type": 2
+}
 2:13/0 = 0
 2:13/0/terrain_set = 0
 2:13/0/terrain = 2
@@ -1398,11 +1468,24 @@ texture = ExtResource("1_rum4a")
 2:13/0/terrains_peering_bit/left_side = 2
 2:13/0/terrains_peering_bit/top_left_corner = 2
 2:13/0/terrains_peering_bit/top_side = 2
+2:13/0/metadata/_better_terrain = {
+4: [2, 1],
+7: [2, 1],
+8: [2, 1],
+11: [2, 1],
+12: [2, 1],
+"type": 2
+}
 3:13/0 = 0
 3:13/0/terrain_set = 0
 3:13/0/terrain = 2
 3:13/0/terrains_peering_bit/bottom_side = 2
 3:13/0/terrains_peering_bit/top_side = 2
+3:13/0/metadata/_better_terrain = {
+4: [2, 1],
+12: [2, 1],
+"type": 2
+}
 4:13/0 = 0
 4:13/0/terrain_set = 0
 4:13/0/terrain = 2
@@ -1413,6 +1496,16 @@ texture = ExtResource("1_rum4a")
 4:13/0/terrains_peering_bit/left_side = 2
 4:13/0/terrains_peering_bit/top_left_corner = 2
 4:13/0/terrains_peering_bit/top_side = 2
+4:13/0/metadata/_better_terrain = {
+0: [2, 1],
+3: [2, 1],
+4: [2, 1],
+7: [2, 1],
+8: [2, 1],
+11: [2, 1],
+12: [2, 1],
+"type": 2
+}
 5:13/0 = 0
 5:13/0/terrain_set = 0
 5:13/0/terrain = 2
@@ -1423,6 +1516,16 @@ texture = ExtResource("1_rum4a")
 5:13/0/terrains_peering_bit/left_side = 2
 5:13/0/terrains_peering_bit/top_side = 2
 5:13/0/terrains_peering_bit/top_right_corner = 2
+5:13/0/metadata/_better_terrain = {
+0: [2, 1],
+3: [2, 1],
+4: [2, 1],
+7: [2, 1],
+8: [2, 1],
+12: [2, 1],
+15: [2, 1],
+"type": 2
+}
 6:13/0 = 0
 6:13/0/terrain_set = 0
 6:13/0/terrain = 2
@@ -1432,6 +1535,15 @@ texture = ExtResource("1_rum4a")
 6:13/0/terrains_peering_bit/left_side = 2
 6:13/0/terrains_peering_bit/top_side = 2
 6:13/0/terrains_peering_bit/top_right_corner = 2
+6:13/0/metadata/_better_terrain = {
+0: [2, 1],
+4: [2, 1],
+7: [2, 1],
+8: [2, 1],
+12: [2, 1],
+15: [2, 1],
+"type": 2
+}
 7:13/0 = 0
 7:13/0/terrain_set = 0
 7:13/0/terrain = 2
@@ -1441,12 +1553,27 @@ texture = ExtResource("1_rum4a")
 7:13/0/terrains_peering_bit/left_side = 2
 7:13/0/terrains_peering_bit/top_left_corner = 2
 7:13/0/terrains_peering_bit/top_side = 2
+7:13/0/metadata/_better_terrain = {
+0: [2, 1],
+3: [2, 1],
+4: [2, 1],
+8: [2, 1],
+11: [2, 1],
+12: [2, 1],
+"type": 2
+}
 0:14/0 = 0
 0:14/0/terrain_set = 0
 0:14/0/terrain = 2
 0:14/0/terrains_peering_bit/right_side = 2
 0:14/0/terrains_peering_bit/top_side = 2
 0:14/0/terrains_peering_bit/top_right_corner = 2
+0:14/0/metadata/_better_terrain = {
+0: [2, 1],
+12: [2, 1],
+15: [2, 1],
+"type": 2
+}
 1:14/0 = 0
 1:14/0/terrain_set = 0
 1:14/0/terrain = 2
@@ -1455,16 +1582,34 @@ texture = ExtResource("1_rum4a")
 1:14/0/terrains_peering_bit/top_left_corner = 2
 1:14/0/terrains_peering_bit/top_side = 2
 1:14/0/terrains_peering_bit/top_right_corner = 2
+1:14/0/metadata/_better_terrain = {
+0: [2, 1],
+8: [2, 1],
+11: [2, 1],
+12: [2, 1],
+15: [2, 1],
+"type": 2
+}
 2:14/0 = 0
 2:14/0/terrain_set = 0
 2:14/0/terrain = 2
 2:14/0/terrains_peering_bit/left_side = 2
 2:14/0/terrains_peering_bit/top_left_corner = 2
 2:14/0/terrains_peering_bit/top_side = 2
+2:14/0/metadata/_better_terrain = {
+8: [2, 1],
+11: [2, 1],
+12: [2, 1],
+"type": 2
+}
 3:14/0 = 0
 3:14/0/terrain_set = 0
 3:14/0/terrain = 2
 3:14/0/terrains_peering_bit/top_side = 2
+3:14/0/metadata/_better_terrain = {
+12: [2, 1],
+"type": 2
+}
 4:14/0 = 0
 4:14/0/terrain_set = 0
 4:14/0/terrain = 2
@@ -1474,6 +1619,15 @@ texture = ExtResource("1_rum4a")
 4:14/0/terrains_peering_bit/bottom_left_corner = 2
 4:14/0/terrains_peering_bit/left_side = 2
 4:14/0/terrains_peering_bit/top_side = 2
+4:14/0/metadata/_better_terrain = {
+0: [2, 1],
+3: [2, 1],
+4: [2, 1],
+7: [2, 1],
+8: [2, 1],
+12: [2, 1],
+"type": 2
+}
 5:14/0 = 0
 5:14/0/terrain_set = 0
 5:14/0/terrain = 2
@@ -1483,6 +1637,15 @@ texture = ExtResource("1_rum4a")
 5:14/0/terrains_peering_bit/left_side = 2
 5:14/0/terrains_peering_bit/top_left_corner = 2
 5:14/0/terrains_peering_bit/top_side = 2
+5:14/0/metadata/_better_terrain = {
+0: [2, 1],
+4: [2, 1],
+7: [2, 1],
+8: [2, 1],
+11: [2, 1],
+12: [2, 1],
+"type": 2
+}
 6:14/0 = 0
 6:14/0/terrain_set = 0
 6:14/0/terrain = 2
@@ -1491,6 +1654,14 @@ texture = ExtResource("1_rum4a")
 6:14/0/terrains_peering_bit/bottom_side = 2
 6:14/0/terrains_peering_bit/left_side = 2
 6:14/0/terrains_peering_bit/top_side = 2
+6:14/0/metadata/_better_terrain = {
+0: [2, 1],
+3: [2, 1],
+4: [2, 1],
+8: [2, 1],
+12: [2, 1],
+"type": 2
+}
 7:14/0 = 0
 7:14/0/terrain_set = 0
 7:14/0/terrain = 2
@@ -1499,22 +1670,46 @@ texture = ExtResource("1_rum4a")
 7:14/0/terrains_peering_bit/bottom_left_corner = 2
 7:14/0/terrains_peering_bit/left_side = 2
 7:14/0/terrains_peering_bit/top_side = 2
+7:14/0/metadata/_better_terrain = {
+0: [2, 1],
+4: [2, 1],
+7: [2, 1],
+8: [2, 1],
+12: [2, 1],
+"type": 2
+}
 0:15/0 = 0
 0:15/0/terrain_set = 0
 0:15/0/terrain = 2
 0:15/0/terrains_peering_bit/right_side = 2
+0:15/0/metadata/_better_terrain = {
+0: [2, 1],
+"type": 2
+}
 1:15/0 = 0
 1:15/0/terrain_set = 0
 1:15/0/terrain = 2
 1:15/0/terrains_peering_bit/right_side = 2
 1:15/0/terrains_peering_bit/left_side = 2
+1:15/0/metadata/_better_terrain = {
+0: [2, 1],
+8: [2, 1],
+"type": 2
+}
 2:15/0 = 0
 2:15/0/terrain_set = 0
 2:15/0/terrain = 2
 2:15/0/terrains_peering_bit/left_side = 2
+2:15/0/metadata/_better_terrain = {
+8: [2, 1],
+"type": 2
+}
 3:15/0 = 0
 3:15/0/terrain_set = 0
 3:15/0/terrain = 2
+3:15/0/metadata/_better_terrain = {
+"type": 2
+}
 4:15/0 = 0
 4:15/0/terrain_set = 0
 4:15/0/terrain = 2
@@ -1524,6 +1719,15 @@ texture = ExtResource("1_rum4a")
 4:15/0/terrains_peering_bit/top_left_corner = 2
 4:15/0/terrains_peering_bit/top_side = 2
 4:15/0/terrains_peering_bit/top_right_corner = 2
+4:15/0/metadata/_better_terrain = {
+0: [2, 1],
+4: [2, 1],
+8: [2, 1],
+11: [2, 1],
+12: [2, 1],
+15: [2, 1],
+"type": 2
+}
 5:15/0 = 0
 5:15/0/terrain_set = 0
 5:15/0/terrain = 2
@@ -1533,6 +1737,15 @@ texture = ExtResource("1_rum4a")
 5:15/0/terrains_peering_bit/left_side = 2
 5:15/0/terrains_peering_bit/top_side = 2
 5:15/0/terrains_peering_bit/top_right_corner = 2
+5:15/0/metadata/_better_terrain = {
+0: [2, 1],
+3: [2, 1],
+4: [2, 1],
+8: [2, 1],
+12: [2, 1],
+15: [2, 1],
+"type": 2
+}
 6:15/0 = 0
 6:15/0/terrain_set = 0
 6:15/0/terrain = 2
@@ -1541,6 +1754,14 @@ texture = ExtResource("1_rum4a")
 6:15/0/terrains_peering_bit/left_side = 2
 6:15/0/terrains_peering_bit/top_side = 2
 6:15/0/terrains_peering_bit/top_right_corner = 2
+6:15/0/metadata/_better_terrain = {
+0: [2, 1],
+4: [2, 1],
+8: [2, 1],
+12: [2, 1],
+15: [2, 1],
+"type": 2
+}
 7:15/0 = 0
 7:15/0/terrain_set = 0
 7:15/0/terrain = 2
@@ -1549,6 +1770,14 @@ texture = ExtResource("1_rum4a")
 7:15/0/terrains_peering_bit/left_side = 2
 7:15/0/terrains_peering_bit/top_left_corner = 2
 7:15/0/terrains_peering_bit/top_side = 2
+7:15/0/metadata/_better_terrain = {
+0: [2, 1],
+4: [2, 1],
+8: [2, 1],
+11: [2, 1],
+12: [2, 1],
+"type": 2
+}
 0:16/0 = 0
 0:16/0/terrain_set = 0
 0:16/0/terrain = 2
@@ -1556,6 +1785,13 @@ texture = ExtResource("1_rum4a")
 0:16/0/terrains_peering_bit/bottom_side = 2
 0:16/0/terrains_peering_bit/bottom_left_corner = 2
 0:16/0/terrains_peering_bit/left_side = 2
+0:16/0/metadata/_better_terrain = {
+0: [2, 1, 0],
+4: [2, 1, 0],
+7: [2, 1, 0],
+8: [2, 1, 0],
+"type": 2
+}
 1:16/0 = 0
 1:16/0/terrain_set = 0
 1:16/0/terrain = 2
@@ -1563,6 +1799,13 @@ texture = ExtResource("1_rum4a")
 1:16/0/terrains_peering_bit/bottom_right_corner = 2
 1:16/0/terrains_peering_bit/bottom_side = 2
 1:16/0/terrains_peering_bit/left_side = 2
+1:16/0/metadata/_better_terrain = {
+0: [2, 1, 0],
+3: [2, 1, 0],
+4: [2, 1, 0],
+8: [2, 1, 0],
+"type": 2
+}
 2:16/0 = 0
 2:16/0/terrain_set = 0
 2:16/0/terrain = 2
@@ -1570,6 +1813,13 @@ texture = ExtResource("1_rum4a")
 2:16/0/terrains_peering_bit/bottom_side = 2
 2:16/0/terrains_peering_bit/top_side = 2
 2:16/0/terrains_peering_bit/top_right_corner = 2
+2:16/0/metadata/_better_terrain = {
+0: [2, 1, 0],
+4: [2, 1, 0],
+12: [2, 1, 0],
+15: [2, 1, 0],
+"type": 2
+}
 3:16/0 = 0
 3:16/0/terrain_set = 0
 3:16/0/terrain = 2
@@ -1577,28 +1827,57 @@ texture = ExtResource("1_rum4a")
 3:16/0/terrains_peering_bit/left_side = 2
 3:16/0/terrains_peering_bit/top_left_corner = 2
 3:16/0/terrains_peering_bit/top_side = 2
+3:16/0/metadata/_better_terrain = {
+4: [2, 1, 0],
+8: [2, 1, 0],
+11: [2, 1, 0],
+12: [2, 1, 0],
+"type": 2
+}
 4:16/0 = 0
 4:16/0/terrain_set = 0
 4:16/0/terrain = 2
 4:16/0/terrains_peering_bit/right_side = 2
 4:16/0/terrains_peering_bit/bottom_side = 2
+4:16/0/metadata/_better_terrain = {
+0: [2, 1],
+4: [2, 1],
+"type": 2
+}
 5:16/0 = 0
 5:16/0/terrain_set = 0
 5:16/0/terrain = 2
 5:16/0/terrains_peering_bit/bottom_side = 2
 5:16/0/terrains_peering_bit/left_side = 2
+5:16/0/metadata/_better_terrain = {
+4: [2, 1],
+8: [2, 1],
+"type": 2
+}
 6:16/0 = 0
 6:16/0/terrain_set = 0
 6:16/0/terrain = 2
 6:16/0/terrains_peering_bit/right_side = 2
 6:16/0/terrains_peering_bit/bottom_side = 2
 6:16/0/terrains_peering_bit/left_side = 2
+6:16/0/metadata/_better_terrain = {
+0: [2, 1],
+4: [2, 1],
+8: [2, 1],
+"type": 2
+}
 7:16/0 = 0
 7:16/0/terrain_set = 0
 7:16/0/terrain = 2
 7:16/0/terrains_peering_bit/right_side = 2
 7:16/0/terrains_peering_bit/left_side = 2
 7:16/0/terrains_peering_bit/top_side = 2
+7:16/0/metadata/_better_terrain = {
+0: [2, 1],
+8: [2, 1],
+12: [2, 1],
+"type": 2
+}
 0:17/0 = 0
 0:17/0/terrain_set = 0
 0:17/0/terrain = 2
@@ -1606,6 +1885,13 @@ texture = ExtResource("1_rum4a")
 0:17/0/terrains_peering_bit/left_side = 2
 0:17/0/terrains_peering_bit/top_left_corner = 2
 0:17/0/terrains_peering_bit/top_side = 2
+0:17/0/metadata/_better_terrain = {
+0: [2, 1, 0],
+8: [2, 1, 0],
+11: [2, 1, 0],
+12: [2, 1, 0],
+"type": 2
+}
 1:17/0 = 0
 1:17/0/terrain_set = 0
 1:17/0/terrain = 2
@@ -1613,6 +1899,13 @@ texture = ExtResource("1_rum4a")
 1:17/0/terrains_peering_bit/left_side = 2
 1:17/0/terrains_peering_bit/top_side = 2
 1:17/0/terrains_peering_bit/top_right_corner = 2
+1:17/0/metadata/_better_terrain = {
+0: [2, 1, 0],
+8: [2, 1, 0],
+12: [2, 1, 0],
+15: [2, 1, 0],
+"type": 2
+}
 2:17/0 = 0
 2:17/0/terrain_set = 0
 2:17/0/terrain = 2
@@ -1620,6 +1913,13 @@ texture = ExtResource("1_rum4a")
 2:17/0/terrains_peering_bit/bottom_right_corner = 2
 2:17/0/terrains_peering_bit/bottom_side = 2
 2:17/0/terrains_peering_bit/top_side = 2
+2:17/0/metadata/_better_terrain = {
+0: [2, 1, 0],
+3: [2, 1, 0],
+4: [2, 1, 0],
+12: [2, 1, 0],
+"type": 2
+}
 3:17/0 = 0
 3:17/0/terrain_set = 0
 3:17/0/terrain = 2
@@ -1627,28 +1927,57 @@ texture = ExtResource("1_rum4a")
 3:17/0/terrains_peering_bit/bottom_left_corner = 2
 3:17/0/terrains_peering_bit/left_side = 2
 3:17/0/terrains_peering_bit/top_side = 2
+3:17/0/metadata/_better_terrain = {
+4: [2, 1, 0],
+7: [2, 1, 0],
+8: [2, 1, 0],
+12: [2, 1, 0],
+"type": 2
+}
 4:17/0 = 0
 4:17/0/terrain_set = 0
 4:17/0/terrain = 2
 4:17/0/terrains_peering_bit/right_side = 2
 4:17/0/terrains_peering_bit/top_side = 2
+4:17/0/metadata/_better_terrain = {
+0: [2, 1],
+12: [2, 1],
+"type": 2
+}
 5:17/0 = 0
 5:17/0/terrain_set = 0
 5:17/0/terrain = 2
 5:17/0/terrains_peering_bit/left_side = 2
 5:17/0/terrains_peering_bit/top_side = 2
+5:17/0/metadata/_better_terrain = {
+8: [2, 1],
+12: [2, 1],
+"type": 2
+}
 6:17/0 = 0
 6:17/0/terrain_set = 0
 6:17/0/terrain = 2
 6:17/0/terrains_peering_bit/right_side = 2
 6:17/0/terrains_peering_bit/bottom_side = 2
 6:17/0/terrains_peering_bit/top_side = 2
+6:17/0/metadata/_better_terrain = {
+0: [2, 1],
+4: [2, 1],
+12: [2, 1],
+"type": 2
+}
 7:17/0 = 0
 7:17/0/terrain_set = 0
 7:17/0/terrain = 2
 7:17/0/terrains_peering_bit/bottom_side = 2
 7:17/0/terrains_peering_bit/left_side = 2
 7:17/0/terrains_peering_bit/top_side = 2
+7:17/0/metadata/_better_terrain = {
+4: [2, 1],
+8: [2, 1],
+12: [2, 1],
+"type": 2
+}
 6:0/0 = 0
 6:0/0/terrain_set = 0
 
@@ -1662,6 +1991,6 @@ terrain_set_0/terrain_2/name = "SteelWalls"
 terrain_set_0/terrain_2/color = Color(0.839216, 0.164706, 0.341176, 1)
 sources/1 = SubResource("TileSetAtlasSource_d6d2n")
 metadata/_better_terrain = {
-"terrains": [["StoneWalls", Color(0.303138, 0.802669, 0.0366123, 1), 0, []], ["DirtWalls", Color(0.92549, 1, 0.0509804, 1), 0, []]],
+"terrains": [["StoneWalls", Color(0.303138, 0.802669, 0.0366123, 1), 0, []], ["DirtWalls", Color(0.92549, 1, 0.0509804, 1), 0, []], ["SteelWalls", Color(0.592157, 0, 1, 1), 0, []]],
 "version": "0.1"
 }

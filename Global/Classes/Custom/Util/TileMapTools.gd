@@ -25,3 +25,15 @@ static func get_tileIDs_and_alts(Source:TileSetAtlasSource) -> Dictionary:
 		for altIndex in Source.get_alternative_tiles_count(tileID):
 			result[tileID].append(Source.get_alternative_tile_id(tileID, altIndex))
 	return result
+
+static func get_terrainIDs(TS:TileSet, terrainSetID:int) -> Array[int]:
+	var result:Array[int] = []
+	for terrainID in TS.get_terrains_count(terrainSetID):
+		result.append(terrainID)
+	return result
+
+static func get_terrainNames(TS:TileSet, terrainSetID:int) -> Array[String]:
+	var result:Array[String] = []
+	for terrainID in TS.get_terrains_count(terrainSetID):
+		result.append(TS.get_terrain_name(terrainSetID, terrainID))
+	return result

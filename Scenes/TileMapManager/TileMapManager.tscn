@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://4q3n5r3ap0t6"]
+
+[ext_resource type="Script" path="res://Scenes/TileMapManager/TileMapManager.gd" id="1_bo7wp"]
+[ext_resource type="PackedScene" uid="uid://w6hghmokh5tv" path="res://Resources/TileMap/TileMap.tscn" id="2_7l6t8"]
+
+[node name="TileMapManager" type="Node2D"]
+script = ExtResource("1_bo7wp")
+
+[node name="TileMap" parent="." instance=ExtResource("2_7l6t8")]

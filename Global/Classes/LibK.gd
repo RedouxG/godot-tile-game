@@ -10,7 +10,6 @@ class_name LibK
 # SCRIPTS
 ### ----------------------------------------------------
 
-const Vectors =      preload("res://Global/Classes/LIBKDependencies/Vectors.gd")
 const Optimization = preload("res://Global/Classes/LIBKDependencies/Optimization.gd")
 const UI =           preload("res://Global/Classes/LIBKDependencies/UI.gd")
 const ScriptGen =    preload("res://Global/Classes/LIBKDependencies/ScriptGen.gd")

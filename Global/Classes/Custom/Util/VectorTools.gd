@@ -1,12 +1,13 @@
 ### ----------------------------------------------------
-### Sublib for Vector related functions
+### Wrapper around godot built in TileMap
 ### ----------------------------------------------------
+
 extends Script
+class_name VectorTools
 
 ### ----------------------------------------------------
 # FUNCTIONS
 ### ----------------------------------------------------
-
 
 static func vec3i_get_range_2d(atPos:Vector3i, squareRange:int) -> Array:
 	var result := []
@@ -46,7 +47,6 @@ static func vec3i_vec2i(v:Vector3i) -> Vector2i:
 ### ----------------------------------------------------
 # World to x (for Vector3i ommits third value)
 ### ----------------------------------------------------
-
 
 static func scale_down_vec2i(v:Vector2i, scale:int) -> Vector2i:
 	return Vector2i(v[0]/scale, v[1]/scale)
