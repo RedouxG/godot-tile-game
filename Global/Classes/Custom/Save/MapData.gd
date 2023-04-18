@@ -11,34 +11,35 @@ class_name MapData
 
 var Saver := ObjectSaver.new(self, ["Data", "MapName"])
 
-@export var Data := Dictionary() # { posV3:Tile }
+@export var Data := Dictionary() # { posV3i:MapTileStr }
 @export var MapName := "Default"
 
 ### ----------------------------------------------------
 # API
 ### ----------------------------------------------------
 
-# Sets Tile in Data on posV3
-func set_on(posV3:Vector3, tile:Tile) -> void:
-	Data[posV3] = str(tile)
+# Sets MapTile in Data on posV3
+func set_on(posV3:Vector3i, mapTile:MapTile) -> void:
+	Data[posV3] = str(mapTile)
 
-# Gets Tile on position from Data
-func get_on(posV3:Vector3) -> Tile:
+# Gets MapTile on position from Data
+func get_on(posV3:Vector3i) -> MapTile:
 	if(not Data.has(posV3)):
-		return Tile.new()
-	return Tile.new().from_str(Data[posV3])
+		return null
+	return MapTile.new().from_str(Data[posV3])
 
 # Removes position from Data
-func rem_on(posV3:Vector3) -> bool:
+func rem_on(posV3:Vector3i) -> bool:
 	return Data.erase(posV3)
 
 # Returns chunk of given size
-func get_chunk(chunkPosV3:Vector3, chunkSize:int) -> Array:
-	var result := []
-	for posV3 in LibK.vec3_get_pos_in_chunk(chunkPosV3, chunkSize):
+func get_chunk(chunkPos:Vector3i, chunkSize:int) -> Dictionary:
+	var result := {}
+	for posV3 in VectorTools.vec3i_get_pos_in_chunk(chunkPos, chunkSize):
 		if(not Data.has(posV3)):
+			result[posV3] = null
 			continue
-		result.append(Tile.new().from_str(Data[posV3]))
+		result[posV3] = MapTile.new().from_str(Data[posV3])
 	return result
 
 ### ----------------------------------------------------

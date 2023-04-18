@@ -14,7 +14,7 @@ var Saver := ObjectSaver.new(self, ["MapPosition"])
 # Position on the game map
 var MapPosition := Vector3i(0,0,0): set = _set_MapPosition
 func _set_MapPosition(posV3:Vector3i):
-	global_position = LibK.Vectors.vec3i_vec2i(posV3)
+	global_position = VectorTools.vec3i_vec2i(posV3)
 	MapPosition = posV3
 
 # Position of the sprite on texture set
@@ -39,7 +39,7 @@ func set_sprite(spritePos:Vector2i, texturePath:String) -> void:
 
 # Unloads itself into TileData and queue_free()
 func unload_entity(unloadedChunkV3:Vector3i) -> void:
-	if(not unloadedChunkV3 == LibK.Vectors.scale_down_vec3(MapPosition, GLOBAL.TILEMAPS.CHUNK_SIZE)): 
+	if(not unloadedChunkV3 == VectorTools.scale_down_vec3i(MapPosition, GLOBAL.TILEMAPS.CHUNK_SIZE)): 
 		return
 	if(not save_entity()):
 		Logger.logErr(["Failed to save entity data on unload, pos: ", MapPosition])

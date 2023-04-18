@@ -1,7 +1,7 @@
 ### ----------------------------------------------------
 ### Input management for MapEditor
 ### Key inputs:
-### 	Q and E - Switch TileMap
+### 	Q and E - Switch layer
 ### 	Z and X - Switch tile
 ### 	Alt     - Load current map
 ### 	Ctrl    - Save current map
@@ -13,15 +13,6 @@ extends Node2D
 ### ----------------------------------------------------
 # VARIABLES
 ### ----------------------------------------------------
-
-var TileSelect := {
-	filter = "",			# Item filter keyword
-	allTileMaps = [],		# List of all tilemaps
-	tileData = [],			# Data regarding tiles (same order as all tilemaps)
-	shownTiles = [],		# List of all show tiles (in TileList)
-	TMIndex = 0,			# TileMap index (allTileMaps)
-	listIndex = 0,			# Index of selected item
-}
 
 @onready var UIElement := {
 	Parent =         $UIElements/MC,
@@ -45,10 +36,14 @@ var EditorStateMachine := StateMachine.new()
 @onready var LoadState := LOAD_STATE.new(self, "LOAD_STATE")
 @onready var GoToState := GOTO_STATE.new(self, "GOTO_STATE")
 
-var inputActive := true
+@onready var TerrainManager := ExtractedTerrains.new($TileMapManager.tile_set)
 
 const EDITOR_SAVE_NAME := "EDITOR"
 var EditedMap:SQLSave
+
+var selectedTerrainID := 0
+var currentLayerName := ""
+var currentLayerID := 0
 
 ### ----------------------------------------------------
 # FUNCTIONS
@@ -68,15 +63,14 @@ func _ready() -> void:
 		get_tree().quit()
 	
 	RenderingServer.set_default_clear_color(Color.DARK_SLATE_BLUE)
-	TileSelect.allTileMaps = $TileMapManager.TileMaps
 	
-	EditedMap = SQLSave.new(EDITOR_SAVE_NAME, SaveManager.MAP_FOLDER)
-	if(not EditedMap.load()):
+	EditedMap = SQLSave.new(SaveManager.TEMP_FOLDER, EDITOR_SAVE_NAME)
+	if(not EditedMap.Load()):
 		push_error("Failed to init MapEditor")
 		get_tree().quit()
 	
-	_init_TM_selection()
-	_init_tile_select()
+	push_error("TODO"); return
+	
 	if(EditorStateMachine.force_call(NormalState, "switch_TM_selection", [0]) == StateMachine.ERROR):
 		push_error("Failed to init EditorStateMachine")
 		get_tree().quit()
@@ -85,18 +79,24 @@ func _ready() -> void:
 # Init
 ### ----------------------------------------------------
 
-func _init_TM_selection():
-	for tileMap in TileSelect.allTileMaps:
-		var TMName:String = tileMap.get_name()
-		UIElement.TMSelect.add_item (TMName)
+class ExtractedTerrains:
+	var TerrainList:Dictionary = {}
 
-func _init_tile_select():
-	for tileMap in TileSelect.allTileMaps:
-		TileSelect.tileData.append(TileMapTools.get_tile_names_and_IDs(tileMap.tile_set))
+	func _init(TS:TileSet) -> void:
+		init_TerrainList(TS)
+	
+	func init_TerrainList(TS:TileSet) -> void:
+		for terrainSetID in TS.get_terrain_sets_count():
+			TerrainList[terrainSetID] = {}
+			var TerrainIDs := TileMapTools.get_terrainIDs(TS, terrainSetID)
+			var TerrainNames:= TileMapTools.get_terrainNames(TS, terrainSetID)
+			for index in range(TerrainIDs.size()):
+				TerrainList[terrainSetID][TerrainIDs[index]] = TerrainNames[index]
 
 ### ----------------------------------------------------
 # Drawing
 ### ----------------------------------------------------
+
 func _draw():
 	var mousePos:Vector2 = get_global_mouse_position()
 	_draw_selection_square(mousePos)
@@ -132,13 +132,11 @@ func _draw_loaded_chunks():
 		var rect = Rect2(posV2, Vector2(chunkScale, chunkScale))
 		draw_rect(rect, Color.RED, false, 1)
 
-
 ### ----------------------------------------------------
 # FUNCTIONS
 ### ----------------------------------------------------
 
 func _input(event:InputEvent) -> void:
-	if(not inputActive): return
 	EditorStateMachine.update_state_input(event)
 	queue_redraw()
 	update_EditedMap_chunks()
@@ -255,13 +253,15 @@ class NORM_STATE extends SMState:
 			var tileID:int = packed[1]
 			var tileTexture:Texture2D = TileMapTools.get_tile_texture(tileID, tileMap.tile_set)
 
-			if(Caller.TileSelect.filter != ""):
-				if(not Caller.TileSelect.filter.to_lower() in tileName.to_lower()): 
+			if(Caller.FilterState.filter != ""):
+				if(not Caller.FilterState.filter.to_lower() in tileName.to_lower()): 
 					continue
 			Caller.UIElement.TileList.add_item(tileName,tileTexture,true)
 			Caller.TileSelect.shownTiles.append([tileName,tileID])
 
 class FLTR_STATE extends SMState:
+	var filter := ""
+	
 	func _init(caller:Node, name:String) -> void:
 		super(caller, name)
 	
@@ -269,8 +269,8 @@ class FLTR_STATE extends SMState:
 		Caller._show_lineEdit(Caller.UIElement.FilterEdit)
 	
 	func change_filter(new_text:String) -> void:
-		Caller.TileSelect.filter = new_text
-		Caller.UIElement.Filter.text = "Filter: " + "\"" + Caller.TileSelect.filter + "\""
+		filter = new_text
+		Caller.UIElement.Filter.text = "Filter: " + "\"" + filter + "\""
 	
 	func end_state() -> void:
 		Caller._hide_lineEdit(Caller.UIElement.FilterEdit)

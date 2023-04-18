@@ -24,7 +24,7 @@ func _init(pathToDB:String, verbosity:int) -> void:
 	path = pathToDB
 
 func has_file() -> bool:
-	return FileManager.file_exist(path)
+	return FileManager.file_exists(path)
 
 func delete_file() -> int:
 	return FileManager.delete_file(path)

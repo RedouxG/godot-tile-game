@@ -19,10 +19,13 @@ func fill_MapData(MD:MapData, size:int) -> Dictionary:
 	var savedData := {}
 	randomize()
 	for x in range(size): for y in range(size):
-		var pos := Vector3(x,y,0)
-		var td := Tile.new({"example":randi()}, "[]")
-		MD.set_on(pos, td)
-		savedData[pos] = str(td)
+		var pos := Vector3i(x,y,0)
+		var MT := MapTile.new()
+		MT.terrain = randi()
+		MT.terrainSet = randi()
+		MT.layer = randi()
+		MD.set_on(pos, MT)
+		savedData[pos] = str(MT)
 	return savedData
 
 func test_MapData() -> void:
@@ -63,13 +66,13 @@ func test_SQLSave() -> void:
 	assert_not_null(LoadedMD, "Loaded map is null")
 	assert_true(SaveData == LoadedMD.Data, "SaveData not equal to loaded data")
 	
-	assert_true(SQLS.delete_save() == OK, "Failed to delete save file")
+	assert_true(SQLS.delete() == OK, "Failed to delete save file")
 
 func test_SaveManager():
 	assert_true(SaveManager.make_new_MapTemp("Test"), "Faied to make new MapTemp")
-	assert_true(SaveManager.make_new_save("TestSave"), "Faied to make new Save")
-	assert_true(SaveManager.load_save("TestSave"), "Faied to load Save")
+	assert_true(SaveManager.make_new_SQLSave("TestSave"), "Faied to make new Save")
+	assert_true(SaveManager.load_SQLSave("TestSave"), "Faied to load Save")
 	assert_true(SaveManager.change_map("Test"), "Failed to change map")
 	
-	assert_true(SaveManager._delete_MapTemp("Test"), "Failed to delete MapTemp")
-	assert_true(SaveManager.SQLSaveDB.delete_save() == OK, "Failed to delete save file")
+	assert_true(SaveManager.delete_MapTemp("Test"), "Failed to delete MapTemp")
+	assert_true(SaveManager.SQLSaveDB.delete() == OK, "Failed to delete save file")

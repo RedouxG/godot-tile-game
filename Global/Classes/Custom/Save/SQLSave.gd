@@ -102,7 +102,7 @@ func Load() -> bool:
 # Save everything, leave savePath empty if you want to overwrite save
 func Save(savePath:String = "") -> bool:
 	if(savePath == ""): savePath = SQL_DB_DEST.path
-	if(FileManager.file_exist(savePath)):
+	if(FileManager.file_exists(savePath)):
 		if(OS.move_to_trash(ProjectSettings.globalize_path(savePath)) != OK):
 			Logger.logErr(["Unable to delete SQLSave save file: ", savePath])
 			return false
@@ -125,9 +125,9 @@ func close() -> int:
 	Logger.LogMsg(["Closed SQLSave: ", SQL_DB_DEST.path])
 	return result
 
-func delete_save() -> int:
+func delete() -> int:
 	var result:int
-	if(FileManager.file_exist(SQL_DB_TEMP.path)):
+	if(FileManager.file_exists(SQL_DB_TEMP.path)):
 		result = close()
 		if(result != OK):
 			Logger.logErr(["Failed to delete SQLSave on close: ", SQL_DB_DEST.path, ", err: ", result])
@@ -189,9 +189,7 @@ func set_map(MapRef:MapData) -> void:
 # Cleans all temp files from save folders (Dont call when a save is used!)
 static func clean_TEMP(folderPath:String) -> bool:
 	var isOK := true
-	for packed in FileManager.get_file_list_at_dir(folderPath):
-		var filepath:String = packed[0]
-		var fileName:String = packed[1]
-		if TEMP_MARKER in fileName:
-			isOK = isOK and (FileManager.delete_file(filepath) == OK)
+	for fileData in FileManager.get_dirs_FileData(folderPath):
+		if TEMP_MARKER in fileData.name:
+			isOK = isOK and (FileManager.delete_file(fileData.path) == OK)
 	return isOK
