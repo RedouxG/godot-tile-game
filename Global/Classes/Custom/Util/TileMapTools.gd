@@ -37,3 +37,7 @@ static func get_terrainNames(TS:TileSet, terrainSetID:int) -> Array[String]:
 	for terrainID in TS.get_terrains_count(terrainSetID):
 		result.append(TS.get_terrain_name(terrainSetID, terrainID))
 	return result
+
+static func get_terrain_texture(TS:TileSet, terrainSetID:int) -> void:
+	
+	pass

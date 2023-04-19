@@ -39,7 +39,13 @@ func get_on(posV3:Vector3i) -> MapTile:
 
 # Removes position from Data
 func rem_on(posV3:Vector3i) -> bool:
-	return MapEdit.Data.erase(posV3)
+	return MapEdit.rem_on(posV3)
+
+func set_terrain_on(posV3:Vector3i, terrainSetID:int, terrainID:int) -> void:
+	MapEdit.set_terrain_on(posV3, terrainSetID, terrainID)
+
+func rem_terrain_on(posV3:Vector3i, terrainSetID:int) -> void:
+	MapEdit.rem_terrain_on(posV3, terrainSetID)
 
 # Returns chunk of given size
 func get_chunk(chunkPos:Vector3i, chunkSize:int) -> Dictionary:

@@ -21,9 +21,7 @@ func fill_MapData(MD:MapData, size:int) -> Dictionary:
 	for x in range(size): for y in range(size):
 		var pos := Vector3i(x,y,0)
 		var MT := MapTile.new()
-		MT.terrain = randi()
-		MT.terrainSet = randi()
-		MT.layer = randi()
+		MT.set_terrain(randi(), randi())
 		MD.set_on(pos, MT)
 		savedData[pos] = str(MT)
 	return savedData

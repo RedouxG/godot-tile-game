@@ -36,10 +36,14 @@ var EditorStateMachine := StateMachine.new()
 @onready var LoadState := LOAD_STATE.new(self, "LOAD_STATE")
 @onready var GoToState := GOTO_STATE.new(self, "GOTO_STATE")
 
-@onready var TerrainManager := ExtractedTerrains.new($TileMapManager.tile_set)
-
+@onready var TileMapManager := $TileMapManager
+@onready var MAX_LAYERS:int = TileMapManager.tile_set.get_terrain_sets_count()
 const EDITOR_SAVE_NAME := "EDITOR"
-var EditedMap:SQLSave
+
+# TerrainSetID is the same as layerID
+# WallFloor is 0, Enviroment is 1
+# {terrainSetID:{terrainID:terrainName}}
+var TerrainList:Dictionary = {}
 
 var selectedTerrainID := 0
 var currentLayerName := ""
@@ -64,12 +68,12 @@ func _ready() -> void:
 	
 	RenderingServer.set_default_clear_color(Color.DARK_SLATE_BLUE)
 	
-	EditedMap = SQLSave.new(SaveManager.TEMP_FOLDER, EDITOR_SAVE_NAME)
-	if(not EditedMap.Load()):
+	SaveManager.make_new_MapTemp(EDITOR_SAVE_NAME)
+	if(not SaveManager._load_MapTemp(EDITOR_SAVE_NAME)):
 		push_error("Failed to init MapEditor")
 		get_tree().quit()
 	
-	push_error("TODO"); return
+	init_TerrainList($TileMapManager.tile_set)
 	
 	if(EditorStateMachine.force_call(NormalState, "switch_TM_selection", [0]) == StateMachine.ERROR):
 		push_error("Failed to init EditorStateMachine")
@@ -79,19 +83,13 @@ func _ready() -> void:
 # Init
 ### ----------------------------------------------------
 
-class ExtractedTerrains:
-	var TerrainList:Dictionary = {}
-
-	func _init(TS:TileSet) -> void:
-		init_TerrainList(TS)
-	
-	func init_TerrainList(TS:TileSet) -> void:
-		for terrainSetID in TS.get_terrain_sets_count():
-			TerrainList[terrainSetID] = {}
-			var TerrainIDs := TileMapTools.get_terrainIDs(TS, terrainSetID)
-			var TerrainNames:= TileMapTools.get_terrainNames(TS, terrainSetID)
-			for index in range(TerrainIDs.size()):
-				TerrainList[terrainSetID][TerrainIDs[index]] = TerrainNames[index]
+func init_TerrainList(TS:TileSet) -> void:
+	for terrainSetID in MAX_LAYERS:
+		TerrainList[terrainSetID] = {}
+		var TerrainIDs := TileMapTools.get_terrainIDs(TS, terrainSetID)
+		var TerrainNames:= TileMapTools.get_terrainNames(TS, terrainSetID)
+		for index in range(TerrainIDs.size()):
+			TerrainList[terrainSetID][TerrainIDs[index]] = TerrainNames[index]
 
 ### ----------------------------------------------------
 # Drawing
@@ -148,7 +146,7 @@ class NORM_STATE extends SMState:
 	
 	func _init(caller:Node, name:String) -> void:
 		super(caller, name)
-		TileMapManager = caller.get_node("TileMapManager")
+		TileMapManager = caller.TileMapManager
 		Cam = caller.get_node("Cam")
 	
 	func mouse_input(event:InputEvent) -> void:
@@ -178,13 +176,13 @@ class NORM_STATE extends SMState:
 			return
 		
 		if(event.is_action_pressed(GLOBAL.INPUT_MAP["E"])): 
-			switch_TM_selection(Caller.TileSelect.TMIndex + 1)
+			switch_layer(1)
 		elif(event.is_action_pressed(GLOBAL.INPUT_MAP["Q"])): 
-			switch_TM_selection(Caller.TileSelect.TMIndex - 1)
+			switch_layer(-1)
 		elif(event.is_action_pressed(GLOBAL.INPUT_MAP["X"])):
-			switch_tile_selection(Caller.TileSelect.listIndex + 1)
+			switch_terrain(1)
 		elif(event.is_action_pressed(GLOBAL.INPUT_MAP["Z"])): 
-			switch_tile_selection(Caller.TileSelect.listIndex - 1)
+			switch_terrain(-1)
 		elif(event.is_action_pressed(GLOBAL.INPUT_MAP["-"])):
 			change_elevation(-1)
 		elif(event.is_action_pressed(GLOBAL.INPUT_MAP["="])):
@@ -198,66 +196,51 @@ class NORM_STATE extends SMState:
 		elif(event.is_action_pressed(GLOBAL.INPUT_MAP["G"])):
 			StateMaster.set_state(Caller.GoToState)
 	
-	func switch_TM_selection(value:int) -> void:
-		Caller.TileSelect.TMIndex = value
-		if(Caller.TileSelect.TMIndex > (Caller.TileSelect.allTileMaps.size() - 1)): 
-			Caller.TileSelect.TMIndex = 0
-		if(Caller.TileSelect.TMIndex < 0): 
-			Caller.TileSelect.TMIndex = (Caller.TileSelect.allTileMaps.size() - 1)
-		
-		Caller.TileSelect.listIndex = 0
+	func switch_layer(value:int) -> void:
+		Caller.currentLayerID += value
+		clamp(Caller.currentLayerID, 0, Caller.MAX_LAYERS - 1)
 		fill_item_list()
-		
-		Caller.UIElement.TMSelect.select(Caller.TileSelect.TMIndex)
-		switch_tile_selection(Caller.TileSelect.listIndex)
+		Caller.UIElement.TMSelect.select(Caller.currentLayerID)
+		Caller.selectedTerrainID = 0
 	
-	func switch_tile_selection(value:int) -> void:
-		Caller.TileSelect.listIndex = value
-		if(Caller.TileSelect.listIndex > (Caller.UIElement.TileList.get_item_count() - 1)): 
-			Caller.TileSelect.listIndex = 0
-		if(Caller.TileSelect.listIndex < 0): 
-			Caller.TileSelect.listIndex = (Caller.UIElement.TileList.get_item_count() - 1)
-		
-		Caller.UIElement.TileList.select(Caller.TileSelect.listIndex)
+	func switch_terrain(value:int) -> void:
+		Caller.selectedTerrainID += value
+		clamp(Caller.selectedTerrainID, 0, Caller.UIElement.TileList.get_item_count()-1)
+		Caller.UIElement.TileList.select(Caller.selectedTerrainID)
 	
 	func set_selected_tile(tileID:int) -> void:
-		var tileMap:TileMap = Caller.TileSelect.allTileMaps[Caller.TileSelect.TMIndex]
-		var mousePos:Vector2 = tileMap.local_to_map(Caller.get_global_mouse_position())
-		var posV3:Vector3 = VectorTools.vec2i_vec3i(mousePos, Cam.currentElevation)
-		var chunkV3:Vector3 = VectorTools.vec2i_vec3i(
+		var TM:TileMap = TileMapManager
+		var mousePos:Vector2 = TM.local_to_map(Caller.get_global_mouse_position())
+		var pos:Vector3 = VectorTools.vec2i_vec3i(mousePos, Cam.currentElevation)
+		var chunkPos:Vector3 = VectorTools.vec2i_vec3i(
 			VectorTools.scale_down_vec2i(mousePos, GLOBAL.TILEMAPS.CHUNK_SIZE),
 			Cam.currentElevation)
-		if(not chunkV3 in TileMapManager.RenderedChunks): return
-		var TMName = tileMap.get_name()
+		if(not chunkPos in TM.RenderedChunks): return
 		
+		var terrainSetlayerID = TM.get_layer_name(Caller.currentLayerID)
 		if(tileID == -1):
-			Caller.EditedMap.remove_tile_from_TileData(TMName,posV3)
+			SaveManager.MapTemp.rem_terrain_on(pos, terrainSetlayerID)
 		else:
-			if(not Caller.EditedMap.add_tile_to_TileData_on(posV3, TMName, tileID)):
-				Logger.logErr(["Failed to set tile: ", [posV3, TMName, tileID]])
-		TileMapManager.refresh_tile_on(posV3, Caller.EditedMap.get_TileData_on(posV3))
+			SaveManager.MapTemp.set_terrain_on(pos, terrainSetlayerID, Caller.selectedTerrainID)
+		TileMapManager.refresh_tile(pos)
 	
 	func change_elevation(direction:int) -> void:
 		Cam.currentElevation += direction
 		Caller.UIElement.ElevationLabel.text = "Elevation: " + str(Cam.currentElevation)
-		TileMapManager.unload_all_chunks()
+		TileMapManager.unload_all()
 
 	# Fills item list with TileMap tiles
 	func fill_item_list() -> void:
-		Caller.UIElement.TileList.clear()
-		Caller.TileSelect.shownTiles.clear()
-		
-		var tileMap:TileMap = Caller.TileSelect.allTileMaps[Caller.TileSelect.TMIndex]
-		for packed in Caller.TileSelect.tileData[Caller.TileSelect.TMIndex]:
-			var tileName:String = packed[0]
-			var tileID:int = packed[1]
-			var tileTexture:Texture2D = TileMapTools.get_tile_texture(tileID, tileMap.tile_set)
-
+		var TerrainIDs = TileMapTools.get_terrainIDs(TileMapManager.tile_set, Caller.currentLayerID)
+		var TerrainNames = TileMapTools.get_terrainNames(TileMapManager.tile_set, Caller.currentLayerID)
+		for index in TerrainIDs.size():
+			var terrainID:int = TerrainIDs[index]
+			var terrainName:String = TerrainNames[index]
 			if(Caller.FilterState.filter != ""):
-				if(not Caller.FilterState.filter.to_lower() in tileName.to_lower()): 
+				if(not Caller.FilterState.filter.to_lower() in terrainName.to_lower()): 
 					continue
-			Caller.UIElement.TileList.add_item(tileName,tileTexture,true)
-			Caller.TileSelect.shownTiles.append([tileName,tileID])
+			#var tileTexture:Texture2D = TileMapTools.get_tile_texture(tileID, tileMap.tile_set)
+			#Caller.UIElement.TileList.add_item(tileName,tileTexture,true)
 
 class FLTR_STATE extends SMState:
 	var filter := ""
@@ -387,19 +370,15 @@ func update_EditedMap_chunks() -> void:
 	var chunksToRender := VectorTools.vec3i_get_range_2d(VectorTools.vec2i_vec3i(camChunk, $Cam.currentElevation), 1)
 
 	# Loading chunks that are not yet rendered
-	for chunkV3 in chunksToRender:
-		if($TileMapManager.RenderedChunks.has(chunkV3)): continue
-		$TileMapManager.load_chunk_to_tilemap(chunkV3, 
-			EditedMap.get_TileData_on_chunk(chunkV3, GLOBAL.TILEMAPS.CHUNK_SIZE))
+	for chunkPos in chunksToRender:
+		if($TileMapManager.RenderedChunks.has(chunkPos)): continue
+		$TileMapManager.load_chunk(chunkPos)
 	
 	# Unload old chunks that are not meant to be seen
 	for i in range($TileMapManager.RenderedChunks.size() - 1, -1, -1):
-		var chunkV3:Vector3 = $TileMapManager.RenderedChunks[i]
-		if(chunksToRender.has(chunkV3)): continue
-		$TileMapManager.RenderedChunks.remove(i)
-		$TileMapManager.unload_chunk_from_tilemap(chunkV3)
-	
-	$TileMapManager.update_all_TM_bitmask()
+		var chunkPos:Vector3i = $TileMapManager.RenderedChunks[i]
+		if(chunksToRender.has(chunkPos)): continue
+		$TileMapManager.unload_chunk(chunkPos)
 
 ### ----------------------------------------------------
 # MISC

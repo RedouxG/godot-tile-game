@@ -15,13 +15,6 @@ var RenderedChunks:Array[Vector2i] = []
 # FUNCTIONS
 ### ----------------------------------------------------
 
-func _ready() -> void:
-	return # test
-	SaveManager.make_new_MapTemp("Test")
-	SaveManager.make_new_SQLSave("TestSave")
-	SaveManager.load_SQLSave("TestSave")
-	SaveManager.change_map("Test")
-
 # Loads a singular chunk to TileMaps
 func load_chunk(chunkPos:Vector3i) -> void:
 	var ChunkData := SaveManager.get_chunk(chunkPos, GLOBAL.TILEMAPS.CHUNK_SIZE)

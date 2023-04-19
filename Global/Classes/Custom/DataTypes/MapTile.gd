@@ -9,14 +9,31 @@ class_name MapTile
 # VARIABLES
 ### ----------------------------------------------------
 
-var Saver := ObjectSaver.new(self, ["EntityData", "layer", "terrain", "terrainSet"])
+var Saver := ObjectSaver.new(self, ["EntityData", "LayerData"])
 
 # Stores data regardning an entity on this tile
 var EntityData:String = ""
 
-var layer:int = -1
-var terrain:int = -1
-var terrainSet:int = -1
+# {TerrainSetID: terrainID}
+var TerrainData:Dictionary = {}
+
+### ----------------------------------------------------
+# FUNCTIONS
+### ----------------------------------------------------
+
+func set_terrain(terrainSetID:int, terrainID:int) -> void:
+	TerrainData[terrainSetID] = terrainID
+
+func get_terrain(terrainSetID:int) -> int:
+	if(not TerrainData.has(terrainSetID)):
+		return -1
+	return TerrainData[terrainSetID]
+
+func rem_terrain(terrainSetID:int) -> void:
+	TerrainData.erase(terrainSetID)
+
+func is_empty() -> bool:
+	return TerrainData.is_empty() and EntityData.is_empty()
 
 ### ----------------------------------------------------
 # SAVE

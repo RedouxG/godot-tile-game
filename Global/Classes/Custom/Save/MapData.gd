@@ -18,19 +18,30 @@ var Saver := ObjectSaver.new(self, ["Data", "MapName"])
 # API
 ### ----------------------------------------------------
 
-# Sets MapTile in Data on posV3
 func set_on(posV3:Vector3i, mapTile:MapTile) -> void:
 	Data[posV3] = str(mapTile)
 
-# Gets MapTile on position from Data
 func get_on(posV3:Vector3i) -> MapTile:
 	if(not Data.has(posV3)):
 		return null
 	return MapTile.new().from_str(Data[posV3])
 
-# Removes position from Data
 func rem_on(posV3:Vector3i) -> bool:
 	return Data.erase(posV3)
+
+func rem_terrain_on(posV3:Vector3i, terrainSetlayerID:int) -> void:
+	var MTile := get_on(posV3)
+	if(MTile == null): return
+	
+	MTile.rem_terrain(terrainSetlayerID)
+	set_on(posV3, MTile)
+
+func set_terrain_on(posV3:Vector3i, terrainSetlayerID:int, terrainID:int) -> void:
+	var MTile := get_on(posV3)
+	if(MTile == null):
+		MTile = MapTile.new()
+	MTile.set_terrain(terrainSetlayerID, terrainID)
+	set_on(posV3, MTile)
 
 # Returns chunk of given size
 func get_chunk(chunkPos:Vector3i, chunkSize:int) -> Dictionary:
