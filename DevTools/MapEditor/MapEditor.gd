@@ -262,7 +262,6 @@ class FLTR_STATE extends SMState:
 	func update_input(event:InputEvent) -> void:
 		if(event.is_action_pressed(GLOBAL.INPUT_MAP["ESC"])):
 			end_state()
-			
 
 class SAVE_STATE extends SMState:
 	func _init(caller:Node, name:String) -> void:

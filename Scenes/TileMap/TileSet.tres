@@ -1989,7 +1989,7 @@ terrain_set_0/terrain_1/name = "DirtWalls"
 terrain_set_0/terrain_1/color = Color(0.5, 0.4375, 0.25, 1)
 terrain_set_0/terrain_2/name = "SteelWalls"
 terrain_set_0/terrain_2/color = Color(0.839216, 0.164706, 0.341176, 1)
-sources/1 = SubResource("TileSetAtlasSource_d6d2n")
+sources/0 = SubResource("TileSetAtlasSource_d6d2n")
 metadata/_better_terrain = {
 "terrains": [["StoneWalls", Color(0.303138, 0.802669, 0.0366123, 1), 0, []], ["DirtWalls", Color(0.92549, 1, 0.0509804, 1), 0, []], ["SteelWalls", Color(0.592157, 0, 1, 1), 0, []]],
 "version": "0.1"

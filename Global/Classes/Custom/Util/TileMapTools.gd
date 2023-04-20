@@ -38,6 +38,38 @@ static func get_terrainNames(TS:TileSet, terrainSetID:int) -> Array[String]:
 		result.append(TS.get_terrain_name(terrainSetID, terrainID))
 	return result
 
-static func get_terrain_texture(TS:TileSet, terrainSetID:int) -> void:
+# Returns tileIDs without alts
+static func get_tileIDs(source:TileSetSource) -> Array[Vector2i]:
+	var result:Array[Vector2i] = []
+	for index in source.get_tiles_count():
+		result.append(source.get_tile_id(index))
+	return result
+
+static func get_terrain_sourceID(TM:TileMap, terrainSetID:int, terrainID:int) -> int:
+	var samplePos:= Vector2i(99999, 99999)
+	var savedAltCoords := TM.get_cell_alternative_tile(0, samplePos)
+	var savedAtlasCoords := TM.get_cell_atlas_coords(0, samplePos)
+	var savedSourceID := TM.get_cell_source_id(0, samplePos)
 	
-	pass
+	TM.set_cells_terrain_connect(0, [samplePos], terrainSetID, terrainID)
+	var sourceID := TM.get_cell_source_id(0, samplePos)
+	
+	TM.set_cell(0, samplePos, savedSourceID, savedAtlasCoords, savedAltCoords)
+	return sourceID
+
+static func get_terrain_atlasCoords(TM:TileMap, terrainSetID:int, terrainID:int) -> Vector2i:
+	var samplePos:= Vector2i(99999, 99999)
+	var savedAltCoords := TM.get_cell_alternative_tile(0, samplePos)
+	var savedAtlasCoords := TM.get_cell_atlas_coords(0, samplePos)
+	var savedSourceID := TM.get_cell_source_id(0, samplePos)
+	
+	TM.set_cells_terrain_connect(0, [samplePos], terrainSetID, terrainID)
+	var atlasCoords := TM.get_cell_atlas_coords(0, samplePos)
+	
+	TM.set_cell(0, samplePos, savedSourceID, savedAtlasCoords, savedAltCoords)
+	return atlasCoords
+
+static func get_tile_image(TS:TileSet, sourceID:int, atlasCoords:Vector2i) -> Image:
+	var source:TileSetAtlasSource = TS.get_source(sourceID)
+	var textureRegion:Rect2i = source.get_tile_texture_region(atlasCoords)
+	return source.texture.get_image().get_region(textureRegion)
