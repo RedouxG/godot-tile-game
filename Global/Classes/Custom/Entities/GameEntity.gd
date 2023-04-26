@@ -39,7 +39,7 @@ func set_sprite(spritePos:Vector2i, texturePath:String) -> void:
 
 # Unloads itself into TileData and queue_free()
 func unload_entity(unloadedChunkV3:Vector3i) -> void:
-	if(not unloadedChunkV3 == VectorTools.scale_down_vec3i(MapPosition, GLOBAL.TILEMAPS.CHUNK_SIZE)): 
+	if(not unloadedChunkV3 == VectorTools.scale_down_vec3i_noZ(MapPosition, GLOBAL.TILEMAPS.CHUNK_SIZE)): 
 		return
 	if(not save_entity()):
 		Logger.logErr(["Failed to save entity data on unload, pos: ", MapPosition])

@@ -15,20 +15,15 @@ extends Camera2D
 # VARIABLES
 ### ----------------------------------------------------
 
+const MAX_ZOOM = 8.0
+const MIN_ZOOM = 1.0
 var zoomValue:float = 0.05
-var currentElevation:int = 0
-var inputActive:bool = true
 
 ### ----------------------------------------------------
 # FUNCTIONS
 ### ----------------------------------------------------
 
-### ----------------------------------------------------
-# Input
-### ----------------------------------------------------
 func zoom_camera(value:float):
-	if zoom[0] + value < 0.1: return
-	if zoom[0] + value > 1:   return
-	
+	if zoom[0] + value < MIN_ZOOM: return
+	if zoom[0] + value > MAX_ZOOM: return
 	zoom = Vector2(zoom[0]+value, zoom[1]+value)
-### ----------------------------------------------------

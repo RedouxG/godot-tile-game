@@ -73,3 +73,9 @@ static func get_tile_image(TS:TileSet, sourceID:int, atlasCoords:Vector2i) -> Im
 	var source:TileSetAtlasSource = TS.get_source(sourceID)
 	var textureRegion:Rect2i = source.get_tile_texture_region(atlasCoords)
 	return source.texture.get_image().get_region(textureRegion)
+
+static func get_terrain_Texture2D(TM:TileMap, terrainSetID:int, terrainID:int) -> Texture2D:
+	var sourceID:int = get_terrain_sourceID(TM, terrainSetID, terrainID)
+	var atlasPos:Vector2i = get_terrain_atlasCoords(TM, terrainSetID, terrainID)
+	var terrainImage:Image = get_tile_image(TM.tile_set, sourceID, atlasPos)
+	return ImageTexture.create_from_image(terrainImage)

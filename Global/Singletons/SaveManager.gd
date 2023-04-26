@@ -95,7 +95,11 @@ func _load_MapTemp(MapName:String) -> bool:
 	Logger.LogMsg(["Loaded MapTemp: ", MapTemp.MapName])
 	return true
 
-func _save_MapTemp() -> bool:
+# If map name is empty save as current map name
+func _save_MapTemp(MapName:String = "") -> bool:
+	if(MapName.is_empty()): 
+		MapTemp.MapName = MapName
+	
 	var path := TEMP_FOLDER + MapTemp.MapName + ".res"
 	var result := MapData.save_MapData_to_path(path, MapTemp)
 	if(result != OK):
@@ -107,6 +111,30 @@ func _save_MapTemp() -> bool:
 func _save_MapEdit() -> void:
 	if(MapEdit != null):
 		SQLSaveDB.set_map(MapEdit)
+
+# For editor use
+func editor_save_map(MapName:String = "") -> bool:
+	if(MapName.is_empty()): 
+		MapEdit.MapName = MapName
+	
+	var path := TEMP_FOLDER + MapEdit.MapName + ".res"
+	var result := MapData.save_MapData_to_path(path, MapEdit)
+	if(result != OK):
+		Logger.logErr(["Failed to save map to path: ", path])
+		return false
+	Logger.LogMsg(["Saved map: ", MapEdit.MapName])
+	return true
+
+# For editor use
+func editor_load_map(MapName:String) -> bool:
+	var path := TEMP_FOLDER + MapName + ".res"
+	var TempResult := MapData.load_MapData_from_path(path)
+	if(TempResult == null):
+		Logger.logErr(["Failed to load map from path: ", path])
+		return false
+	MapEdit = TempResult
+	Logger.LogMsg(["Loaded map: ", MapEdit.MapName])
+	return true
 
 ### ----------------------------------------------------
 # Util

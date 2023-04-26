@@ -24,7 +24,7 @@ func set_on(posV3:Vector3i, mapTile:MapTile) -> void:
 func get_on(posV3:Vector3i) -> MapTile:
 	if(not Data.has(posV3)):
 		return null
-	return MapTile.new().from_str(Data[posV3])
+	return MapTile.new().from_string(Data[posV3])
 
 func rem_on(posV3:Vector3i) -> bool:
 	return Data.erase(posV3)
