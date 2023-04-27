@@ -33,7 +33,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Chunk" type="RichTextLabel" parent="UIElements/MC/GC/Info"]
+[node name="ChunkText" type="RichTextLabel" parent="UIElements/MC/GC/Info"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("5")
@@ -42,7 +42,7 @@ fit_content = true
 scroll_active = false
 deselect_on_focus_loss_enabled = false
 
-[node name="Cell" type="RichTextLabel" parent="UIElements/MC/GC/Info"]
+[node name="CellText" type="RichTextLabel" parent="UIElements/MC/GC/Info"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("5")
@@ -51,7 +51,7 @@ fit_content = true
 scroll_active = false
 deselect_on_focus_loss_enabled = false
 
-[node name="Elevation" type="RichTextLabel" parent="UIElements/MC/GC/Info"]
+[node name="ElevationText" type="RichTextLabel" parent="UIElements/MC/GC/Info"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("5")
@@ -60,7 +60,7 @@ fit_content = true
 scroll_active = false
 deselect_on_focus_loss_enabled = false
 
-[node name="Filter" type="RichTextLabel" parent="UIElements/MC/GC/Info"]
+[node name="FilterText" type="RichTextLabel" parent="UIElements/MC/GC/Info"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("5")
@@ -74,7 +74,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="SaveEdit" type="LineEdit" parent="UIElements/MC/GC/Info"]
+[node name="SaveInput" type="LineEdit" parent="UIElements/MC/GC/Info"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 0
@@ -87,7 +87,7 @@ middle_mouse_paste_enabled = false
 selecting_enabled = false
 deselect_on_focus_loss_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="UIElements/MC/GC/Info/SaveEdit"]
+[node name="RichTextLabel" type="RichTextLabel" parent="UIElements/MC/GC/Info/SaveInput"]
 layout_mode = 0
 offset_top = -26.0
 offset_right = 355.0
@@ -96,7 +96,7 @@ theme = ExtResource("5")
 text = "Save Map"
 fit_content = true
 
-[node name="LoadEdit" type="LineEdit" parent="UIElements/MC/GC/Info"]
+[node name="LoadInput" type="LineEdit" parent="UIElements/MC/GC/Info"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 0
@@ -109,7 +109,7 @@ middle_mouse_paste_enabled = false
 selecting_enabled = false
 deselect_on_focus_loss_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="UIElements/MC/GC/Info/LoadEdit"]
+[node name="RichTextLabel" type="RichTextLabel" parent="UIElements/MC/GC/Info/LoadInput"]
 layout_mode = 0
 offset_top = -26.0
 offset_right = 355.0
@@ -118,7 +118,7 @@ theme = ExtResource("5")
 text = "Load Map"
 fit_content = true
 
-[node name="FilterEdit" type="LineEdit" parent="UIElements/MC/GC/Info"]
+[node name="FilterInput" type="LineEdit" parent="UIElements/MC/GC/Info"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 0
@@ -131,7 +131,7 @@ middle_mouse_paste_enabled = false
 selecting_enabled = false
 deselect_on_focus_loss_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="UIElements/MC/GC/Info/FilterEdit"]
+[node name="RichTextLabel" type="RichTextLabel" parent="UIElements/MC/GC/Info/FilterInput"]
 layout_mode = 0
 offset_top = -26.0
 offset_right = 355.0
@@ -140,7 +140,7 @@ theme = ExtResource("5")
 text = "Filter"
 fit_content = true
 
-[node name="Goto" type="LineEdit" parent="UIElements/MC/GC/Info"]
+[node name="GotoInput" type="LineEdit" parent="UIElements/MC/GC/Info"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 0
@@ -153,7 +153,7 @@ middle_mouse_paste_enabled = false
 selecting_enabled = false
 deselect_on_focus_loss_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="UIElements/MC/GC/Info/Goto"]
+[node name="RichTextLabel" type="RichTextLabel" parent="UIElements/MC/GC/Info/GotoInput"]
 layout_mode = 0
 offset_top = -26.0
 offset_right = 355.0
@@ -172,16 +172,16 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="TileScroll" type="VBoxContainer" parent="UIElements/MC/GC"]
+[node name="SelectionUI" type="VBoxContainer" parent="UIElements/MC/GC"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="TMSelect" type="OptionButton" parent="UIElements/MC/GC/TileScroll"]
+[node name="TerrainSelect" type="OptionButton" parent="UIElements/MC/GC/SelectionUI"]
 layout_mode = 2
 mouse_filter = 1
 
-[node name="ItemList" type="ItemList" parent="UIElements/MC/GC/TileScroll"]
+[node name="ItemList" type="ItemList" parent="UIElements/MC/GC/SelectionUI"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -229,3 +229,10 @@ size_flags_vertical = 3
 mouse_filter = 1
 
 [node name="TileMapManager" parent="." instance=ExtResource("4_hdech")]
+
+[connection signal="text_submitted" from="UIElements/MC/GC/Info/SaveInput" to="." method="_on_save_input_text_submitted"]
+[connection signal="text_submitted" from="UIElements/MC/GC/Info/LoadInput" to="." method="_on_load_input_text_submitted"]
+[connection signal="text_submitted" from="UIElements/MC/GC/Info/FilterInput" to="." method="_on_filter_input_text_submitted"]
+[connection signal="text_submitted" from="UIElements/MC/GC/Info/GotoInput" to="." method="_on_goto_input_text_submitted"]
+[connection signal="item_selected" from="UIElements/MC/GC/SelectionUI/TerrainSelect" to="." method="_on_terrain_select_item_selected"]
+[connection signal="item_selected" from="UIElements/MC/GC/SelectionUI/ItemList" to="." method="_on_item_list_item_selected"]

@@ -17,18 +17,21 @@ extends Node2D
 const EDITOR_SAVE_NAME := "EDITOR"
 
 @onready var UIElement := {
-	Parent =         $UIElements/MC,
-	TileScroll =     $UIElements/MC/GC/TileScroll,
-	TMSelect =       $UIElements/MC/GC/TileScroll/TMSelect,
-	TileList =       $UIElements/MC/GC/TileScroll/ItemList,
-	SaveEdit =       $UIElements/MC/GC/Info/SaveEdit,
-	LoadEdit =       $UIElements/MC/GC/Info/LoadEdit,
-	FilterEdit =     $UIElements/MC/GC/Info/FilterEdit,
-	GotoEdit =       $UIElements/MC/GC/Info/Goto,
-	ChunkLabel =     $UIElements/MC/GC/Info/Chunk,
-	ElevationLabel = $UIElements/MC/GC/Info/Elevation,
-	CellLabel =      $UIElements/MC/GC/Info/Cell,
-	Filter =         $UIElements/MC/GC/Info/Filter,
+	UIRoot =         $UIElements/MC,
+	
+	SelectionUI =    $UIElements/MC/GC/SelectionUI,
+	TerrainSelect =  $UIElements/MC/GC/SelectionUI/TerrainSelect,
+	TileItemList =   $UIElements/MC/GC/SelectionUI/ItemList,
+	
+	SaveInput =       $UIElements/MC/GC/Info/SaveInput,
+	LoadInput =       $UIElements/MC/GC/Info/LoadInput,
+	GotoInput =       $UIElements/MC/GC/Info/GotoInput,
+	FilterInput =    $UIElements/MC/GC/Info/FilterInput,
+	
+	CellText =      $UIElements/MC/GC/Info/CellText,
+	FilterText =     $UIElements/MC/GC/Info/FilterInput,
+	ChunkText =     $UIElements/MC/GC/Info/ChunkText,
+	ElevationText = $UIElements/MC/GC/Info/ElevationText,
 }
 
 @onready var TM:TileMap = $TileMapManager
@@ -41,11 +44,17 @@ var EditorStateMachine := StateMachine.new()
 @onready var LoadState := LOAD_STATE.new(self, "LOAD_STATE")
 @onready var GoToState := GOTO_STATE.new(self, "GOTO_STATE")
 
+var PrevDrawnTile:Vector2i = Vector2i(9999,9999)
+var PrevDrawnChunk:Vector2i = Vector2i(9999,9999)
+var PrevDrawnRenderedChunks:Array[Vector3i] = []
+
 ### ----------------------------------------------------
 # FUNCTIONS
 ### ----------------------------------------------------
 
 func _ready() -> void:
+	RenderingServer.set_default_clear_color(Color.DARK_SLATE_BLUE)
+	
 	var isOK := true
 	EditorStateMachine.add_state(SelectState)
 	EditorStateMachine.add_state(FilterState)
@@ -57,8 +66,6 @@ func _ready() -> void:
 	if(not isOK):
 		push_error("Failed to init EditorStateMachine")
 		get_tree().quit()
-	
-	RenderingServer.set_default_clear_color(Color.DARK_SLATE_BLUE)
 	
 	SaveManager.MapTemp = MapData.get_new(EDITOR_SAVE_NAME)
 	SaveManager.MapEdit = MapData.get_new(EDITOR_SAVE_NAME)
@@ -73,42 +80,50 @@ func _ready() -> void:
 
 func _draw():
 	var mousePos:Vector2 = get_global_mouse_position()
-	_draw_selection_square(mousePos)
-	_draw_selection_chunk(mousePos)
-	#_draw_loaded_chunks()
+	_draw_loaded_chunks()
+	_draw_selected_chunk(mousePos)
+	_draw_selected_tile(mousePos)
 
 # Draws a square to indicate current cell pointed by mouse cursor
-func _draw_selection_square(mousePos:Vector2) -> void:
+func _draw_selected_tile(mousePos:Vector2) -> void:
 	var cellPos:Vector2i = VectorTools.scale_down_vec2i(mousePos, GLOBAL.TILEMAPS.BASE_SCALE)
+	if(cellPos == PrevDrawnTile): # Dont redraw if tile is already drawn
+		return
+	PrevDrawnTile = cellPos
 	var rect = Rect2i(cellPos * GLOBAL.TILEMAPS.BASE_SCALE, GLOBAL.TILEMAPS.TILE_SIZE)
-	UIElement.CellLabel.text = "Cell: " + str(cellPos)
-	draw_rect(rect, Color.CRIMSON,false,1)
+	UIElement.CellText.text = "Cell: " + str(cellPos)
+	draw_rect(rect, Color.CRIMSON, false, 1)
 
 # Draws a square to indicate current chunk pointed by mouse cursor
-func _draw_selection_chunk(mousePos:Vector2) -> void:
-	var chunkScale:int = GLOBAL.TILEMAPS.BASE_SCALE * GLOBAL.TILEMAPS.CHUNK_SIZE
+func _draw_selected_chunk(mousePos:Vector2) -> void:
 	var chunkPos:Vector2i = VectorTools.scale_down_vec2i(mousePos, GLOBAL.TILEMAPS.CHUNK_SIZE * GLOBAL.TILEMAPS.BASE_SCALE)
+	if(chunkPos == PrevDrawnChunk): # Dont redraw if tile is already drawn
+		return
+	PrevDrawnChunk = chunkPos
+	var chunkScale:int = GLOBAL.TILEMAPS.BASE_SCALE * GLOBAL.TILEMAPS.CHUNK_SIZE
 	var rect = Rect2i(chunkPos * chunkScale, Vector2(chunkScale, chunkScale))
-	
-	UIElement.ChunkLabel.text = "Chunk: " + str(chunkPos)
+	UIElement.ChunkText.text = "Chunk: " + str(chunkPos)
 	draw_rect(rect, Color.BLACK, false, 1)
 
 # Draws squares around all loaded chunks
 func _draw_loaded_chunks():
-	for posV3 in $TileMapManager.RenderedChunks:
+	if(PrevDrawnRenderedChunks != $TileMapManager.RenderedChunks): # Dont redraw if tile is already drawn
+		return
+	PrevDrawnRenderedChunks = $TileMapManager.RenderedChunks
+	for pos in $TileMapManager.RenderedChunks:
 		var chunkScale:int = GLOBAL.TILEMAPS.BASE_SCALE * GLOBAL.TILEMAPS.CHUNK_SIZE
-		var posV2:Vector2 = VectorTools.vec3i_vec2i(posV3) * chunkScale
-		var rect = Rect2(posV2, Vector2(chunkScale, chunkScale))
-		draw_rect(rect, Color.RED, false, 1)
+		var rect = Rect2(VectorTools.vec3i_vec2i(pos) * chunkScale, Vector2(chunkScale, chunkScale))
+		draw_rect(rect, Color.GRAY, false, 1)
 
 ### ----------------------------------------------------
 # FUNCTIONS
 ### ----------------------------------------------------
 
+
 func _input(event:InputEvent) -> void:
 	EditorStateMachine.update_state_input(event)
 	queue_redraw()
-	update_EditedMap_chunks()
+	#update_EditedMap_chunks()
 
 # Default editor state
 class SLCT_STATE extends SMState:
@@ -130,6 +145,8 @@ class SLCT_STATE extends SMState:
 		TS = caller.TS
 		Cam = caller.get_node("Cam")
 		MAX_LAYERS = TS.get_terrain_sets_count()
+		for index in MAX_LAYERS:
+			Caller.UIElement.TerrainSelect.add_item("Terrain: " + str(index), index)
 	
 	func mouse_input(event:InputEvent) -> void:
 		if(event is InputEventMouseButton):
@@ -151,55 +168,53 @@ class SLCT_STATE extends SMState:
 	
 	# This could be an input map but doing it with ifs is good enough
 	func update_input(event:InputEvent) -> void:
-		if(not LibK.UI.is_mouse_on_ui(Caller.UIElement.TileScroll, Caller.UIElement.Parent)):
+		if(not LibK.UI.is_mouse_on_ui(Caller.UIElement.SelectionUI, Caller.UIElement.UIRoot)):
 			mouse_input(event)
-		if not event is InputEventKey: 
-			return
 		
-		if(event.is_action_pressed(GLOBAL.INPUT_MAP["E"])): 
-			switch_currentLayerID(1)
-		elif(event.is_action_pressed(GLOBAL.INPUT_MAP["Q"])): 
-			switch_currentLayerID(-1)
-		elif(event.is_action_pressed(GLOBAL.INPUT_MAP["X"])):
-			switch_terrainIndex(1)
-		elif(event.is_action_pressed(GLOBAL.INPUT_MAP["Z"])): 
-			switch_terrainIndex(-1)
-		elif(event.is_action_pressed(GLOBAL.INPUT_MAP["-"])):
+		if(InputTools.is_key_pressed(event, KEY_E)):
+			add_currentLayerID(1)
+		elif(InputTools.is_key_pressed(event, KEY_Q)): 
+			add_currentLayerID(-1)
+		elif(InputTools.is_key_pressed(event, KEY_X)):
+			add_terrainIndex(1)
+		elif(InputTools.is_key_pressed(event, KEY_Z)): 
+			add_terrainIndex(-1)
+		elif(InputTools.is_key_pressed(event, KEY_MINUS)):
 			change_elevation(-1)
-		elif(event.is_action_pressed(GLOBAL.INPUT_MAP["="])):
+		elif(InputTools.is_key_pressed(event, KEY_EQUAL)):
 			change_elevation(1)
-		elif(event.is_action_pressed(GLOBAL.INPUT_MAP["F"])):
+		elif(InputTools.is_key_pressed(event, KEY_F)):
 			StateMaster.set_state(Caller.FilterState)
-		elif(event.is_action_pressed(GLOBAL.INPUT_MAP["LCtrl"])):
+		elif(InputTools.is_key_pressed(event, KEY_CTRL)):
 			StateMaster.set_state(Caller.SaveState)
-		elif(event.is_action_pressed(GLOBAL.INPUT_MAP["LAlt"])):
+		elif(InputTools.is_key_pressed(event, KEY_ALT)):
 			StateMaster.set_state(Caller.LoadState)
-		elif(event.is_action_pressed(GLOBAL.INPUT_MAP["G"])):
+		elif(InputTools.is_key_pressed(event, KEY_G)):
 			StateMaster.set_state(Caller.GoToState)
 	
-	func switch_currentLayerID(value:int) -> void:
+	func add_currentLayerID(value:int) -> void:
 		currentLayerID += value
-		clamp(currentLayerID, 0, Caller.MAX_LAYERS - 1)
+		currentLayerID = clamp(currentLayerID, 0, MAX_LAYERS - 1)
 		fill_item_list()
-		Caller.UIElement.TMSelect.select(Caller.layerID)
+		Caller.UIElement.TerrainSelect.select(currentLayerID)
 		terrainIndex = 0
 	
 	func change_currentLayerID(value:int) -> void:
 		currentLayerID = value
-		clamp(currentLayerID, 0, Caller.MAX_LAYERS - 1)
+		currentLayerID = clamp(currentLayerID, 0, MAX_LAYERS - 1)
 		fill_item_list()
-		Caller.UIElement.TMSelect.select(Caller.layerID)
+		Caller.UIElement.TerrainSelect.select(currentLayerID)
 		terrainIndex = 0
 	
-	func switch_terrainIndex(value:int) -> void:
+	func add_terrainIndex(value:int) -> void:
 		terrainIndex += value
-		clamp(terrainIndex, 0, Caller.UIElement.TileList.get_item_count()-1)
-		Caller.UIElement.TileList.select(terrainIndex)
+		terrainIndex = clamp(terrainIndex, 0, Caller.UIElement.TileItemList.get_item_count()-1)
+		Caller.UIElement.TileItemList.select(terrainIndex)
 	
 	func change_terrainIndex(value:int) -> void:
 		terrainIndex = value
-		clamp(terrainIndex, 0, Caller.UIElement.TileList.get_item_count()-1)
-		Caller.UIElement.TileList.select(terrainIndex)
+		terrainIndex = clamp(terrainIndex, 0, Caller.UIElement.TileItemList.get_item_count()-1)
+		Caller.UIElement.TileItemList.select(terrainIndex)
 	
 	func set_selected_tile(tileID:int) -> void:
 		var mousePos:Vector2i = TM.local_to_map(Caller.get_global_mouse_position())
@@ -217,12 +232,14 @@ class SLCT_STATE extends SMState:
 	
 	func change_elevation(direction:int) -> void:
 		currentElevation += direction
-		Caller.UIElement.ElevationLabel.text = "Elevation: " + str(currentElevation)
+		Caller.UIElement.ElevationText.text = "Elevation: " + str(currentElevation)
 		TM.unload_all()
 
 	# Fills item list with TileMap tiles
 	func fill_item_list() -> void:
 		ShownTerrains.clear()
+		Caller.UIElement.TileItemList.clear()
+		
 		var TerrainIDs = TileMapTools.get_terrainIDs(TS, currentLayerID)
 		var TerrainNames = TileMapTools.get_terrainNames(TS, currentLayerID)
 		for index in TerrainIDs.size():
@@ -233,7 +250,7 @@ class SLCT_STATE extends SMState:
 					continue
 			var terrainTexture:Texture2D = TileMapTools.get_terrain_Texture2D(
 				TM, currentLayerID, terrainID)
-			Caller.UIElement.TileList.add_item(terrainName, terrainTexture, true)
+			Caller.UIElement.TileItemList.add_item(terrainName, terrainTexture, true)
 			ShownTerrains.append(terrainID)
 
 class FLTR_STATE extends SMState:
@@ -243,18 +260,18 @@ class FLTR_STATE extends SMState:
 		super(caller, name)
 	
 	func _state_set() -> void:
-		Caller._show_lineEdit(Caller.UIElement.FilterEdit)
+		Caller._show_lineEdit(Caller.UIElement.FilterInput)
 	
 	func change_filter(new_text:String) -> void:
 		filter = new_text
-		Caller.UIElement.Filter.text = "Filter: " + "\"" + filter + "\""
+		Caller.UIElement.FilterInput.text = "FilterInput: " + "\"" + filter + "\""
 	
 	func end_state() -> void:
-		Caller._hide_lineEdit(Caller.UIElement.FilterEdit)
+		Caller._hide_lineEdit(Caller.UIElement.FilterInput)
 		StateMaster.set_default_state()
 	
 	func update_input(event:InputEvent) -> void:
-		if(event.is_action_pressed(GLOBAL.INPUT_MAP["ESC"])):
+		if(InputTools.is_key_pressed(event, KEY_ESCAPE)):
 			end_state()
 
 class SAVE_STATE extends SMState:
@@ -262,18 +279,18 @@ class SAVE_STATE extends SMState:
 		super(caller, name)
 	
 	func _state_set() -> void:
-		Caller._show_lineEdit(Caller.UIElement.SaveEdit)
+		Caller._show_lineEdit(Caller.UIElement.SaveInput)
 	
 	func save_map(mapName:String) -> void:
 		if(not SaveManager.editor_save_map(mapName)):
 			Logger.logErr(["Failed to save: ", mapName])
 	
 	func end_state() -> void:
-		Caller._hide_lineEdit(Caller.UIElement.SaveEdit)
+		Caller._hide_lineEdit(Caller.UIElement.SaveInput)
 		StateMaster.set_default_state()
 	
 	func update_input(event:InputEvent) -> void:
-		if(event.is_action_pressed(GLOBAL.INPUT_MAP["ESC"])):
+		if(InputTools.is_key_pressed(event, KEY_ESCAPE)):
 			end_state()
 
 class LOAD_STATE extends SMState:
@@ -281,7 +298,7 @@ class LOAD_STATE extends SMState:
 		super(caller, name)
 	
 	func _state_set() -> void:
-		Caller._show_lineEdit(Caller.UIElement.LoadEdit)
+		Caller._show_lineEdit(Caller.UIElement.LoadInput)
 	
 	func load_map(mapName:String) -> void:
 		var Temp := SQLSave.new(mapName, SaveManager.MAP_FOLDER)
@@ -291,11 +308,11 @@ class LOAD_STATE extends SMState:
 	
 	func end_state() -> void:
 		Caller.get_node("TileMapManager").unload_all_chunks()
-		Caller._hide_lineEdit(Caller.UIElement.LoadEdit)
+		Caller._hide_lineEdit(Caller.UIElement.LoadInput)
 		StateMaster.set_default_state()
 	
 	func update_input(event:InputEvent) -> void:
-		if(event.is_action_pressed(GLOBAL.INPUT_MAP["ESC"])):
+		if(InputTools.is_key_pressed(event, KEY_ESCAPE)):
 			end_state()
 
 class GOTO_STATE extends SMState:
@@ -303,7 +320,7 @@ class GOTO_STATE extends SMState:
 		super(caller, name)
 
 	func _state_set() -> void:
-		Caller._show_lineEdit(Caller.UIElement.GotoEdit)
+		Caller._show_lineEdit(Caller.UIElement.GotoInput)
 	
 	func change_coords(new_text:String) -> void:
 		var coords:Array = new_text.split(" ")
@@ -317,39 +334,38 @@ class GOTO_STATE extends SMState:
 			int(coords[1]) * GLOBAL.TILEMAPS.BASE_SCALE)
 	
 	func end_state() -> void:
-		Caller._hide_lineEdit(Caller.UIElement.GotoEdit)
+		Caller._hide_lineEdit(Caller.UIElement.GotoInput)
 		StateMaster.set_default_state()
 	
 	func update_input(event:InputEvent) -> void:
-		if(event.is_action_pressed(GLOBAL.INPUT_MAP["ESC"])):
+		if(InputTools.is_key_pressed(event, KEY_ESCAPE)):
 			end_state()
 
 ### ----------------------------------------------------
 # Signals
 ### ----------------------------------------------------
 
-func _on_ItemList_item_selected(index:int) -> void:
-	EditorStateMachine.force_call(SelectState, "change_terrainIndex", [index])
-
-func _on_TMSelect_item_selected(index:int) -> void:
+func _on_terrain_select_item_selected(index: int) -> void:
 	EditorStateMachine.force_call(SelectState, "change_currentLayerID", [index])
 
-func _on_Filter_text_entered(new_text: String) -> void:
+func _on_item_list_item_selected(index: int) -> void:
+	EditorStateMachine.force_call(SelectState, "change_terrainIndex", [index])
+
+func _on_filter_input_text_submitted(new_text: String) -> void:
 	EditorStateMachine.redirect_signal(FilterState, "change_filter", [new_text])
 	EditorStateMachine.redirect_signal(FilterState, "end_state", [])
 
-func _on_SaveEdit_text_entered(mapName:String) -> void:
-	EditorStateMachine.redirect_signal(SaveState, "save_map", [mapName])
+func _on_save_input_text_submitted(new_text: String) -> void:
+	EditorStateMachine.redirect_signal(SaveState, "save_map", [new_text])
 	EditorStateMachine.redirect_signal(SaveState, "end_state", [])
 
-func _on_LoadEdit_text_entered(mapName:String) -> void:
-	EditorStateMachine.redirect_signal(LoadState, "load_map", [mapName])
+func _on_load_input_text_submitted(new_text: String) -> void:
+	EditorStateMachine.redirect_signal(LoadState, "load_map", [new_text])
 	EditorStateMachine.redirect_signal(LoadState, "end_state", [])
 
-func _on_GOTO_text_entered(new_text:String) -> void:
+func _on_goto_input_text_submitted(new_text: String) -> void:
 	EditorStateMachine.redirect_signal(GoToState, "change_coords", [new_text])
 	EditorStateMachine.redirect_signal(GoToState, "end_state", [])
-	
 
 ### ----------------------------------------------------
 # Update chunks
