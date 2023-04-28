@@ -34,7 +34,10 @@ func rem_terrain_on(posV3:Vector3i, terrainSetlayerID:int) -> void:
 	if(MTile == null): return
 	
 	MTile.rem_terrain(terrainSetlayerID)
-	set_on(posV3, MTile)
+	if(MTile.is_empty()): 
+		rem_on(posV3)
+	else:
+		set_on(posV3, MTile)
 
 func set_terrain_on(posV3:Vector3i, terrainSetlayerID:int, terrainID:int) -> void:
 	var MTile := get_on(posV3)
@@ -50,7 +53,7 @@ func get_chunk(chunkPos:Vector3i, chunkSize:int) -> Dictionary:
 		if(not Data.has(posV3)):
 			result[posV3] = null
 			continue
-		result[posV3] = MapTile.new().from_str(Data[posV3])
+		result[posV3] = MapTile.new().from_string(Data[posV3])
 	return result
 
 ### ----------------------------------------------------

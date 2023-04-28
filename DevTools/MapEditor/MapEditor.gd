@@ -23,15 +23,15 @@ const EDITOR_SAVE_NAME := "EDITOR"
 	TerrainSelect =  $UIElements/MC/GC/SelectionUI/TerrainSelect,
 	TileItemList =   $UIElements/MC/GC/SelectionUI/ItemList,
 	
-	SaveInput =       $UIElements/MC/GC/Info/SaveInput,
-	LoadInput =       $UIElements/MC/GC/Info/LoadInput,
-	GotoInput =       $UIElements/MC/GC/Info/GotoInput,
+	SaveInput =      $UIElements/MC/GC/Info/SaveInput,
+	LoadInput =      $UIElements/MC/GC/Info/LoadInput,
+	GotoInput =      $UIElements/MC/GC/Info/GotoInput,
 	FilterInput =    $UIElements/MC/GC/Info/FilterInput,
 	
-	CellText =      $UIElements/MC/GC/Info/CellText,
+	CellText =       $UIElements/MC/GC/Info/CellText,
 	FilterText =     $UIElements/MC/GC/Info/FilterInput,
-	ChunkText =     $UIElements/MC/GC/Info/ChunkText,
-	ElevationText = $UIElements/MC/GC/Info/ElevationText,
+	ChunkText =      $UIElements/MC/GC/Info/ChunkText,
+	ElevationText =  $UIElements/MC/GC/Info/ElevationText,
 }
 
 @onready var TM:TileMap = $TileMapManager
@@ -43,10 +43,6 @@ var EditorStateMachine := StateMachine.new()
 @onready var SaveState := SAVE_STATE.new(self, "SAVE_STATE")
 @onready var LoadState := LOAD_STATE.new(self, "LOAD_STATE")
 @onready var GoToState := GOTO_STATE.new(self, "GOTO_STATE")
-
-var PrevDrawnTile:Vector2i = Vector2i(9999,9999)
-var PrevDrawnChunk:Vector2i = Vector2i(9999,9999)
-var PrevDrawnRenderedChunks:Array[Vector3i] = []
 
 ### ----------------------------------------------------
 # FUNCTIONS
@@ -78,6 +74,11 @@ func _ready() -> void:
 # Drawing
 ### ----------------------------------------------------
 
+func _input(event:InputEvent) -> void:
+	EditorStateMachine.update_state_input(event)
+	queue_redraw()
+	update_EditedMap_chunks()
+
 func _draw():
 	var mousePos:Vector2 = get_global_mouse_position()
 	_draw_loaded_chunks()
@@ -87,9 +88,6 @@ func _draw():
 # Draws a square to indicate current cell pointed by mouse cursor
 func _draw_selected_tile(mousePos:Vector2) -> void:
 	var cellPos:Vector2i = VectorTools.scale_down_vec2i(mousePos, GLOBAL.TILEMAPS.BASE_SCALE)
-	if(cellPos == PrevDrawnTile): # Dont redraw if tile is already drawn
-		return
-	PrevDrawnTile = cellPos
 	var rect = Rect2i(cellPos * GLOBAL.TILEMAPS.BASE_SCALE, GLOBAL.TILEMAPS.TILE_SIZE)
 	UIElement.CellText.text = "Cell: " + str(cellPos)
 	draw_rect(rect, Color.CRIMSON, false, 1)
@@ -97,9 +95,6 @@ func _draw_selected_tile(mousePos:Vector2) -> void:
 # Draws a square to indicate current chunk pointed by mouse cursor
 func _draw_selected_chunk(mousePos:Vector2) -> void:
 	var chunkPos:Vector2i = VectorTools.scale_down_vec2i(mousePos, GLOBAL.TILEMAPS.CHUNK_SIZE * GLOBAL.TILEMAPS.BASE_SCALE)
-	if(chunkPos == PrevDrawnChunk): # Dont redraw if tile is already drawn
-		return
-	PrevDrawnChunk = chunkPos
 	var chunkScale:int = GLOBAL.TILEMAPS.BASE_SCALE * GLOBAL.TILEMAPS.CHUNK_SIZE
 	var rect = Rect2i(chunkPos * chunkScale, Vector2(chunkScale, chunkScale))
 	UIElement.ChunkText.text = "Chunk: " + str(chunkPos)
@@ -107,9 +102,6 @@ func _draw_selected_chunk(mousePos:Vector2) -> void:
 
 # Draws squares around all loaded chunks
 func _draw_loaded_chunks():
-	if(PrevDrawnRenderedChunks != $TileMapManager.RenderedChunks): # Dont redraw if tile is already drawn
-		return
-	PrevDrawnRenderedChunks = $TileMapManager.RenderedChunks
 	for pos in $TileMapManager.RenderedChunks:
 		var chunkScale:int = GLOBAL.TILEMAPS.BASE_SCALE * GLOBAL.TILEMAPS.CHUNK_SIZE
 		var rect = Rect2(VectorTools.vec3i_vec2i(pos) * chunkScale, Vector2(chunkScale, chunkScale))
@@ -118,12 +110,6 @@ func _draw_loaded_chunks():
 ### ----------------------------------------------------
 # FUNCTIONS
 ### ----------------------------------------------------
-
-
-func _input(event:InputEvent) -> void:
-	EditorStateMachine.update_state_input(event)
-	queue_redraw()
-	#update_EditedMap_chunks()
 
 # Default editor state
 class SLCT_STATE extends SMState:
@@ -134,8 +120,8 @@ class SLCT_STATE extends SMState:
 	var MAX_LAYERS:int = 0
 	
 	var ShownTerrains:Array = []
-	var terrainIndex := 0 # Terrain index in ShownTerrains
-	var currentLayerID := 0
+	var terrainIndex := 0    # Terrain index in ShownTerrains
+	var currentLayerID := 0  # LayerID is the same as TerrainSetID
 	
 	var currentElevation:int = 0
 	
@@ -161,9 +147,9 @@ class SLCT_STATE extends SMState:
 		if(event is InputEventMouseButton or event is InputEventMouseMotion):
 			if(not ShownTerrains.size() > 0): 
 				return
-			if event.button_mask == MOUSE_BUTTON_MASK_LEFT:  
+			if(event.button_mask == MOUSE_BUTTON_MASK_LEFT):  
 				set_selected_tile(ShownTerrains[terrainIndex])
-			if event.button_mask == MOUSE_BUTTON_MASK_RIGHT: 
+			if(event.button_mask == MOUSE_BUTTON_MASK_RIGHT): 
 				set_selected_tile(-1)
 	
 	# This could be an input map but doing it with ifs is good enough
@@ -196,15 +182,17 @@ class SLCT_STATE extends SMState:
 		currentLayerID += value
 		currentLayerID = clamp(currentLayerID, 0, MAX_LAYERS - 1)
 		fill_item_list()
-		Caller.UIElement.TerrainSelect.select(currentLayerID)
 		terrainIndex = 0
+		Caller.UIElement.TerrainSelect.select(currentLayerID)
+		Caller.UIElement.TileItemList.select(terrainIndex)
 	
 	func change_currentLayerID(value:int) -> void:
 		currentLayerID = value
 		currentLayerID = clamp(currentLayerID, 0, MAX_LAYERS - 1)
 		fill_item_list()
-		Caller.UIElement.TerrainSelect.select(currentLayerID)
 		terrainIndex = 0
+		Caller.UIElement.TerrainSelect.select(currentLayerID)
+		Caller.UIElement.TileItemList.select(terrainIndex)
 	
 	func add_terrainIndex(value:int) -> void:
 		terrainIndex += value
@@ -216,19 +204,20 @@ class SLCT_STATE extends SMState:
 		terrainIndex = clamp(terrainIndex, 0, Caller.UIElement.TileItemList.get_item_count()-1)
 		Caller.UIElement.TileItemList.select(terrainIndex)
 	
-	func set_selected_tile(tileID:int) -> void:
-		var mousePos:Vector2i = TM.local_to_map(Caller.get_global_mouse_position())
-		var pos:Vector3i = VectorTools.vec2i_vec3i(mousePos, currentElevation)
-		var chunkPos:Vector3i = VectorTools.vec2i_vec3i(
-			VectorTools.scale_down_vec2i(mousePos, GLOBAL.TILEMAPS.CHUNK_SIZE),
+	func set_selected_tile(terrainID:int) -> void:
+		var tilePos:Vector3i = VectorTools.vec2i_vec3i(
+			TM.local_to_map(Caller.get_global_mouse_position()),
 			currentElevation)
+		var chunkPos:Vector3i = VectorTools.scale_down_vec3i_noZ(
+			tilePos,
+			GLOBAL.TILEMAPS.CHUNK_SIZE)
 		if(not chunkPos in TM.RenderedChunks): return
 		
-		if(tileID == -1):
-			SaveManager.MapTemp.rem_terrain_on(pos, currentLayerID)
+		if(terrainID == -1):
+			SaveManager.rem_terrain_on(tilePos, currentLayerID)
 		else:
-			SaveManager.MapTemp.set_terrain_on(pos, currentLayerID, ShownTerrains[terrainIndex])
-		TM.refresh_tile(pos)
+			SaveManager.set_terrain_on(tilePos, currentLayerID, terrainID)
+		TM.refresh_tile(tilePos)
 	
 	func change_elevation(direction:int) -> void:
 		currentElevation += direction
@@ -392,10 +381,8 @@ func update_EditedMap_chunks() -> void:
 ### ----------------------------------------------------
 
 func _show_lineEdit(LENode:Control) -> void:
-	$Cam.inputActive = false
 	LENode.show()
 	LENode.grab_focus()
 
 func _hide_lineEdit(LENode:Control) -> void:
-	$Cam.inputActive = true
 	LENode.hide()

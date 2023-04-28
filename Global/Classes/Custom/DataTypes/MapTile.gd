@@ -9,7 +9,7 @@ class_name MapTile
 # VARIABLES
 ### ----------------------------------------------------
 
-var Saver := ObjectSaver.new(self, ["EntityData", "LayerData"])
+var Saver := ObjectSaver.new(self, ["EntityData", "TerrainData"])
 
 # Stores data regardning an entity on this tile
 var EntityData:String = ""

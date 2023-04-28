@@ -34,7 +34,7 @@ func set_on(posV3:Vector3i, mapTile:MapTile) -> void:
 # Gets MapTile on position from Data
 func get_on(posV3:Vector3i) -> MapTile:
 	if(MapEdit.Data.has(posV3)):
-		return MapTile.new().from_str(MapEdit.Data[posV3])
+		return MapTile.new().from_string(MapEdit.Data[posV3])
 	return MapTemp.get_on(posV3)
 
 # Removes position from Data
