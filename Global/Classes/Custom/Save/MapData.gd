@@ -72,6 +72,9 @@ func from_string(data:String) -> MapData:
 ### ----------------------------------------------------
 
 static func load_MapData_from_path(path:String) -> MapData:
+	if(not FileManager.file_exists(path)):
+		Logger.logErr(["MapData file doesnt exist in path: ", path])
+		return null
 	var TempRef = ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_REPLACE)
 	if(not TempRef is MapData):
 		return null

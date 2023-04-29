@@ -76,7 +76,8 @@ func _ready() -> void:
 
 func _input(event:InputEvent) -> void:
 	EditorStateMachine.update_state_input(event)
-	queue_redraw()
+	if(event is InputEventMouseMotion):
+		queue_redraw()
 	update_EditedMap_chunks()
 
 func _draw():
@@ -290,13 +291,13 @@ class LOAD_STATE extends SMState:
 		Caller._show_lineEdit(Caller.UIElement.LoadInput)
 	
 	func load_map(mapName:String) -> void:
-		var Temp := SQLSave.new(mapName, SaveManager.MAP_FOLDER)
+		var Temp := SQLSave.new(mapName, SaveManager.TEMP_FOLDER)
 		if(not SaveManager.editor_load_map(mapName)):
 			Logger.logErr(["Failed to load: ", mapName])
 		Caller.TM.refresh_all_chunks()
 	
 	func end_state() -> void:
-		Caller.get_node("TileMapManager").unload_all_chunks()
+		Caller.get_node("TileMapManager").unload_all()
 		Caller._hide_lineEdit(Caller.UIElement.LoadInput)
 		StateMaster.set_default_state()
 	

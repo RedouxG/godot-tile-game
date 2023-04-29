@@ -115,14 +115,15 @@ func _save_MapEdit() -> void:
 # For editor use
 func editor_save_map(MapName:String = "") -> bool:
 	if(MapName.is_empty()): 
-		MapEdit.MapName = MapName
+		MapName = MapEdit.MapName
+	MapEdit.MapName = MapName
 	
-	var path := TEMP_FOLDER + MapEdit.MapName + ".res"
+	var path := TEMP_FOLDER + MapName + ".res"
 	var result := MapData.save_MapData_to_path(path, MapEdit)
 	if(result != OK):
 		Logger.logErr(["Failed to save map to path: ", path])
 		return false
-	Logger.LogMsg(["Saved map: ", MapEdit.MapName])
+	Logger.LogMsg(["Saved map: ", MapName])
 	return true
 
 # For editor use
