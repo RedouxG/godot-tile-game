@@ -78,7 +78,7 @@ func _input(event:InputEvent) -> void:
 	EditorStateMachine.update_state_input(event)
 	if(event is InputEventMouseMotion):
 		queue_redraw()
-	update_EditedMap_chunks()
+		update_EditedMap_chunks()
 
 func _draw():
 	var mousePos:Vector2 = get_global_mouse_position()

@@ -79,3 +79,13 @@ static func get_terrain_Texture2D(TM:TileMap, terrainSetID:int, terrainID:int) -
 	var atlasPos:Vector2i = get_terrain_atlasCoords(TM, terrainSetID, terrainID)
 	var terrainImage:Image = get_tile_image(TM.tile_set, sourceID, atlasPos)
 	return ImageTexture.create_from_image(terrainImage)
+
+# Tilemaps are pretty cumbersome in godot 4 so i use this function as API for placing tiles
+static func set_terrain(TM:TileMap, pos:Vector2i, layerID:int, terrainID:int) -> void:
+	BetterTerrain.set_cell(TM, layerID, pos, terrainID)
+	BetterTerrain.update_terrain_cell(TM, layerID, pos, true)
+
+# Tilemaps are pretty cumbersome in godot 4 so i use this function as API for removing tiles
+static func rem_terrain(TM:TileMap, pos:Vector2i, layerID:int) -> void:
+	TM.erase_cell(layerID, pos)
+	BetterTerrain.update_terrain_cell(TM, layerID, pos, true)
