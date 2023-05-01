@@ -84,8 +84,11 @@ static func set_terrain_cell(TM:TileMap, pos:Vector2i, layerID:int, terrainID:in
 	TM.set_cells_terrain_connect(layerID, [pos], layerID, terrainID)
 
 static func rem_terrain_cell(TM:TileMap, pos:Vector2i, layerID:int) -> void:
-	TM.set_cells_terrain_connect(layerID, [pos], layerID, -1)
 	TM.erase_cell(layerID, pos)
+
+# Updates terrain bitmask for a given empty pos
+static func update_removed_cell(TM:TileMap, pos:Vector2i, layerID:int) -> void:
+	TM.set_cells_terrain_connect(layerID, [pos], layerID, -1)
 
 # Check if can interpret terrain_sets as layers (layers must be equal or more)
 static func check_terrainSets_as_layers(TM:TileMap) -> bool:
@@ -94,6 +97,4 @@ static func check_terrainSets_as_layers(TM:TileMap) -> bool:
 	return true
 
 static func get_terrainSets_as_layers(TM:TileMap) -> int:
-	if(not check_terrainSets_as_layers(TM)):
-		return -1
 	return TM.tile_set.get_terrain_sets_count()

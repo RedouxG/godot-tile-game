@@ -218,6 +218,7 @@ class SLCT_STATE extends SMState:
 		
 		if(terrainID == -1):
 			SaveManager.rem_terrain_on(tilePos, currentLayerID)
+			TileMapTools.update_removed_cell(TM, VectorTools.vec3i_vec2i(tilePos), currentLayerID)
 		else:
 			SaveManager.set_terrain_on(tilePos, currentLayerID, terrainID)
 		TM.refresh_tile(tilePos)
