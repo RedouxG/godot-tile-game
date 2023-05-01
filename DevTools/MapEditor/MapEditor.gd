@@ -131,9 +131,11 @@ class SLCT_STATE extends SMState:
 		TM = caller.TM
 		TS = caller.TS
 		Cam = caller.get_node("Cam")
-		MAX_LAYERS = TS.get_terrain_sets_count()
+		MAX_LAYERS = TileMapTools.get_terrainSets_as_layers(TM)
 		for index in MAX_LAYERS:
-			Caller.UIElement.TerrainSelect.add_item("Terrain: " + str(index), index)
+			Caller.UIElement.TerrainSelect.add_item(
+				TM.get_layer_name(index) + " (" + str(index) + ")",
+				index)
 	
 	func mouse_input(event:InputEvent) -> void:
 		if(event is InputEventMouseButton):

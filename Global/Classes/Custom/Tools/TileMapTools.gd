@@ -80,12 +80,20 @@ static func get_terrain_Texture2D(TM:TileMap, terrainSetID:int, terrainID:int) -
 	var terrainImage:Image = get_tile_image(TM.tile_set, sourceID, atlasPos)
 	return ImageTexture.create_from_image(terrainImage)
 
-# Tilemaps are pretty cumbersome in godot 4 so i use this function as API for placing tiles
-static func set_terrain(TM:TileMap, pos:Vector2i, layerID:int, terrainID:int) -> void:
-	BetterTerrain.set_cell(TM, layerID, pos, terrainID)
-	BetterTerrain.update_terrain_cell(TM, layerID, pos, true)
+static func set_terrain_cell(TM:TileMap, pos:Vector2i, layerID:int, terrainID:int) -> void:
+	TM.set_cells_terrain_connect(layerID, [pos], layerID, terrainID)
 
-# Tilemaps are pretty cumbersome in godot 4 so i use this function as API for removing tiles
-static func rem_terrain(TM:TileMap, pos:Vector2i, layerID:int) -> void:
+static func rem_terrain_cell(TM:TileMap, pos:Vector2i, layerID:int) -> void:
+	TM.set_cells_terrain_connect(layerID, [pos], layerID, -1)
 	TM.erase_cell(layerID, pos)
-	BetterTerrain.update_terrain_cell(TM, layerID, pos, true)
+
+# Check if can interpret terrain_sets as layers (layers must be equal or more)
+static func check_terrainSets_as_layers(TM:TileMap) -> bool:
+	if(not TM.get_layers_count() >= TM.tile_set.get_terrain_sets_count()):
+		return false
+	return true
+
+static func get_terrainSets_as_layers(TM:TileMap) -> int:
+	if(not check_terrainSets_as_layers(TM)):
+		return -1
+	return TM.tile_set.get_terrain_sets_count()
