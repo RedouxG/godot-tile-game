@@ -44,12 +44,15 @@ var EditorStateMachine := StateMachine.new()
 @onready var LoadState := LOAD_STATE.new(self, "LOAD_STATE")
 @onready var GoToState := GOTO_STATE.new(self, "GOTO_STATE")
 
+const RENDER_RANGE := 1
+var PREC_RENDER_RANGE:Array[Vector3i]
 ### ----------------------------------------------------
 # FUNCTIONS
 ### ----------------------------------------------------
 
 func _ready() -> void:
 	RenderingServer.set_default_clear_color(Color.DARK_SLATE_BLUE)
+	PREC_RENDER_RANGE = VectorTools.vec3i_get_range_2d(Vector3i(0,0,0), RENDER_RANGE)
 	
 	var isOK := true
 	EditorStateMachine.add_state(SelectState)
@@ -79,6 +82,8 @@ func _input(event:InputEvent) -> void:
 	if(event is InputEventMouseMotion):
 		queue_redraw()
 		update_EditedMap_chunks()
+	if InputTools.is_key_pressed(event, KEY_V):
+		print(PREC_RENDER_RANGE)
 
 func _draw():
 	var mousePos:Vector2 = get_global_mouse_position()
@@ -367,7 +372,9 @@ func _on_goto_input_text_submitted(new_text: String) -> void:
 # Renders chunks as in normal game based on camera position (as simulated entity)
 func update_EditedMap_chunks() -> void:
 	var camChunk := VectorTools.scale_down_vec2i($Cam.global_position, GLOBAL.TILEMAPS.CHUNK_SIZE*GLOBAL.TILEMAPS.BASE_SCALE)
-	var chunksToRender := VectorTools.vec3i_get_range_2d(VectorTools.vec2i_vec3i(camChunk, SelectState.currentElevation), 1)
+	var chunksToRender := VectorTools.vec3i_get_precomputed_range(
+		VectorTools.vec2i_vec3i(camChunk, SelectState.currentElevation),
+		PREC_RENDER_RANGE)
 
 	# Loading chunks that are not yet rendered
 	for chunkPos in chunksToRender:

@@ -11,6 +11,9 @@ extends TileMap
 # VARIABLES
 ### ----------------------------------------------------
 
+var MAX_LAYERS:int = TileMapTools.get_terrainSets_as_layers(self)
+var PRE_POS_IN_CHUNK:Array[Vector3i] = VectorTools.vec3i_get_pos_in_chunk(Vector3i(0,0,0), GLOBAL.TILEMAPS.CHUNK_SIZE)
+
 # Keeps track of rendered chunks
 var RenderedChunks:Array[Vector3i] = []
 
@@ -46,13 +49,15 @@ func load_tile(pos:Vector3i) -> void:
 
 # Unloads a single chunk from TileMaps
 func unload_chunk(chunkPos:Vector3i) -> void:
-	var PosInChunk := VectorTools.vec3i_get_pos_in_chunk(chunkPos, GLOBAL.TILEMAPS.CHUNK_SIZE)
+	var PosInChunk := VectorTools.vec3i_get_precomputed_pos_in_chunk(
+		chunkPos, 
+		PRE_POS_IN_CHUNK)
 	for pos in PosInChunk:
 		unload_tile(pos)
 	RenderedChunks.erase(chunkPos)
 
 func unload_tile(pos:Vector3i) -> void:
-	for layer in TileMapTools.get_terrainSets_as_layers(self):
+	for layer in MAX_LAYERS:
 		TileMapTools.rem_terrain_cell(self, VectorTools.vec3i_vec2i(pos), layer)
 
 func refresh_chunk(chunkPos:Vector3i) -> void:
