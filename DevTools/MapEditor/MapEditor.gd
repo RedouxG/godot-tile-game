@@ -246,6 +246,7 @@ class SLCT_STATE extends SMState:
 			if(Caller.FilterState.filter != ""):
 				if(not Caller.FilterState.filter.to_lower() in terrainName.to_lower()): 
 					continue
+			print(currentLayerID, terrainID)
 			var terrainTexture:Texture2D = TileMapTools.get_terrain_Texture2D(
 				TM, currentLayerID, terrainID)
 			Caller.UIElement.TileItemList.add_item(terrainName, terrainTexture, true)

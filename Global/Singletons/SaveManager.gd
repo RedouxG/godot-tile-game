@@ -27,33 +27,33 @@ var MapEdit:MapData
 # API
 ### ----------------------------------------------------
 
-# Sets MapTile in Data on posV3
-func set_on(posV3:Vector3i, mapTile:MapTile) -> void:
-	MapEdit.Data[posV3] = str(mapTile)
+# Sets MapTile in Data on pos
+func set_on(pos:Vector3i, mapTile:MapTile) -> void:
+	MapEdit.Data[pos] = str(mapTile)
 
 # Gets MapTile on position from Data
-func get_on(posV3:Vector3i) -> MapTile:
-	if(MapEdit.Data.has(posV3)):
-		return MapTile.new().from_string(MapEdit.Data[posV3])
-	return MapTemp.get_on(posV3)
+func get_on(pos:Vector3i) -> MapTile:
+	if(MapEdit.Data.has(pos)):
+		return MapTile.new().from_string(MapEdit.Data[pos])
+	return MapTemp.get_on(pos)
 
 # Removes position from Data
-func rem_on(posV3:Vector3i) -> bool:
-	return MapEdit.rem_on(posV3)
+func rem_on(pos:Vector3i) -> bool:
+	return MapEdit.rem_on(pos)
 
-func set_terrain_on(posV3:Vector3i, terrainSetID:int, terrainID:int) -> void:
-	MapEdit.set_terrain_on(posV3, terrainSetID, terrainID)
+func set_terrain_on(pos:Vector3i, layerID:int, terrainID:int) -> void:
+	MapEdit.set_terrain_on(pos, layerID, terrainID)
 
-func rem_terrain_on(posV3:Vector3i, terrainSetID:int) -> void:
-	MapEdit.rem_terrain_on(posV3, terrainSetID)
+func rem_terrain_on(pos:Vector3i, layerID:int) -> void:
+	MapEdit.rem_terrain_on(pos, layerID)
 
 # Returns chunk of given size
 func get_chunk(chunkPos:Vector3i, chunkSize:int) -> Dictionary:
 	var MapEditChunk := MapEdit.get_chunk(chunkPos, chunkSize)
 	var MapTempChunk := MapEdit.get_chunk(chunkPos, chunkSize)
-	for posV3 in MapEditChunk:
-		if(MapEditChunk.get(posV3) == null):
-			MapEditChunk[posV3] = MapTempChunk.get(posV3)
+	for pos in MapEditChunk:
+		if(MapEditChunk.get(pos) == null):
+			MapEditChunk[pos] = MapTempChunk.get(pos)
 	return MapEditChunk
 
 ### ----------------------------------------------------

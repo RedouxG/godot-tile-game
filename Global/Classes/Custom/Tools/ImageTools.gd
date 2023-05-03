@@ -3,26 +3,23 @@
 ### ----------------------------------------------------
 
 extends Script
+class_name ImageTools
 
 ### ----------------------------------------------------
 # FUNCTIONS
 ### ----------------------------------------------------
 
-
-# Interpolates BG texture with addColor
 # Puts Outline texture on top of interpolated BG texture
 # Returns null on failure
-static func stack_textures(textureBG:Texture2D, textureOutline:Texture2D, addColor:Color, weight:float) -> Texture2D:
-	if(not textureBG.get_size() == textureOutline.get_size()):
-		push_error("Texture2D outline and bg must be same size: "+str(textureBG.get_size())+" "+str(textureOutline.get_size()))
+static func stack_images(BGImage:Image, OutlineImage:Image, addColor:Color, weight:float) -> Image:
+	if(not (BGImage.get_height() == OutlineImage.get_height()) and (BGImage.get_width() == OutlineImage.get_width())):
+		push_error("BGImage and OutlineImage must be same size!")
 		return null
 	if(weight<0 or weight>1):
 		push_error("Weight must be in range from 0 - 1: " + str(weight))
 		return null
 	
-	var BGImage:Image = textureBG.get_data()
-	var OutlineImage:Image = textureOutline.get_data()
-	var blendImage := Image.create(textureBG.get_width(), textureBG.get_height(), false,Image.FORMAT_RGBA8)
+	var blendImage := Image.create(BGImage.get_width(), BGImage.get_height(), false, Image.FORMAT_RGBA8)
 	
 	for x in range(BGImage.get_width()):
 		for y in range(BGImage.get_height()):
@@ -36,18 +33,21 @@ static func stack_textures(textureBG:Texture2D, textureOutline:Texture2D, addCol
 			if OutlinePixel.a != 0: blendPixel = BGPixel.lerp(OutlinePixel,1)
 			
 			blendImage.set_pixel(x, y, blendPixel)
-	return ImageTexture.create_from_image(blendImage)
-
+	return blendImage
 
 # Gets singular sprite from a set
-static func get_sprite_from_texture(spritePos:Vector2, spriteSize:Vector2, setTexture:Texture2D) -> Texture2D:
+static func get_sprite_from_texture(spritePos:Vector2i, spriteSize:Vector2i, setTexture:Texture2D) -> Texture2D:
 	var atlas_texture := AtlasTexture.new()
 	atlas_texture.set_atlas(setTexture)
 	atlas_texture.set_region_enabled(Rect2(spritePos, spriteSize))
 	return atlas_texture
 
 # Returns image size as array [width,height], empty Array on fail
-static func get_png_size(path:String) -> Array[int]:
+static func get_png_size(path:String) -> Vector2i:
 	var image := Image.new()
-	if(not image.load(path) == OK): return []
-	return [image.get_width(), image.get_height()]
+	if(not image.load(path) == OK): return Vector2i(-1, -1)
+	return Vector2i(image.get_width(), image.get_height())
+
+static func load_image(path:String) -> Image:
+	var texture:Texture2D = ResourceLoader.load(path)
+	return texture.get_image()

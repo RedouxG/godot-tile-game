@@ -14,5 +14,4 @@ const Optimization = preload("res://Global/Classes/LIBKDependencies/Optimization
 const UI =           preload("res://Global/Classes/LIBKDependencies/UI.gd")
 const ScriptGen =    preload("res://Global/Classes/LIBKDependencies/ScriptGen.gd")
 const Compression =  preload("res://Global/Classes/LIBKDependencies/Compression.gd")
-const Img =          preload("res://Global/Classes/LIBKDependencies/Img.gd")
 const Scene =        preload("res://Global/Classes/LIBKDependencies/Scene.gd")

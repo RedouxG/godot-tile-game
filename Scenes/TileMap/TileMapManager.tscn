@@ -1,19 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://dvhkaiu245xah"]
+[gd_scene load_steps=2 format=3 uid="uid://ulmrj278saoc"]
 
-[ext_resource type="TileSet" uid="uid://bn62o6kkmq35r" path="res://Scenes/TileMap/TileSet.tres" id="1_q7gvl"]
 [ext_resource type="Script" path="res://Scenes/TileMap/TileMapManager.gd" id="2_8v22b"]
 
 [node name="TileMapManager" type="TileMap"]
-texture_filter = 1
-tile_set = ExtResource("1_q7gvl")
 format = 2
-layer_0/name = "WallFloor"
-layer_1/name = "Enviroment"
-layer_1/enabled = true
-layer_1/modulate = Color(1, 1, 1, 1)
-layer_1/y_sort_enabled = false
-layer_1/y_sort_origin = 0
-layer_1/z_index = 0
-layer_1/tile_data = PackedInt32Array()
 script = ExtResource("2_8v22b")
-metadata/_edit_horizontal_guides_ = [-36.0]

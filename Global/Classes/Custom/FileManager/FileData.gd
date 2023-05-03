@@ -10,7 +10,8 @@ class_name FileData
 ### ----------------------------------------------------
 
 var name:String
-var path:String
+var basePath:String
+var fullPath:String
 var isDir:bool
 var isFile:bool
 
@@ -19,10 +20,11 @@ var isFile:bool
 ### ----------------------------------------------------
 
 func _init(filePath:String) -> void:
+	fullPath = filePath
 	isDir = DirAccess.dir_exists_absolute(filePath)
 	isFile = FileAccess.file_exists(filePath)
-	path = filePath.get_base_dir() + '/'
-	name = filePath.substr(path.length())
+	basePath = filePath.get_base_dir() + '/'
+	name = filePath.substr(basePath.length())
 
 func _to_string() -> String:
-	return str([path,name, isDir, isFile])
+	return str([fullPath, isDir, isFile])

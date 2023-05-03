@@ -11,49 +11,49 @@ class_name MapData
 
 var Saver := ObjectSaver.new(self, ["Data", "MapName"])
 
-@export var Data := Dictionary() # { posV3i:MapTileStr }
+@export var Data := Dictionary() # { pos:MapTileStr }
 @export var MapName := "Default"
 
 ### ----------------------------------------------------
 # API
 ### ----------------------------------------------------
 
-func set_on(posV3:Vector3i, mapTile:MapTile) -> void:
-	Data[posV3] = str(mapTile)
+func set_on(pos:Vector3i, mapTile:MapTile) -> void:
+	Data[pos] = str(mapTile)
 
-func get_on(posV3:Vector3i) -> MapTile:
-	if(not Data.has(posV3)):
+func get_on(pos:Vector3i) -> MapTile:
+	if(not Data.has(pos)):
 		return null
-	return MapTile.new().from_string(Data[posV3])
+	return MapTile.new().from_string(Data[pos])
 
-func rem_on(posV3:Vector3i) -> bool:
-	return Data.erase(posV3)
+func rem_on(pos:Vector3i) -> bool:
+	return Data.erase(pos)
 
-func rem_terrain_on(posV3:Vector3i, terrainSetlayerID:int) -> void:
-	var MTile := get_on(posV3)
+func rem_terrain_on(pos:Vector3i, layerID:int) -> void:
+	var MTile := get_on(pos)
 	if(MTile == null): return
 	
-	MTile.rem_terrain(terrainSetlayerID)
+	MTile.rem_terrain(layerID)
 	if(MTile.is_empty()): 
-		rem_on(posV3)
+		rem_on(pos)
 	else:
-		set_on(posV3, MTile)
+		set_on(pos, MTile)
 
-func set_terrain_on(posV3:Vector3i, terrainSetlayerID:int, terrainID:int) -> void:
-	var MTile := get_on(posV3)
+func set_terrain_on(pos:Vector3i, layerID:int, terrainID:int) -> void:
+	var MTile := get_on(pos)
 	if(MTile == null):
 		MTile = MapTile.new()
-	MTile.set_terrain(terrainSetlayerID, terrainID)
-	set_on(posV3, MTile)
+	MTile.set_terrain(layerID, terrainID)
+	set_on(pos, MTile)
 
 # Returns chunk of given size
 func get_chunk(chunkPos:Vector3i, chunkSize:int) -> Dictionary:
 	var result := {}
-	for posV3 in VectorTools.vec3i_get_pos_in_chunk(chunkPos, chunkSize):
-		if(not Data.has(posV3)):
-			result[posV3] = null
+	for pos in VectorTools.vec3i_get_pos_in_chunk(chunkPos, chunkSize):
+		if(not Data.has(pos)):
+			result[pos] = null
 			continue
-		result[posV3] = MapTile.new().from_string(Data[posV3])
+		result[pos] = MapTile.new().from_string(Data[pos])
 	return result
 
 ### ----------------------------------------------------

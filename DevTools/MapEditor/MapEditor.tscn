@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://DevTools/MapEditor/MapEditor.gd" id="1"]
 [ext_resource type="Script" path="res://DevTools/MapEditor/Cam/Cam.gd" id="2"]
-[ext_resource type="PackedScene" uid="uid://dvhkaiu245xah" path="res://Scenes/TileMap/TileMapManager.tscn" id="4_hdech"]
+[ext_resource type="PackedScene" uid="uid://ulmrj278saoc" path="res://Scenes/TileMap/TileMapManager.tscn" id="4_hdech"]
 [ext_resource type="Theme" uid="uid://da02gjqpcj223" path="res://Resources/Themes/MapEditor.tres" id="5"]
 
 [node name="MapEditor" type="Node2D"]
@@ -229,6 +229,21 @@ size_flags_vertical = 3
 mouse_filter = 1
 
 [node name="TileMapManager" parent="." instance=ExtResource("4_hdech")]
+layer_0/name = "Floor"
+layer_1/name = "WallFloor"
+layer_1/enabled = true
+layer_1/modulate = Color(1, 1, 1, 1)
+layer_1/y_sort_enabled = false
+layer_1/y_sort_origin = 0
+layer_1/z_index = 0
+layer_1/tile_data = PackedInt32Array()
+layer_2/name = "Enviroment"
+layer_2/enabled = true
+layer_2/modulate = Color(1, 1, 1, 1)
+layer_2/y_sort_enabled = false
+layer_2/y_sort_origin = 0
+layer_2/z_index = 0
+layer_2/tile_data = PackedInt32Array()
 
 [connection signal="text_submitted" from="UIElements/MC/GC/Info/SaveInput" to="." method="_on_save_input_text_submitted"]
 [connection signal="text_submitted" from="UIElements/MC/GC/Info/LoadInput" to="." method="_on_load_input_text_submitted"]

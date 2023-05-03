@@ -20,15 +20,6 @@ const TAB = "\t"
 static func get_base_dir(path:String) -> String:
 	return path.get_base_dir() + '/'
 
-static func file_append_line(path:String, line:String) -> int:
-	var file := FileAccess.open(path, FileAccess.READ_WRITE)
-	if(file == null):
-		return FileAccess.get_open_error()
-	
-	file.seek_end()
-	file.store_line(line)
-	return OK
-
 static func save_as_str(content:String,path:String) -> int:
 	var file := FileAccess.open(path, FileAccess.WRITE)
 	file.store_string(content)
@@ -61,37 +52,14 @@ static func delete_dir(path:String) -> int:
 	return DirAccess.remove_absolute(path)
 
 static func delete_dir_recursive(path:String) -> int:
-	for fileData in get_all_FileData(path):
-		if(dir_exists(fileData.path)): 
-			var err := delete_dir_recursive(fileData.path)
-			if(err!=OK):
-				return err
-		if(file_exists(fileData.path)): 
-			var err := delete_file(fileData.path)
-			if(err!=OK):
-				return err
-	return DirAccess.remove_absolute(path)
-
-static func get_all_FileData(path:String, ommitImport = true) -> Array[FileData]:
-	var dir := DirAccess.open(path)
-	var fileList:Array[FileData] = []
+	for fileData in get_dirs_FileData(path):
+		var err := delete_dir_recursive(fileData.path)
+		if(err!=OK): return err
 	
-	if(DirAccess.get_open_error() != OK): return []
-	if(dir.list_dir_begin()  != OK):      return []
-	var fileName = dir.get_next()
-	while fileName != "":
-		fileName = dir.get_next()
-		if(ommitImport and "import" in fileName):
-			continue
-		fileList.append(FileData.new(path + fileName))
-	dir.list_dir_end()
-	return fileList
-
-static func get_dirs(path:String) -> Array[String]:
-	var result:Array[String] = []
-	for dir in DirAccess.get_directories_at(path):
-		result.append(dir)
-	return result
+	for fileData in get_files_FileData(path):
+		var err := delete_file(fileData.path)
+		if(err!=OK): return err
+	return DirAccess.remove_absolute(path)
 
 static func get_dirs_FileData(path:String) -> Array[FileData]:
 	var result:Array[FileData] = []
@@ -124,3 +92,25 @@ static func file_exists(filePath:String) -> bool:
 
 static func dir_exists(dirPath:String) -> bool:
 	return DirAccess.dir_exists_absolute(dirPath)
+
+static func file_append_line(path:String, line:String) -> int:
+	var file := FileAccess.open(path, FileAccess.READ_WRITE)
+	if(file == null):
+		return FileAccess.get_open_error()
+	
+	file.seek_end()
+	file.store_line(line)
+	return OK
+
+# Returns directory structure as nested dict
+# value null means file, value of dict means dir
+static func get_dir_system_recursive(path:String) -> Dictionary:
+	var DirSystem := {}
+	if(not dir_exists(path)):
+		return DirSystem
+	
+	for fileData in get_dirs_FileData(path):
+		DirSystem[fileData.name] = get_dir_system_recursive(fileData.fullPath)
+	for fileData in get_files_FileData(path):
+		DirSystem[fileData.name] = null
+	return DirSystem

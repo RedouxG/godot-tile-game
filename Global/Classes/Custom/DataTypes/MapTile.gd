@@ -14,23 +14,23 @@ var Saver := ObjectSaver.new(self, ["EntityData", "TerrainData"])
 # Stores data regardning an entity on this tile
 var EntityData:String = ""
 
-# {TerrainSetID: terrainID}
+# {layerID: terrainID}
 var TerrainData:Dictionary = {}
 
 ### ----------------------------------------------------
 # FUNCTIONS
 ### ----------------------------------------------------
 
-func set_terrain(terrainSetID:int, terrainID:int) -> void:
-	TerrainData[terrainSetID] = terrainID
+func set_terrain(layerID:int, terrainID:int) -> void:
+	TerrainData[layerID] = terrainID
 
-func get_terrain(terrainSetID:int) -> int:
-	if(not TerrainData.has(terrainSetID)):
+func get_terrain(layerID:int) -> int:
+	if(not TerrainData.has(layerID)):
 		return -1
-	return TerrainData[terrainSetID]
+	return TerrainData[layerID]
 
-func rem_terrain(terrainSetID:int) -> void:
-	TerrainData.erase(terrainSetID)
+func rem_terrain(layerID:int) -> void:
+	TerrainData.erase(layerID)
 
 func is_empty() -> bool:
 	return TerrainData.is_empty() and EntityData.is_empty()

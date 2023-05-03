@@ -34,7 +34,7 @@ func _on_entity_ready() -> void:
 # Loads sprite from sprite set
 func set_sprite(spritePos:Vector2i, texturePath:String) -> void:
 	var setTexture:Texture2D = ResourceLoader.load(texturePath, "Texture2D")
-	texture = LibK.Img.get_sprite_from_texture(spritePos, GLOBAL.TILEMAPS.TILE_SIZE, setTexture)
+	texture = ImageTools.get_sprite_from_texture(spritePos, GLOBAL.TILEMAPS.TILE_SIZE, setTexture)
 	offset = GLOBAL.TILEMAPS.TILE_SIZE/2
 
 # Unloads itself into TileData and queue_free()
