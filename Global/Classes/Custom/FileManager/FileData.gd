@@ -27,4 +27,4 @@ func _init(filePath:String) -> void:
 	name = filePath.substr(basePath.length())
 
 func _to_string() -> String:
-	return str([fullPath, isDir, isFile])
+	return "(FileData) " + name

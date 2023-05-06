@@ -110,7 +110,7 @@ static func get_dir_system_recursive(path:String) -> Dictionary:
 		return DirSystem
 	
 	for fileData in get_dirs_FileData(path):
-		DirSystem[fileData.name] = get_dir_system_recursive(fileData.fullPath)
+		DirSystem[fileData] = get_dir_system_recursive(fileData.fullPath)
 	for fileData in get_files_FileData(path):
-		DirSystem[fileData.name] = null
+		DirSystem[fileData] = null
 	return DirSystem
