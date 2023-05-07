@@ -44,6 +44,8 @@ var EditorStateMachine := StateMachine.new()
 @onready var LoadState := LOAD_STATE.new(self, "LOAD_STATE")
 @onready var GoToState := GOTO_STATE.new(self, "GOTO_STATE")
 
+const CHUNK_PIXEL_SIZE = GLOBAL.TILEMAPS.BASE_SCALE * GLOBAL.TILEMAPS.CHUNK_SIZE
+const CHUNK_SIZE_VECTOR = Vector2i(CHUNK_PIXEL_SIZE, CHUNK_PIXEL_SIZE)
 const RENDER_RANGE := 1
 var PREC_RENDER_RANGE:Array[Vector3i]
 ### ----------------------------------------------------
@@ -72,6 +74,8 @@ func _ready() -> void:
 	if(EditorStateMachine.force_call(SelectState, "fill_item_list", []) == StateMachine.ERROR):
 		push_error("Failed to init EditorStateMachine")
 		get_tree().quit()
+	
+	update_EditedMap_chunks()
 
 ### ----------------------------------------------------
 # Drawing
@@ -81,9 +85,6 @@ func _input(event:InputEvent) -> void:
 	EditorStateMachine.update_state_input(event)
 	if(event is InputEventMouseMotion):
 		queue_redraw()
-		update_EditedMap_chunks()
-	if InputTools.is_key_pressed(event, KEY_V):
-		print(PREC_RENDER_RANGE)
 
 func _draw():
 	var mousePos:Vector2 = get_global_mouse_position()
@@ -94,24 +95,21 @@ func _draw():
 # Draws a square to indicate current cell pointed by mouse cursor
 func _draw_selected_tile(mousePos:Vector2) -> void:
 	var cellPos:Vector2i = VectorTools.scale_down_vec2i(mousePos, GLOBAL.TILEMAPS.BASE_SCALE)
-	var rect = Rect2i(cellPos * GLOBAL.TILEMAPS.BASE_SCALE, GLOBAL.TILEMAPS.TILE_SIZE)
+	var rect := Rect2i(cellPos * GLOBAL.TILEMAPS.BASE_SCALE, GLOBAL.TILEMAPS.TILE_SIZE)
 	UIElement.CellText.text = "Cell: " + str(cellPos)
 	draw_rect(rect, Color.CRIMSON, false, 1)
 
 # Draws a square to indicate current chunk pointed by mouse cursor
 func _draw_selected_chunk(mousePos:Vector2) -> void:
 	var chunkPos:Vector2i = VectorTools.scale_down_vec2i(mousePos, GLOBAL.TILEMAPS.CHUNK_SIZE * GLOBAL.TILEMAPS.BASE_SCALE)
-	var chunkScale:int = GLOBAL.TILEMAPS.BASE_SCALE * GLOBAL.TILEMAPS.CHUNK_SIZE
-	var rect = Rect2i(chunkPos * chunkScale, Vector2(chunkScale, chunkScale))
+	var rect := Rect2i(chunkPos * CHUNK_PIXEL_SIZE, CHUNK_SIZE_VECTOR)
 	UIElement.ChunkText.text = "Chunk: " + str(chunkPos)
 	draw_rect(rect, Color.BLACK, false, 1)
 
 # Draws squares around all loaded chunks
 func _draw_loaded_chunks():
 	for pos in $TileMapManager.RenderedChunks:
-		var chunkScale:int = GLOBAL.TILEMAPS.BASE_SCALE * GLOBAL.TILEMAPS.CHUNK_SIZE
-		var rect = Rect2(VectorTools.vec3i_vec2i(pos) * chunkScale, Vector2(chunkScale, chunkScale))
-		draw_rect(rect, Color.GRAY, false, 1)
+		draw_rect(Rect2i(VectorTools.vec3i_vec2i(pos) * CHUNK_PIXEL_SIZE, CHUNK_SIZE_VECTOR), Color.GRAY, false, 1)
 
 ### ----------------------------------------------------
 # FUNCTIONS
@@ -151,6 +149,7 @@ class SLCT_STATE extends SMState:
 		if(event is InputEventMouseMotion):
 			if(event.button_mask == MOUSE_BUTTON_MASK_MIDDLE):
 				Cam.position -= event.relative * Cam.zoom
+				Caller.update_EditedMap_chunks()
 		
 		if(event is InputEventMouseButton or event is InputEventMouseMotion):
 			if(not ShownTerrains.size() > 0): 
@@ -246,7 +245,6 @@ class SLCT_STATE extends SMState:
 			if(Caller.FilterState.filter != ""):
 				if(not Caller.FilterState.filter.to_lower() in terrainName.to_lower()): 
 					continue
-			print(currentLayerID, terrainID)
 			var terrainTexture:Texture2D = TileMapTools.get_terrain_Texture2D(
 				TM, currentLayerID, terrainID)
 			Caller.UIElement.TileItemList.add_item(terrainName, terrainTexture, true)
@@ -304,6 +302,7 @@ class LOAD_STATE extends SMState:
 		if(not SaveManager.editor_load_map(mapName)):
 			Logger.logErr(["Failed to load: ", mapName])
 		Caller.TM.refresh_all_chunks()
+		
 	
 	func end_state() -> void:
 		Caller.get_node("TileMapManager").unload_all()

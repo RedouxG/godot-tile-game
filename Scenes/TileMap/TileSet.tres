@@ -1,0 +1,30 @@
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://ch45358lplom5"]
+
+[ext_resource type="Texture2D" uid="uid://cpfvvv2h4kgqr" path="res://Scenes/TileMap/SpriteSets/background.png" id="1_ws2ir"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_w5k4e"]
+texture = ExtResource("1_ws2ir")
+0:0/0 = 0
+0:0/0/terrain_set = 0
+0:0/0/terrain = 0
+1:0/0 = 0
+1:0/0/terrain_set = 0
+1:0/0/terrain = 1
+0:1/0 = 0
+0:1/0/terrain_set = 0
+0:1/0/terrain = 2
+1:1/0 = 0
+1:1/0/terrain_set = 0
+1:1/0/terrain = 3
+
+[resource]
+terrain_set_0/mode = 0
+terrain_set_0/terrain_0/name = "StoneWall"
+terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
+terrain_set_0/terrain_1/name = "StoneFloor"
+terrain_set_0/terrain_1/color = Color(0.5, 0.4375, 0.25, 1)
+terrain_set_0/terrain_2/name = "DirtWall"
+terrain_set_0/terrain_2/color = Color(0.46875, 0.5, 0.25, 1)
+terrain_set_0/terrain_3/name = "DirtFloor"
+terrain_set_0/terrain_3/color = Color(0.375, 0.5, 0.25, 1)
+sources/0 = SubResource("TileSetAtlasSource_w5k4e")

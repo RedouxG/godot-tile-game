@@ -1,7 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://ulmrj278saoc"]
+[gd_scene load_steps=3 format=3 uid="uid://ulmrj278saoc"]
 
+[ext_resource type="TileSet" uid="uid://ch45358lplom5" path="res://Scenes/TileMap/TileSet.tres" id="1_5lhjt"]
 [ext_resource type="Script" path="res://Scenes/TileMap/TileMapManager.gd" id="2_8v22b"]
 
 [node name="TileMapManager" type="TileMap"]
+texture_filter = 1
+tile_set = ExtResource("1_5lhjt")
 format = 2
 script = ExtResource("2_8v22b")
