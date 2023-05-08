@@ -18,13 +18,3 @@ class TILEMAPS: # Stores data regardning map, TileMaps ect
 
 class TEXTURES:
 	const ENTITY_SET_PATH = "res://Resources/Textures/EntitySet.png"
-
-class TILES:
-	enum TYPES {WoodenPlank, Stone, Dirt, Grass, DarkGrass}
-	const DB:Dictionary = {
-		TYPES.WoodenPlank:{"Color":Color('#816109')},
-		TYPES.Stone: 	  {"Color":Color('#708090')},
-		TYPES.Dirt:  	  {"Color":Color('#483D8B')},
-		TYPES.Grass: 	  {"Color":Color('#228B22')},
-		TYPES.DarkGrass:  {"Color":Color('#006400')},
-	}
