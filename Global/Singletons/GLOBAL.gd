@@ -18,3 +18,11 @@ class TILEMAPS: # Stores data regardning map, TileMaps ect
 
 class TEXTURES:
 	const ENTITY_SET_PATH = "res://Resources/Textures/EntitySet.png"
+
+var TERRAIN_DB := TerrainDB.new()
+
+func _ready() -> void:
+	var TS:TileSet = preload("res://Scenes/TileMap/TileSet.tres")
+	if(not TERRAIN_DB.check_database_compatible(TS)):
+		push_error("TERRAIN_DB is not compatible with TileSet! ")
+		get_tree().quit()

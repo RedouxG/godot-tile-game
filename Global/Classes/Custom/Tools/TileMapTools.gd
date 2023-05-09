@@ -98,3 +98,10 @@ static func check_terrainSets_as_layers(TM:TileMap) -> bool:
 
 static func get_terrainSets_as_layers(TM:TileMap) -> int:
 	return TM.tile_set.get_terrain_sets_count()
+
+# {TerrainSetID : [TerrainName, ...]}
+static func get_terrains(TS:TileSet) -> Dictionary:
+	var output := {}
+	for terrainSetID in TS.get_terrain_sets_count():
+		output[terrainSetID] = get_terrainNames(TS, terrainSetID)
+	return output

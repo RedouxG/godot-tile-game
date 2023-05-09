@@ -35,6 +35,22 @@ static func stack_images(BGImage:Image, OutlineImage:Image, addColor:Color, weig
 			blendImage.set_pixel(x, y, blendPixel)
 	return blendImage
 
+# Interpolates a texture with a color
+# Returns null on failure
+static func interpolate_image(image:Image, addColor:Color, weight:float) -> Image:
+	if(weight<0 or weight>1):
+		push_error("Weight must be in range from 0 - 1: " + str(weight))
+		return null
+	
+	var blendImage := Image.create(image.get_width(), image.get_height(), false, Image.FORMAT_RGBA8)
+	for x in range(image.get_width()):
+		for y in range(image.get_height()):
+			var blendPixel:Color = image.get_pixel(x,y)
+			if blendPixel.a != 0: 
+				blendPixel = blendPixel.lerp(addColor, weight) 
+			blendImage.set_pixel(x, y, blendPixel)
+	return blendImage
+
 # Gets singular sprite from a set
 static func get_sprite_from_texture(spritePos:Vector2i, spriteSize:Vector2i, setTexture:Texture2D) -> Texture2D:
 	var atlas_texture := AtlasTexture.new()

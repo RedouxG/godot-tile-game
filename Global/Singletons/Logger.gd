@@ -73,14 +73,14 @@ func draw_line(logIndicator:bool = true) -> void:
 func LogMsg(message:Array, logIndicator = true) -> void:
 	if logTime: message.push_front(get_time())
 	if logIndicator: message.push_front(LOG_MARK)
-	_process_LOG(_format_LOG(message))
+	output_log(_format_LOG(message))
 
 # logErr(["This is an error message])
 func logErr(message:Array) -> void:
 	if logTime: message.push_front(get_time())
 	
 	message.push_front(ERR_MARK)
-	_process_LOG(_format_LOG(message), true)
+	output_log(_format_LOG(message), true)
 
 func _format_LOG(message:Array) -> String:
 	var output:String = ""
@@ -89,7 +89,7 @@ func _format_LOG(message:Array) -> String:
 		output += part
 	return output
 
-func _process_LOG(message:String, isErr = false) -> void:
+func output_log(message:String, isErr = false) -> void:
 	if(isErr): push_error(message)
 	print(message)
 	
