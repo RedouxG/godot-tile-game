@@ -3,7 +3,7 @@
 ### ----------------------------------------------------
 
 extends Script
-class_name FileManager
+class_name FileTools
 
 ### ----------------------------------------------------
 # VARIABLES

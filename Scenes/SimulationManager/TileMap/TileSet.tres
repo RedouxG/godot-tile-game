@@ -1,9 +1,9 @@
-[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://byacrgfu2ep2j"]
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://vj26jfah81d"]
 
-[ext_resource type="Texture2D" uid="uid://cpfvvv2h4kgqr" path="res://Scenes/TileMap/SpriteSets/background.png" id="1_hxfi2"]
+[ext_resource type="Texture2D" uid="uid://cpfvvv2h4kgqr" path="res://Scenes/SimulationManager/TileMap/SpriteSets/background.png" id="1_cey7n"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8fv0e"]
-texture = ExtResource("1_hxfi2")
+texture = ExtResource("1_cey7n")
 0:0/0 = 0
 0:0/0/terrain_set = 0
 0:0/0/terrain = 0

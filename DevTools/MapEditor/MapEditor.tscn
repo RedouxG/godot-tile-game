@@ -1,8 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://b54akdv5y43f6"]
+[gd_scene load_steps=5 format=3 uid="uid://di66juccykxv7"]
 
 [ext_resource type="Script" path="res://DevTools/MapEditor/MapEditor.gd" id="1"]
 [ext_resource type="Script" path="res://DevTools/MapEditor/Cam/Cam.gd" id="2"]
-[ext_resource type="PackedScene" uid="uid://ulmrj278saoc" path="res://Scenes/TileMap/TileMapManager.tscn" id="4_hdech"]
+[ext_resource type="PackedScene" uid="uid://dv4r7nrdv28sg" path="res://Scenes/SimulationManager/TileMap/TileMapManager.tscn" id="4_hdech"]
 [ext_resource type="Theme" uid="uid://da02gjqpcj223" path="res://Resources/Themes/MapEditor.tres" id="5"]
 
 [node name="MapEditor" type="Node2D"]

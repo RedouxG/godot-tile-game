@@ -9,18 +9,12 @@ class_name TerrainDB
 # VARIABLES
 ### ----------------------------------------------------
 
-var Saver := ObjectSaver.new(self, ["DB"])
-var DB:Dictionary = {}
+var Saver := ObjectSaver.new(self, ["DictionaryDB"])
+var DictionaryDB:Dictionary = {}
 
 ### ----------------------------------------------------
 # FUNCTIONS
 ### ----------------------------------------------------
-
-func add_record(key:String, TD:TerrainData) -> void:
-	DB[key] = TD
-
-func get_record(key:String) -> TerrainData:
-	return DB.get(key)
 
 # Setup database when object is created, updated by hand
 func _init() -> void:
@@ -28,6 +22,12 @@ func _init() -> void:
 	add_record("StoneFloor", TerrainData.new().set_description("This is a stone floor."))
 	add_record("DirtWall", TerrainData.new().set_description("This is a dirt wall."))
 	add_record("DirtFloor", TerrainData.new().set_description("This is a dirt floor."))
+
+func add_record(key:String, TD:TerrainData) -> void:
+	DictionaryDB[key] = TD
+
+func get_record(key:String) -> TerrainData:
+	return DictionaryDB.get(key)
 
 # Checks if database has records for all existing terrains in tileset
 func check_database_compatible(TS:TileSet) -> bool:

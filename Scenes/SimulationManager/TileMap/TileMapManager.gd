@@ -17,9 +17,16 @@ var PRE_POS_IN_CHUNK:Array[Vector3i] = VectorTools.vec3i_get_pos_in_chunk(Vector
 # Keeps track of rendered chunks
 var RenderedChunks:Array[Vector3i] = []
 
+var TERRAIN_DB := TerrainDB.new()
+
 ### ----------------------------------------------------
 # FUNCTIONS
 ### ----------------------------------------------------
+
+func _ready() -> void:
+	if(not TERRAIN_DB.check_database_compatible(tile_set)):
+		push_error("TERRAIN_DB is not compatible with TileSet! ")
+		get_tree().quit()
 
 # Loads a chunk to TileMap
 func load_chunk(chunkPos:Vector3i) -> void:

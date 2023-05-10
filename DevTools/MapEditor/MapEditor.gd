@@ -36,6 +36,7 @@ const EDITOR_SAVE_NAME := "EDITOR"
 
 @onready var TM:TileMap = $TileMapManager
 @onready var TS:TileSet = $TileMapManager.tile_set
+@onready var PREC_RENDER_RANGE := VectorTools.vec3i_get_range_2d(Vector3i(0,0,0), GLOBAL.SIMULATION.SIM_RANGE)
 
 var EditorStateMachine := StateMachine.new()
 @onready var SelectState := SLCT_STATE.new(self, "SLCT_STATE")
@@ -46,15 +47,13 @@ var EditorStateMachine := StateMachine.new()
 
 const CHUNK_PIXEL_SIZE = GLOBAL.TILEMAPS.BASE_SCALE * GLOBAL.TILEMAPS.CHUNK_SIZE
 const CHUNK_SIZE_VECTOR = Vector2i(CHUNK_PIXEL_SIZE, CHUNK_PIXEL_SIZE)
-const RENDER_RANGE := 1
-var PREC_RENDER_RANGE:Array[Vector3i]
+
 ### ----------------------------------------------------
 # FUNCTIONS
 ### ----------------------------------------------------
 
 func _ready() -> void:
 	RenderingServer.set_default_clear_color(Color.DARK_SLATE_BLUE)
-	PREC_RENDER_RANGE = VectorTools.vec3i_get_range_2d(Vector3i(0,0,0), RENDER_RANGE)
 	
 	var isOK := true
 	EditorStateMachine.add_state(SelectState)

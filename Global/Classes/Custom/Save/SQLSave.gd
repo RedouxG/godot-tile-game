@@ -16,7 +16,7 @@ class_name SQLSave
 ### ----------------------------------------------------
 
 # Names of all tables that need to be created
-enum TABLE_NAMES {GAMEDATA_TABLE}
+enum TABLE_NAMES {GAMEDATA_TABLE, MAPDATA_TABLE}
 # Keys in GameData table (compressed dicts are values)
 enum GAMEDATA_KEYS {PLAYER_DATA}
 
@@ -93,7 +93,7 @@ func Load() -> bool:
 	if(not SQL_DB_DEST.has_file()):
 		Logger.logErr(["Tried to init non existing save: ", SQL_DB_DEST.path])
 		return false
-	if(FileManager.copy_file(SQL_DB_DEST.path, SQL_DB_TEMP.path) != OK):
+	if(FileTools.copy_file(SQL_DB_DEST.path, SQL_DB_TEMP.path) != OK):
 		Logger.logErr(["Failed to copy db from dest to temp: ", SQL_DB_DEST.path, " -> ", SQL_DB_TEMP.path])
 		return false
 	Logger.LogMsg(["Loaded SQLSave: ", SQL_DB_DEST.path])
@@ -102,12 +102,12 @@ func Load() -> bool:
 # Save everything, leave savePath empty if you want to overwrite save
 func Save(savePath:String = "") -> bool:
 	if(savePath == ""): savePath = SQL_DB_DEST.path
-	if(FileManager.file_exists(savePath)):
+	if(FileTools.file_exists(savePath)):
 		if(OS.move_to_trash(ProjectSettings.globalize_path(savePath)) != OK):
 			Logger.logErr(["Unable to delete SQLSave save file: ", savePath])
 			return false
 	
-	var result := FileManager.copy_file(SQL_DB_TEMP.path, savePath)
+	var result := FileTools.copy_file(SQL_DB_TEMP.path, savePath)
 	if(not result == OK):
 		Logger.logErr(["Failed to copy db from temp to save: ", SQL_DB_TEMP.path, " -> ", savePath, ", result: ", result])
 		return false
@@ -127,7 +127,7 @@ func close() -> int:
 
 func delete() -> int:
 	var result:int
-	if(FileManager.file_exists(SQL_DB_TEMP.path)):
+	if(FileTools.file_exists(SQL_DB_TEMP.path)):
 		result = close()
 		if(result != OK):
 			Logger.logErr(["Failed to delete SQLSave on close: ", SQL_DB_DEST.path, ", err: ", result])
@@ -166,7 +166,7 @@ func set_PlayerEntity(Player:PlayerEntity) -> bool:
 # Returns saved or new map
 func get_map(MapName:String) -> MapData:
 	var loadStr := SQL_DB_TEMP.sql_load_compressed(
-		TABLE_NAMES.keys()[TABLE_NAMES.GAMEDATA_TABLE],
+		TABLE_NAMES.keys()[TABLE_NAMES.MAPDATA_TABLE],
 		MapName)
 	if(loadStr.is_empty()):
 		Logger.LogMsg(["Map: ", MapName, ", doesn't exist, return new empty."])
@@ -179,7 +179,7 @@ func get_map(MapName:String) -> MapData:
 func set_map(MapRef:MapData) -> void:
 	SQL_DB_TEMP.sql_save_compressed(
 		MapRef.to_string(),
-		TABLE_NAMES.keys()[TABLE_NAMES.GAMEDATA_TABLE],
+		TABLE_NAMES.keys()[TABLE_NAMES.MAPDATA_TABLE],
 		MapRef.MapName)
 
 ### ----------------------------------------------------
@@ -189,7 +189,7 @@ func set_map(MapRef:MapData) -> void:
 # Cleans all temp files from save folders (Dont call when a save is used!)
 static func clean_TEMP(folderPath:String) -> bool:
 	var isOK := true
-	for fileData in FileManager.get_dirs_FileData(folderPath):
+	for fileData in FileTools.get_dirs_FileData(folderPath):
 		if TEMP_MARKER in fileData.name:
-			isOK = isOK and (FileManager.delete_file(fileData.path) == OK)
+			isOK = isOK and (FileTools.delete_file(fileData.path) == OK)
 	return isOK

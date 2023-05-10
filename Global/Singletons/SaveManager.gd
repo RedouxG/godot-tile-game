@@ -158,7 +158,7 @@ func make_new_MapTemp(MapName:String) -> bool:
 
 func delete_MapTemp(MapName:String) -> bool:
 	var path := TEMP_FOLDER + MapName + ".res"
-	var result := FileManager.delete_file(path)
+	var result := FileTools.delete_file(path)
 	if(result != OK):
 		Logger.logErr(["Failed to delete MapTemp, path: ", path,", err: ", result])
 		return false
