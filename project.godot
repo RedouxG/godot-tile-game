@@ -18,6 +18,7 @@ config/features=PackedStringArray("4.0")
 GLOBAL="*res://Global/Singletons/GLOBAL.gd"
 Logger="*res://Global/Singletons/Logger.gd"
 SaveManager="*res://Global/Singletons/SaveManager.gd"
+TileDB="*res://Global/Singletons/TileDB.gd"
 
 [debug]
 

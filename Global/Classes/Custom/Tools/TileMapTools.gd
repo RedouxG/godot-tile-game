@@ -80,12 +80,6 @@ static func get_terrain_Texture2D(TM:TileMap, terrainSetID:int, terrainID:int) -
 	var terrainImage:Image = get_tile_image(TM.tile_set, sourceID, atlasPos)
 	return ImageTexture.create_from_image(terrainImage)
 
-static func set_terrain_cell(TM:TileMap, pos:Vector2i, layerID:int, terrainID:int) -> void:
-	TM.set_cells_terrain_connect(layerID, [pos], layerID, terrainID)
-
-static func rem_terrain_cell(TM:TileMap, pos:Vector2i, layerID:int) -> void:
-	TM.erase_cell(layerID, pos)
-
 # Updates terrain bitmask for a given empty pos
 static func update_removed_cell(TM:TileMap, pos:Vector2i, layerID:int) -> void:
 	TM.set_cells_terrain_connect(layerID, [pos], layerID, -1)
@@ -104,4 +98,10 @@ static func get_terrains(TS:TileSet) -> Dictionary:
 	var output := {}
 	for terrainSetID in TS.get_terrain_sets_count():
 		output[terrainSetID] = get_terrainNames(TS, terrainSetID)
+	return output
+
+static func get_layers(TM:TileMap) -> Array[int]:
+	var output:Array[int] = []
+	for i in TM.get_layers_count():
+		output.append(i)
 	return output

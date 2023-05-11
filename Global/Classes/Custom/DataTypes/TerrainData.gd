@@ -9,13 +9,17 @@ class_name TerrainData
 ### Variables
 ### ----------------------------------------------------
 
-var Saver := ObjectSaver.new(self, ["metadata"])
+var Saver := ObjectSaver.new(self, ["layerID","description"])
 
 # Description shown when inspecting a tile of a given terrain
-var Description:String = "Not setup"
+var layerID:int
+var description:String = "Not setup"
+
+func _init(layer:int) -> void:
+	layerID = layer
 
 func set_description(desc:String) -> TerrainData:
-	Description = desc
+	description = desc
 	return self
 
 ### ----------------------------------------------------
