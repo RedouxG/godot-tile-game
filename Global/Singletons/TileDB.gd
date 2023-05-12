@@ -9,20 +9,23 @@ extends Node
 ### ----------------------------------------------------
 
 enum LAYERS {Background, Foreground, Enviroment}
-var DictionaryDB:Dictionary = {}
+const TS:TileSet = preload("res://Scenes/SimulationManager/TileMap/TileSet.tres")
+var TM:TileMap = preload("res://Scenes/SimulationManager/TileMap/TileMapManager.tscn").instantiate()
+
+var DictionaryDB := {}  # Database of all records {terrainName:TerrainData}
+var TerrainSystem := {} # {LayerID:{terrainID:terrainName}}
 
 ### ----------------------------------------------------
 # FUNCTIONS
 ### ----------------------------------------------------
 
 func _ready() -> void:
-	var TM:TileMap = preload("res://Scenes/SimulationManager/TileMap/TileMapManager.tscn").instantiate()
-	var TS:TileSet = preload("res://Scenes/SimulationManager/TileMap/TileSet.tres")
-	if(not check_database_compatible(TM, TS)):
-		Logger.logErr(["TileDB is not compatible with TileSet!"])
+	if(not check_database_compatible()):
+		Logger.logErr(["TILEDB is not compatible with TileSet!"])
 		get_tree().quit()
 	else:
-		Logger.LogMsg(["TileDB is compatible with TileSet"])
+		Logger.LogMsg(["TILEDB is compatible with TileSet"])
+	_setup_TerrainSystem()
 
 # Setup database when object is created, updated by hand
 func _init() -> void:
@@ -35,18 +38,30 @@ func _init() -> void:
 	add_record("DirtFloor", 
 		TerrainData.new(LAYERS.Background).set_description("This is a dirt floor."))
 
+func _setup_TerrainSystem() -> void:
+	for terrainName in DictionaryDB:
+		var td:TerrainData = DictionaryDB[terrainName]
+		var terrainID := BetterTerrainTools.get_terrain_id(TS, terrainName)
+		if(not TerrainSystem.has(td.layerID)):
+			TerrainSystem[td.layerID] = {}
+		if(terrainID == -1): continue
+		TerrainSystem[td.layerID][terrainID] = terrainName
+
 func add_record(key:String, TD:TerrainData) -> void:
 	DictionaryDB[key] = TD
 
 func get_record(key:String) -> TerrainData:
 	return DictionaryDB.get(key)
 
+func get_terrains_on_layer(layerID:int) -> Dictionary:
+	return TerrainSystem.get(layerID, {}).duplicate(true)
+
 # Checks if database has records for all existing terrains in tileset
-func check_database_compatible(TM:TileMap, TS:TileSet) -> bool:
+func check_database_compatible() -> bool:
 	var isOK := true
 	var Terrains := TileMapTools.get_terrains(TS)
-	for terrainSetID in Terrains:
-		for terrainName in Terrains[terrainSetID]:
+	for layerID in Terrains:
+		for terrainName in Terrains[layerID]:
 			if(get_record(terrainName) == null):
 				push_warning("Database is missing record for: ", terrainName)
 				isOK = false

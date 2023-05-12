@@ -124,7 +124,7 @@ class SLCT_STATE extends SMState:
 	
 	var ShownTerrains:Array = []
 	var terrainIndex := 0    # Terrain index in ShownTerrains
-	var currentLayerID := 0  # LayerID is the same as TerrainSetID
+	var currentLayerID := 0  # LayerID is the same as layerID
 	
 	var currentElevation:int = 0
 	
@@ -133,7 +133,7 @@ class SLCT_STATE extends SMState:
 		TM = caller.TM
 		TS = caller.TS
 		Cam = caller.get_node("Cam")
-		MAX_LAYERS = TileMapTools.get_terrainSets_as_layers(TM)
+		MAX_LAYERS = TM.get_layers_count()
 		for index in MAX_LAYERS:
 			Caller.UIElement.TerrainSelect.add_item(
 				TM.get_layer_name(index) + " (" + str(index) + ")",
@@ -221,7 +221,6 @@ class SLCT_STATE extends SMState:
 		
 		if(terrainID == -1):
 			SaveManager.rem_terrain_on(tilePos, currentLayerID)
-			TileMapTools.update_removed_cell(TM, VectorTools.vec3i_vec2i(tilePos), currentLayerID)
 		else:
 			SaveManager.set_terrain_on(tilePos, currentLayerID, terrainID)
 		TM.refresh_tile(tilePos)
@@ -235,18 +234,19 @@ class SLCT_STATE extends SMState:
 	func fill_item_list() -> void:
 		ShownTerrains.clear()
 		Caller.UIElement.TileItemList.clear()
-		
-		var TerrainIDs = TileMapTools.get_terrainIDs(TS, currentLayerID)
-		var TerrainNames = TileMapTools.get_terrainNames(TS, currentLayerID)
-		for index in TerrainIDs.size():
-			var terrainID:int = TerrainIDs[index]
-			var terrainName:String = TerrainNames[index]
+	
+		var TerrainSystemLayer := TILEDB.get_terrains_on_layer(currentLayerID)
+		for terrainID in TerrainSystemLayer:
+			var terrainName:String = TerrainSystemLayer[terrainID]
 			if(Caller.FilterState.filter != ""):
 				if(not Caller.FilterState.filter.to_lower() in terrainName.to_lower()): 
 					continue
-			var terrainTexture:Texture2D = TileMapTools.get_terrain_Texture2D(
-				TM, currentLayerID, terrainID)
-			Caller.UIElement.TileItemList.add_item(terrainName, terrainTexture, true)
+			var TerrainImage:Image = TileMapTools.get_tile_image(
+				TS, 
+				BetterTerrainTools.get_terrain_sourceID(TS, terrainID),
+				BetterTerrainTools.get_terrain_representative_coords(TS,terrainID))
+			var TerrainTexture:Texture2D = ImageTexture.create_from_image(TerrainImage)
+			Caller.UIElement.TileItemList.add_item(terrainName, TerrainTexture, true)
 			ShownTerrains.append(terrainID)
 
 class FLTR_STATE extends SMState:

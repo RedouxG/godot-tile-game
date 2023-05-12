@@ -18,7 +18,8 @@ config/features=PackedStringArray("4.0")
 GLOBAL="*res://Global/Singletons/GLOBAL.gd"
 Logger="*res://Global/Singletons/Logger.gd"
 SaveManager="*res://Global/Singletons/SaveManager.gd"
-TileDB="*res://Global/Singletons/TileDB.gd"
+TILEDB="*res://Global/Singletons/TILEDB.gd"
+BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
 
 [debug]
 
@@ -36,7 +37,7 @@ movie_writer/disable_vsync=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg", "res://addons/gut/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg", "res://addons/gut/plugin.cfg", "res://addons/better-terrain/plugin.cfg")
 
 [filesystem]
 

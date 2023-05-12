@@ -16,6 +16,26 @@ static func get_sources(TS:TileSet) -> Array[TileSetAtlasSource]:
 		result.append(TS.get_source(sourceID))
 	return result
 
+static func get_tiledatas(Source:TileSetAtlasSource) -> Array[TileData]:
+	var output:Array[TileData] = []
+	for t in Source.get_tiles_count():
+		var coord := Source.get_tile_id(t)
+		for a in Source.get_alternative_tiles_count(coord):
+			var alternate := Source.get_alternative_tile_id(coord, a)
+			output.append(Source.get_tile_data(coord, alternate))
+	return output
+
+# { coord:[tiledata(alt1), tiledata(alt2), ...]}
+static func get_tiledatas_coords(Source:TileSetAtlasSource) -> Dictionary:
+	var output:Dictionary = {}
+	for t in Source.get_tiles_count():
+		var coord := Source.get_tile_id(t)
+		output[coord] = []
+		for a in Source.get_alternative_tiles_count(coord):
+			var alternate := Source.get_alternative_tile_id(coord, a)
+			output[coord].append(Source.get_tile_data(coord, alternate))
+	return output
+
 # Returns dictionary of type {Vector2i:[altID, ...]}
 static func get_tileIDs_and_alts(Source:TileSetAtlasSource) -> Dictionary:
 	var result:Dictionary = {}
@@ -45,53 +65,9 @@ static func get_tileIDs(source:TileSetSource) -> Array[Vector2i]:
 		result.append(source.get_tile_id(index))
 	return result
 
-static func get_terrain_sourceID(TM:TileMap, terrainSetID:int, terrainID:int) -> int:
-	var samplePos:= Vector2i(99999, 99999)
-	var savedAltCoords := TM.get_cell_alternative_tile(0, samplePos)
-	var savedAtlasCoords := TM.get_cell_atlas_coords(0, samplePos)
-	var savedSourceID := TM.get_cell_source_id(0, samplePos)
-	
-	TM.set_cells_terrain_connect(0, [samplePos], terrainSetID, terrainID)
-	var sourceID := TM.get_cell_source_id(0, samplePos)
-	
-	TM.set_cell(0, samplePos, savedSourceID, savedAtlasCoords, savedAltCoords)
-	return sourceID
-
-static func get_terrain_atlasCoords(TM:TileMap, terrainSetID:int, terrainID:int) -> Vector2i:
-	var samplePos:= Vector2i(99999, 99999)
-	var savedAltCoords := TM.get_cell_alternative_tile(0, samplePos)
-	var savedAtlasCoords := TM.get_cell_atlas_coords(0, samplePos)
-	var savedSourceID := TM.get_cell_source_id(0, samplePos)
-	
-	TM.set_cells_terrain_connect(0, [samplePos], terrainSetID, terrainID)
-	var atlasCoords := TM.get_cell_atlas_coords(0, samplePos)
-	
-	TM.set_cell(0, samplePos, savedSourceID, savedAtlasCoords, savedAltCoords)
-	return atlasCoords
-
-static func get_tile_image(TS:TileSet, sourceID:int, atlasCoords:Vector2i) -> Image:
-	var source:TileSetAtlasSource = TS.get_source(sourceID)
-	var textureRegion:Rect2i = source.get_tile_texture_region(atlasCoords)
-	return source.texture.get_image().get_region(textureRegion)
-
-static func get_terrain_Texture2D(TM:TileMap, terrainSetID:int, terrainID:int) -> Texture2D:
-	var sourceID:int = get_terrain_sourceID(TM, terrainSetID, terrainID)
-	var atlasPos:Vector2i = get_terrain_atlasCoords(TM, terrainSetID, terrainID)
-	var terrainImage:Image = get_tile_image(TM.tile_set, sourceID, atlasPos)
-	return ImageTexture.create_from_image(terrainImage)
-
 # Updates terrain bitmask for a given empty pos
 static func update_removed_cell(TM:TileMap, pos:Vector2i, layerID:int) -> void:
 	TM.set_cells_terrain_connect(layerID, [pos], layerID, -1)
-
-# Check if can interpret terrain_sets as layers (layers must be equal or more)
-static func check_terrainSets_as_layers(TM:TileMap) -> bool:
-	if(not TM.get_layers_count() >= TM.tile_set.get_terrain_sets_count()):
-		return false
-	return true
-
-static func get_terrainSets_as_layers(TM:TileMap) -> int:
-	return TM.tile_set.get_terrain_sets_count()
 
 # {TerrainSetID : [TerrainName, ...]}
 static func get_terrains(TS:TileSet) -> Dictionary:
@@ -105,3 +81,8 @@ static func get_layers(TM:TileMap) -> Array[int]:
 	for i in TM.get_layers_count():
 		output.append(i)
 	return output
+
+static func get_tile_image(TS:TileSet, sourceID:int, atlasCoords:Vector2i) -> Image:
+	var source:TileSetAtlasSource = TS.get_source(sourceID)
+	var textureRegion:Rect2i = source.get_tile_texture_region(atlasCoords)
+	return source.texture.get_image().get_region(textureRegion)
