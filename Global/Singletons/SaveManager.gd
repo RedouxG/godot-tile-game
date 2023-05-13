@@ -130,7 +130,6 @@ func editor_save_map(MapName:String = "") -> bool:
 func editor_load_map(MapName:String) -> bool:
 	var path := TEMP_FOLDER + MapName + ".res"
 	var TempResult := MapData.load_MapData_from_path(path)
-	MapEdit = null
 	if(TempResult == null):
 		Logger.logErr(["Failed to load map from path: ", path])
 		return false

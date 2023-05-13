@@ -59,12 +59,11 @@ func get_terrains_on_layer(layerID:int) -> Dictionary:
 # Checks if database has records for all existing terrains in tileset
 func check_database_compatible() -> bool:
 	var isOK := true
-	var Terrains := TileMapTools.get_terrains(TS)
-	for layerID in Terrains:
-		for terrainName in Terrains[layerID]:
-			if(get_record(terrainName) == null):
-				push_warning("Database is missing record for: ", terrainName)
-				isOK = false
+	var Terrains := BetterTerrainTools.get_terrains(TS)
+	for terrainName in Terrains:
+		if(get_record(terrainName) == null):
+			push_warning("Database is missing record for: ", terrainName)
+			isOK = false
 	
 	for layerID in LAYERS.values():
 		if(not layerID in TileMapTools.get_layers(TM)):

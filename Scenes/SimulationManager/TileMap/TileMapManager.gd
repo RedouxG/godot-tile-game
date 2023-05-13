@@ -26,10 +26,7 @@ func load_chunk(chunkPos:Vector3i) -> void:
 		PosInChunk.append(VectorTools.vec3i_vec2i(pos))
 		if(MT == null): continue
 		for layerID in MT.TerrainData:
-			set_terrain_cell(
-				VectorTools.vec3i_vec2i(pos),
-				layerID,
-				MT.get_terrain(layerID))
+			BetterTerrain.set_cell(self, layerID, VectorTools.vec3i_vec2i(pos), MT.get_terrain(layerID))
 	
 	for layerID in get_layers_count():
 		BetterTerrain.update_terrain_cells(self, layerID, PosInChunk)
@@ -42,10 +39,7 @@ func load_tile(pos:Vector3i) -> void:
 	var MT:MapTile = SaveManager.get_on(pos)
 	if(MT == null): return
 	for layerID in MT.TerrainData:
-		set_terrain_cell(
-			VectorTools.vec3i_vec2i(pos),
-			layerID,
-			MT.get_terrain(layerID))
+		BetterTerrain.set_cell(self, layerID, VectorTools.vec3i_vec2i(pos), MT.get_terrain(layerID))
 		BetterTerrain.update_terrain_cell(self, layerID, VectorTools.vec3i_vec2i(pos))
 
 # Unloads a single chunk from TileMaps
@@ -57,7 +51,7 @@ func unload_chunk(chunkPos:Vector3i) -> void:
 
 func unload_tile(pos:Vector3i) -> void:
 	for layerID in get_layers_count():
-		rem_terrain_cell(VectorTools.vec3i_vec2i(pos), layerID)
+		erase_cell(layerID, VectorTools.vec3i_vec2i(pos))
 
 func refresh_chunk(chunkPos:Vector3i) -> void:
 	unload_chunk(chunkPos)
@@ -76,9 +70,3 @@ func refresh_tile(pos:Vector3i) -> void:
 func unload_all() -> void:
 	clear()
 	RenderedChunks.clear()
-
-func set_terrain_cell(pos:Vector2i, layerID:int, terrainID:int) -> void:
-	BetterTerrain.set_cell(self, layerID, pos, terrainID)
-
-func rem_terrain_cell(pos:Vector2i, layerID:int) -> void:
-	erase_cell(layerID, pos)

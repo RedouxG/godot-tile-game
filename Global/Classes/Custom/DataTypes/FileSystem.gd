@@ -1,5 +1,5 @@
 ### ----------------------------------------------------
-### Class used as a filesystem object
+### Class represents a filesystem
 ### ----------------------------------------------------
 
 extends RefCounted

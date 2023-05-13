@@ -241,10 +241,8 @@ class SLCT_STATE extends SMState:
 			if(Caller.FilterState.filter != ""):
 				if(not Caller.FilterState.filter.to_lower() in terrainName.to_lower()): 
 					continue
-			var TerrainImage:Image = TileMapTools.get_tile_image(
-				TS, 
-				BetterTerrainTools.get_terrain_sourceID(TS, terrainID),
-				BetterTerrainTools.get_terrain_representative_coords(TS,terrainID))
+			
+			var TerrainImage := BetterTerrainTools.get_terrain_image(TS, terrainID)
 			var TerrainTexture:Texture2D = ImageTexture.create_from_image(TerrainImage)
 			Caller.UIElement.TileItemList.add_item(terrainName, TerrainTexture, true)
 			ShownTerrains.append(terrainID)
