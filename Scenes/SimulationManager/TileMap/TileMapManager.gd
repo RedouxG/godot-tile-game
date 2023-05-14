@@ -25,7 +25,7 @@ func load_chunk(chunkPos:Vector3i) -> void:
 		var MT:MapTile = ChunkData.get(pos)
 		PosInChunk.append(VectorTools.vec3i_vec2i(pos))
 		if(MT == null): continue
-		for layerID in MT.TerrainData:
+		for layerID in MT.TerrainsData:
 			BetterTerrain.set_cell(self, layerID, VectorTools.vec3i_vec2i(pos), MT.get_terrain(layerID))
 	
 	for layerID in get_layers_count():
@@ -38,7 +38,7 @@ func load_chunk(chunkPos:Vector3i) -> void:
 func load_tile(pos:Vector3i) -> void:
 	var MT:MapTile = SaveManager.get_on(pos)
 	if(MT == null): return
-	for layerID in MT.TerrainData:
+	for layerID in MT.TerrainsData:
 		BetterTerrain.set_cell(self, layerID, VectorTools.vec3i_vec2i(pos), MT.get_terrain(layerID))
 		BetterTerrain.update_terrain_cell(self, layerID, VectorTools.vec3i_vec2i(pos))
 

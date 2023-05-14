@@ -15,6 +15,8 @@ extends Node2D
 ### ----------------------------------------------------
 
 const EDITOR_SAVE_NAME := "EDITOR"
+const CHUNK_PIXEL_SIZE = GLOBAL.TILEMAPS.BASE_SCALE * GLOBAL.TILEMAPS.CHUNK_SIZE
+const CHUNK_SIZE_VECTOR = Vector2i(CHUNK_PIXEL_SIZE, CHUNK_PIXEL_SIZE)
 
 @onready var UIElement := {
 	UIRoot =         $UIElements/MC,
@@ -39,14 +41,11 @@ const EDITOR_SAVE_NAME := "EDITOR"
 @onready var PREC_RENDER_RANGE := VectorTools.vec3i_get_range_2d(Vector3i(0,0,0), GLOBAL.SIMULATION.SIM_RANGE)
 
 var EditorStateMachine := StateMachine.new()
-@onready var SelectState := SLCT_STATE.new(self, "SLCT_STATE")
+@onready var TileState := TILE_STATE.new(self, "TILE_STATE")
 @onready var FilterState := FLTR_STATE.new(self, "FLTR_STATE")
 @onready var SaveState := SAVE_STATE.new(self, "SAVE_STATE")
 @onready var LoadState := LOAD_STATE.new(self, "LOAD_STATE")
 @onready var GoToState := GOTO_STATE.new(self, "GOTO_STATE")
-
-const CHUNK_PIXEL_SIZE = GLOBAL.TILEMAPS.BASE_SCALE * GLOBAL.TILEMAPS.CHUNK_SIZE
-const CHUNK_SIZE_VECTOR = Vector2i(CHUNK_PIXEL_SIZE, CHUNK_PIXEL_SIZE)
 
 ### ----------------------------------------------------
 # FUNCTIONS
@@ -56,13 +55,13 @@ func _ready() -> void:
 	RenderingServer.set_default_clear_color(Color.DARK_SLATE_BLUE)
 	
 	var isOK := true
-	EditorStateMachine.add_state(SelectState)
+	EditorStateMachine.add_state(TileState)
 	EditorStateMachine.add_state(FilterState)
 	EditorStateMachine.add_state(SaveState)
 	EditorStateMachine.add_state(LoadState)
 	EditorStateMachine.add_state(GoToState)
-	isOK = isOK and EditorStateMachine.set_state(SelectState)
-	isOK = isOK and EditorStateMachine.add_default_state(SelectState)
+	isOK = isOK and EditorStateMachine.set_state(TileState)
+	isOK = isOK and EditorStateMachine.add_default_state(TileState)
 	if(not isOK):
 		push_error("Failed to init EditorStateMachine")
 		get_tree().quit()
@@ -70,7 +69,7 @@ func _ready() -> void:
 	SaveManager.MapTemp = MapData.get_new(EDITOR_SAVE_NAME)
 	SaveManager.MapEdit = MapData.get_new(EDITOR_SAVE_NAME)
 	
-	if(EditorStateMachine.force_call(SelectState, "fill_item_list", []) == StateMachine.ERROR):
+	if(EditorStateMachine.force_call(TileState, "fill_item_list", []) == StateMachine.ERROR):
 		push_error("Failed to init EditorStateMachine")
 		get_tree().quit()
 	
@@ -115,7 +114,10 @@ func _draw_loaded_chunks():
 ### ----------------------------------------------------
 
 # Default editor state
-class SLCT_STATE extends SMState:
+class TILE_STATE extends SMState:
+	enum DRAW_MODE {Single, Multiple}
+	var currentDrawMode:int = DRAW_MODE.Single
+	
 	var TM:TileMap
 	var TS:TileSet
 	var Cam:Camera2D
@@ -139,7 +141,19 @@ class SLCT_STATE extends SMState:
 				TM.get_layer_name(index) + " (" + str(index) + ")",
 				index)
 	
-	func mouse_input(event:InputEvent) -> void:
+	func tile_place_input(event:InputEvent) -> void:
+		if(not (event is InputEventMouseButton or event is InputEventMouseMotion)):
+			return
+		if(not ShownTerrains.size() > 0): 
+			return
+		
+		if(currentDrawMode == DRAW_MODE.Single):
+			if(event.button_mask == MOUSE_BUTTON_MASK_LEFT):  
+				set_selected_tile(ShownTerrains[terrainIndex])
+			if(event.button_mask == MOUSE_BUTTON_MASK_RIGHT): 
+				set_selected_tile(-1)
+	
+	func camera_movement_input(event:InputEvent) -> void:
 		if(event is InputEventMouseButton):
 			if(event.button_index == MOUSE_BUTTON_WHEEL_UP):
 				Cam.zoom_camera(-Cam.zoomValue)
@@ -149,19 +163,12 @@ class SLCT_STATE extends SMState:
 			if(event.button_mask == MOUSE_BUTTON_MASK_MIDDLE):
 				Cam.position -= event.relative * Cam.zoom
 				Caller.update_EditedMap_chunks()
-		
-		if(event is InputEventMouseButton or event is InputEventMouseMotion):
-			if(not ShownTerrains.size() > 0): 
-				return
-			if(event.button_mask == MOUSE_BUTTON_MASK_LEFT):  
-				set_selected_tile(ShownTerrains[terrainIndex])
-			if(event.button_mask == MOUSE_BUTTON_MASK_RIGHT): 
-				set_selected_tile(-1)
 	
 	# This could be an input map but doing it with ifs is good enough
 	func update_input(event:InputEvent) -> void:
 		if(not LibK.UI.is_mouse_on_ui(Caller.UIElement.SelectionUI, Caller.UIElement.UIRoot)):
-			mouse_input(event)
+			camera_movement_input(event)
+			tile_place_input(event)
 		
 		if(InputTools.is_key_pressed(event, KEY_E)):
 			add_currentLayerID(1)
@@ -341,10 +348,10 @@ class GOTO_STATE extends SMState:
 ### ----------------------------------------------------
 
 func _on_terrain_select_item_selected(index: int) -> void:
-	EditorStateMachine.force_call(SelectState, "change_currentLayerID", [index])
+	EditorStateMachine.force_call(TileState, "change_currentLayerID", [index])
 
 func _on_item_list_item_selected(index: int) -> void:
-	EditorStateMachine.force_call(SelectState, "change_terrainIndex", [index])
+	EditorStateMachine.force_call(TileState, "change_terrainIndex", [index])
 
 func _on_filter_input_text_submitted(new_text: String) -> void:
 	EditorStateMachine.redirect_signal(FilterState, "change_filter", [new_text])
@@ -370,7 +377,7 @@ func _on_goto_input_text_submitted(new_text: String) -> void:
 func update_EditedMap_chunks() -> void:
 	var camChunk := VectorTools.scale_down_vec2i($Cam.global_position, GLOBAL.TILEMAPS.CHUNK_SIZE*GLOBAL.TILEMAPS.BASE_SCALE)
 	var chunksToRender := VectorTools.vec3i_get_precomputed_range(
-		VectorTools.vec2i_vec3i(camChunk, SelectState.currentElevation),
+		VectorTools.vec2i_vec3i(camChunk, TileState.currentElevation),
 		PREC_RENDER_RANGE)
 
 	# Loading chunks that are not yet rendered

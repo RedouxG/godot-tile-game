@@ -162,6 +162,24 @@ theme = ExtResource("5")
 text = "Go to:"
 fit_content = true
 
+[node name="Tools" type="HBoxContainer" parent="UIElements/MC/GC/Info"]
+layout_mode = 2
+
+[node name="1" type="RichTextLabel" parent="UIElements/MC/GC/Info/Tools"]
+modulate = Color(1, 0, 0, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+text = "Single"
+fit_content = true
+
+[node name="2" type="RichTextLabel" parent="UIElements/MC/GC/Info/Tools"]
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+text = "Multiple"
+fit_content = true
+
 [node name="null" type="VBoxContainer" parent="UIElements/MC/GC"]
 layout_mode = 2
 size_flags_horizontal = 3
