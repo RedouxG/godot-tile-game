@@ -166,7 +166,7 @@ class TILE_STATE extends SMState:
 	
 	# This could be an input map but doing it with ifs is good enough
 	func update_input(event:InputEvent) -> void:
-		if(not LibK.UI.is_mouse_on_ui(Caller.UIElement.SelectionUI, Caller.UIElement.UIRoot)):
+		if(not UITools.is_mouse_on_ui(Caller.UIElement.SelectionUI, Caller.UIElement.UIRoot)):
 			camera_movement_input(event)
 			tile_place_input(event)
 		
@@ -284,7 +284,7 @@ class SAVE_STATE extends SMState:
 	
 	func save_map(mapName:String) -> void:
 		if(not SaveManager.editor_save_map(mapName)):
-			Logger.logErr(["Failed to save: ", mapName])
+			Logger.log_err(["Failed to save: ", mapName])
 	
 	func end_state() -> void:
 		Caller._hide_lineEdit(Caller.UIElement.SaveInput)
@@ -304,7 +304,7 @@ class LOAD_STATE extends SMState:
 	func load_map(mapName:String) -> void:
 		var Temp := SQLSave.new(mapName, SaveManager.TEMP_FOLDER)
 		if(not SaveManager.editor_load_map(mapName)):
-			Logger.logErr(["Failed to load: ", mapName])
+			Logger.log_err(["Failed to load: ", mapName])
 		Caller.TM.refresh_all_chunks()
 		
 	

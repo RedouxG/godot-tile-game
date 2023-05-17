@@ -35,7 +35,7 @@ func create_new_file() -> int:
 # Compresses and saves data in sqlite db
 # Designed to compress big data chunks
 func sql_save_compressed(Str:String, tableName:String, KeyVar) -> void:
-	var B64C := LibK.Compression.compress_str(Str, SQLCOMPRESSION)
+	var B64C := CompressTools.compress_str(Str, SQLCOMPRESSION)
 	var values:String = "'" + str(KeyVar) + "','" + B64C + "','" + str(Str.length()) + "'"
 	do_query("REPLACE INTO "+tableName+" (Key,CData,DCSize) VALUES("+values+");")
 
@@ -43,7 +43,7 @@ func sql_save_compressed(Str:String, tableName:String, KeyVar) -> void:
 func sql_load_compressed(tableName:String, KeyVar) -> String:
 	if (not row_exists(tableName, "Key", str(KeyVar))): return ""
 	var queryResult := get_query_result("SELECT CData,DCSize FROM "+tableName+" WHERE Key='"+str(KeyVar)+"';")
-	return LibK.Compression.decompress_str(queryResult[0]["CData"], SQLCOMPRESSION, queryResult[0]["DCSize"])
+	return CompressTools.decompress_str(queryResult[0]["CData"], SQLCOMPRESSION, queryResult[0]["DCSize"])
 
 # Tries to get dict form saved data, returns empty dict on fail
 func get_dict_from_table(tableName:String, keyVar) -> Dictionary:
@@ -65,7 +65,7 @@ func add_table(tableName:String, tableDict:Dictionary) -> bool:
 	SQL_GLOBAL.close_db()
 
 	if(not isOK):
-		Logger.logErr(["Unable to create table: ", tableName])
+		Logger.log_err(["Unable to create table: ", tableName])
 		return false
 	return isOK
 
@@ -75,7 +75,7 @@ func table_exists(tableName:String) -> bool:
 
 func column_exists(tableName:String, columnName:String) -> bool:
 	if(not table_exists(tableName)):
-		Logger.logErr(["Table doesnt exist: ", tableName])
+		Logger.log_err(["Table doesnt exist: ", tableName])
 		return false 
 	
 	var exists := false
@@ -89,7 +89,7 @@ func column_exists(tableName:String, columnName:String) -> bool:
 
 func row_exists(tableName:String, columnName:String, value:String) -> bool:
 	if(not column_exists(tableName, columnName)):
-		Logger.logErr(["Column doesnt exist in table: ", tableName, ", ", columnName])
+		Logger.log_err(["Column doesnt exist in table: ", tableName, ", ", columnName])
 		return false
 	
 	var QuerryResult := get_query_result("SELECT EXISTS(SELECT 1 FROM " + tableName + " WHERE " + columnName + "='" + value + "') LIMIT 1;")

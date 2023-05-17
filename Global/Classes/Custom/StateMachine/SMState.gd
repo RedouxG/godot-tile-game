@@ -40,11 +40,11 @@ func get_name() -> String:
 
 # For physics process
 func update_delta(_delta:float) -> void:
-	Logger.logErr(["Function should be overwriten! "])
+	Logger.log_err(["Function should be overwriten! "])
 
 # For input event
 func update_input(_event:InputEvent) -> void:
-	Logger.logErr(["Function should be overwriten! "])
+	Logger.log_err(["Function should be overwriten! "])
 
 func _to_string() -> String:
 	return get_name()

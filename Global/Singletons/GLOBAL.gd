@@ -20,3 +20,6 @@ class TILEMAPS: # Stores data regardning map, TileMaps ect
 
 class TEXTURES:
 	const ENTITY_SET_PATH = "res://Resources/Textures/EntitySet.png"
+
+func _enter_tree() -> void:
+	Logger.log_session_start()

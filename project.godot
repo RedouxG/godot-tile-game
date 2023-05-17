@@ -16,7 +16,6 @@ config/features=PackedStringArray("4.0")
 [autoload]
 
 GLOBAL="*res://Global/Singletons/GLOBAL.gd"
-Logger="*res://Global/Singletons/Logger.gd"
 SaveManager="*res://Global/Singletons/SaveManager.gd"
 TILEDB="*res://Global/Singletons/TILEDB.gd"
 BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"

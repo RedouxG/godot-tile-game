@@ -42,7 +42,7 @@ func unload_entity(unloadedChunkV3:Vector3i) -> void:
 	if(not unloadedChunkV3 == VectorTools.scale_down_vec3i_noZ(MapPosition, GLOBAL.TILEMAPS.CHUNK_SIZE)): 
 		return
 	if(not save_entity()):
-		Logger.logErr(["Failed to save entity data on unload, pos: ", MapPosition])
+		Logger.log_err(["Failed to save entity data on unload, pos: ", MapPosition])
 	queue_free()
 
 # Saves this entity

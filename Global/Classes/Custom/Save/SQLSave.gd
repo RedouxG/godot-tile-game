@@ -61,12 +61,12 @@ func _init(fileDir:String, fileName:String, verbose = false) -> void:
 func create_new_save() -> bool:
 	if(SQL_DB_DEST.has_file()):
 		if(SQL_DB_DEST.delete_file() != OK):
-			Logger.logErr(["Unable to delete SQLSave save file: ", SQL_DB_DEST.path])
+			Logger.log_err(["Unable to delete SQLSave save file: ", SQL_DB_DEST.path])
 			return false
 	
 	var result := SQL_DB_DEST.create_new_file()
 	if(result != OK):
-		Logger.logErr(["Unable to create empty SQLSave save file: ", SQL_DB_DEST.path, ", err: ", result])
+		Logger.log_err(["Unable to create empty SQLSave save file: ", SQL_DB_DEST.path, ", err: ", result])
 		return false
 	
 	var isOK := true
@@ -76,8 +76,8 @@ func create_new_save() -> bool:
 	
 	_init_GAMEDATA_TABLE()
 	
-	if(not isOK): Logger.logErr(["Failed to create SQLSave save file tables: ", SQL_DB_DEST.path])
-	elif(isOK):   Logger.LogMsg(["Created SQLSave save file at: ", SQL_DB_DEST.path])
+	if(not isOK): Logger.log_err(["Failed to create SQLSave save file tables: ", SQL_DB_DEST.path])
+	elif(isOK):   Logger.log_msg(["Created SQLSave save file at: ", SQL_DB_DEST.path])
 	return isOK
 
 func _init_GAMEDATA_TABLE() -> void:
@@ -91,12 +91,12 @@ func _init_GAMEDATA_TABLE() -> void:
 # Should be called after init before trying to acess data from save
 func Load() -> bool:
 	if(not SQL_DB_DEST.has_file()):
-		Logger.logErr(["Tried to init non existing save: ", SQL_DB_DEST.path])
+		Logger.log_err(["Tried to init non existing save: ", SQL_DB_DEST.path])
 		return false
 	if(FileTools.copy_file(SQL_DB_DEST.path, SQL_DB_TEMP.path) != OK):
-		Logger.logErr(["Failed to copy db from dest to temp: ", SQL_DB_DEST.path, " -> ", SQL_DB_TEMP.path])
+		Logger.log_err(["Failed to copy db from dest to temp: ", SQL_DB_DEST.path, " -> ", SQL_DB_TEMP.path])
 		return false
-	Logger.LogMsg(["Loaded SQLSave: ", SQL_DB_DEST.path])
+	Logger.log_msg(["Loaded SQLSave: ", SQL_DB_DEST.path])
 	return true
 
 # Save everything, leave savePath empty if you want to overwrite save
@@ -104,25 +104,25 @@ func Save(savePath:String = "") -> bool:
 	if(savePath == ""): savePath = SQL_DB_DEST.path
 	if(FileTools.file_exists(savePath)):
 		if(OS.move_to_trash(ProjectSettings.globalize_path(savePath)) != OK):
-			Logger.logErr(["Unable to delete SQLSave save file: ", savePath])
+			Logger.log_err(["Unable to delete SQLSave save file: ", savePath])
 			return false
 	
 	var result := FileTools.copy_file(SQL_DB_TEMP.path, savePath)
 	if(not result == OK):
-		Logger.logErr(["Failed to copy db from temp to save: ", SQL_DB_TEMP.path, " -> ", savePath, ", result: ", result])
+		Logger.log_err(["Failed to copy db from temp to save: ", SQL_DB_TEMP.path, " -> ", savePath, ", result: ", result])
 		return false
 	
 	SQLiteWrapper.do_query_on_path(savePath, "VACUUM;")
-	Logger.LogMsg(["Saved SQLSave: ", savePath])
+	Logger.log_msg(["Saved SQLSave: ", savePath])
 	return true
 
 # Deletes TEMP file
 func close() -> int:
 	var result := SQL_DB_TEMP.delete_file()
 	if(result != OK):
-		Logger.logErr(["Failed to close SQLSave: ", SQL_DB_DEST.path, ", err: ", result])
+		Logger.log_err(["Failed to close SQLSave: ", SQL_DB_DEST.path, ", err: ", result])
 		return result
-	Logger.LogMsg(["Closed SQLSave: ", SQL_DB_DEST.path])
+	Logger.log_msg(["Closed SQLSave: ", SQL_DB_DEST.path])
 	return result
 
 func delete() -> int:
@@ -130,14 +130,14 @@ func delete() -> int:
 	if(FileTools.file_exists(SQL_DB_TEMP.path)):
 		result = close()
 		if(result != OK):
-			Logger.logErr(["Failed to delete SQLSave on close: ", SQL_DB_DEST.path, ", err: ", result])
+			Logger.log_err(["Failed to delete SQLSave on close: ", SQL_DB_DEST.path, ", err: ", result])
 			return result
 	
 	result = SQL_DB_DEST.delete_file()
 	if(result != OK):
-		Logger.logErr(["Failed to delete SQLSave: ", SQL_DB_DEST.path, ", err: ", result])
+		Logger.log_err(["Failed to delete SQLSave: ", SQL_DB_DEST.path, ", err: ", result])
 		return result
-	Logger.LogMsg(["Deleted SQLSave: ", SQL_DB_DEST.path])
+	Logger.log_msg(["Deleted SQLSave: ", SQL_DB_DEST.path])
 	return result
 
 ### ----------------------------------------------------
@@ -169,7 +169,7 @@ func get_map(MapName:String) -> MapData:
 		TABLE_NAMES.keys()[TABLE_NAMES.MAPDATA_TABLE],
 		MapName)
 	if(loadStr.is_empty()):
-		Logger.LogMsg(["Map: ", MapName, ", doesn't exist, return new empty."])
+		Logger.log_msg(["Map: ", MapName, ", doesn't exist, return new empty."])
 		var NewMap := MapData.new()
 		NewMap.MapName = MapName
 		return NewMap
