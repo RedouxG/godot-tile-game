@@ -10,7 +10,6 @@ extends Node
 
 enum LAYERS {Background, Foreground, Enviroment}
 const TS:TileSet = preload("res://Scenes/SimulationManager/TileMap/TileSet.tres")
-var TM:TileMap = preload("res://Scenes/SimulationManager/TileMap/TileMapManager.tscn").instantiate()
 
 var DictionaryDB := {}  # Database of all records {terrainName:TerrainData}
 var TerrainSystem := {} # {LayerID:{terrainID:terrainName}}
@@ -42,6 +41,7 @@ func get_terrains_on_layer(layerID:int) -> Dictionary:
 
 # Checks if database has records for all existing terrains in tileset
 func check_database_compatible() -> bool:
+	var TM:TileMap = preload("res://Scenes/SimulationManager/TileMap/TileMapManager.tscn").instantiate()
 	var isOK := true
 	var Terrains := BetterTerrainTools.get_terrains(TS)
 	for terrainName in Terrains:
@@ -53,6 +53,8 @@ func check_database_compatible() -> bool:
 		if(not layerID in TileMapTools.get_layers(TM)):
 			Logger.log_err(["layerID does not exist in TileMap: ", layerID])
 			isOK = false
+	
+	TM.queue_free()
 	return isOK
 
 func _setup_TerrainSystem() -> void:
@@ -65,15 +67,11 @@ func _setup_TerrainSystem() -> void:
 		TerrainSystem[td.layerID][terrainID] = terrainName
 
 func _init_database() -> void:
-	add_record("StoneWall", 
-		TerrainData.new(LAYERS.Background)
+	add_record("StoneWall", TerrainData.new(LAYERS.Background)
 		.set_description("This is a stone wall."))
-	add_record("StoneFloor", 
-		TerrainData.new(LAYERS.Background)
+	add_record("StoneFloor", TerrainData.new(LAYERS.Background)
 		.set_description("This is a stone floor."))
-	add_record("DirtWall", 
-		TerrainData.new(LAYERS.Background)
+	add_record("DirtWall", TerrainData.new(LAYERS.Background)
 		.set_description("This is a dirt wall."))
-	add_record("DirtFloor", 
-		TerrainData.new(LAYERS.Background)
+	add_record("DirtFloor", TerrainData.new(LAYERS.Background)
 		.set_description("This is a dirt floor."))

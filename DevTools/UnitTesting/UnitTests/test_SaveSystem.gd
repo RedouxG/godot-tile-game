@@ -69,7 +69,7 @@ func test_SQLSave() -> void:
 func test_SaveManager():
 	assert_true(SaveManager.make_new_MapTemp("Test"), "Faied to make new MapTemp")
 	assert_true(SaveManager.make_new_SQLSave("TestSave"), "Faied to make new Save")
-	assert_true(SaveManager.load_SQLSave("TestSave"), "Faied to load Save")
+	assert_true(SaveManager.load_current_save("TestSave"), "Faied to load Save")
 	assert_true(SaveManager.change_map("Test"), "Failed to change map")
 	
 	assert_true(SaveManager.delete_MapTemp("Test"), "Failed to delete MapTemp")

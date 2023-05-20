@@ -39,7 +39,7 @@ static func copy_file(from:String, to:String) -> int:
 # Creates empty file
 static func create_empty_file(path:String) -> int:
 	var file := FileAccess.open(path, FileAccess.WRITE)
-	return FileAccess.get_open_error()
+	return file.get_error()
 
 static func create_dir(path:String) -> int:
 	return DirAccess.make_dir_absolute(path)

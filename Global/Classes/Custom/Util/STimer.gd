@@ -30,9 +30,3 @@ func get_result() -> int:
 # Answers if time in ms from start has passed
 func time_passed(timeToPass:int) -> bool:
 	return (get_result() > timeToPass)
-
-func delay(timeMS:int) -> void:
-	var s := Time.get_ticks_msec()
-	var timePassed := 0
-	while(timePassed < timeMS):
-		timePassed = Time.get_ticks_msec() - s
