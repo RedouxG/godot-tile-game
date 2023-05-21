@@ -283,7 +283,7 @@ class SAVE_STATE extends SMState:
 		Caller._show_lineEdit(Caller.UIElement.SaveInput)
 	
 	func save_map(mapName:String) -> void:
-		if(not SaveManager.editor_save_map(mapName)):
+		if(not Caller.editor_save_map(mapName)):
 			Logger.log_err(["Failed to save: ", mapName])
 	
 	func end_state() -> void:
@@ -303,7 +303,7 @@ class LOAD_STATE extends SMState:
 	
 	func load_map(mapName:String) -> void:
 		var Temp := SQLSave.new(mapName, SaveManager.TEMP_FOLDER)
-		if(not SaveManager.editor_load_map(mapName)):
+		if(not Caller.editor_load_map(mapName)):
 			Logger.log_err(["Failed to load: ", mapName])
 		Caller.TM.refresh_all_chunks()
 		
@@ -401,3 +401,22 @@ func _show_lineEdit(LENode:Control) -> void:
 
 func _hide_lineEdit(LENode:Control) -> void:
 	LENode.hide()
+
+func editor_save_map(mapName:String) -> bool:
+	var path := SaveManager.TEMP_FOLDER + mapName + ".res"
+	var result := MapData.save_MapData_to_path(path, SaveManager.MapEdit)
+	if(result != OK):
+		Logger.log_err(["Failed to save map to path: ", path])
+		return false
+	Logger.log_msg(["Saved map: ", mapName])
+	return true
+
+func editor_load_map(mapName:String) -> bool:
+	var path := SaveManager.TEMP_FOLDER + mapName + ".res"
+	var TempResult := MapData.load_MapData_from_path(path)
+	if(TempResult == null):
+		Logger.log_err(["Failed to load map from path: ", path])
+		return false
+	SaveManager.MapEdit = TempResult
+	Logger.log_msg(["Loaded map: ", mapName])
+	return true

@@ -8,7 +8,8 @@ extends TileMap
 # VARIABLES
 ### ----------------------------------------------------
 
-var PRE_POS_IN_CHUNK:Array[Vector3i] = VectorTools.vec3i_get_pos_in_chunk(Vector3i(0,0,0), GLOBAL.TILEMAPS.CHUNK_SIZE)
+var PRE_POS_IN_CHUNK3:Array[Vector3i] = VectorTools.vec3i_get_pos_in_chunk(Vector3i(0,0,0), GLOBAL.TILEMAPS.CHUNK_SIZE)
+var PRE_POS_IN_CHUNK2:Array[Vector2i] = VectorTools.vec2i_get_pos_in_chunk(Vector2i(0,0), GLOBAL.TILEMAPS.CHUNK_SIZE)
 
 # Keeps track of rendered chunks
 var RenderedChunks:Array[Vector3i] = []
@@ -20,16 +21,15 @@ var RenderedChunks:Array[Vector3i] = []
 # Loads a chunk to TileMap
 func load_chunk(chunkPos:Vector3i) -> void:
 	var ChunkData := SaveManager.get_chunk(chunkPos, GLOBAL.TILEMAPS.CHUNK_SIZE)
-	var PosInChunk:Array[Vector2i] = []
 	for pos in ChunkData:
 		var MT:MapTile = ChunkData.get(pos)
-		PosInChunk.append(VectorTools.vec3i_vec2i(pos))
 		if(MT == null): continue
 		for layerID in MT.TerrainsData:
 			BetterTerrain.set_cell(self, layerID, VectorTools.vec3i_vec2i(pos), MT.get_terrain(layerID))
 	
 	for layerID in get_layers_count():
-		BetterTerrain.update_terrain_cells(self, layerID, PosInChunk)
+		BetterTerrain.update_terrain_cells(self, layerID,
+			VectorTools.vec2i_get_precomputed_pos_in_chunk(VectorTools.vec3i_vec2i(chunkPos), PRE_POS_IN_CHUNK2))
 	
 	if(not RenderedChunks.has(chunkPos)):
 		RenderedChunks.append(chunkPos)
@@ -44,7 +44,7 @@ func load_tile(pos:Vector3i) -> void:
 
 # Unloads a single chunk from TileMaps
 func unload_chunk(chunkPos:Vector3i) -> void:
-	var PosInChunk := VectorTools.vec3i_get_precomputed_pos_in_chunk(chunkPos, PRE_POS_IN_CHUNK)
+	var PosInChunk := VectorTools.vec3i_get_precomputed_pos_in_chunk(chunkPos, PRE_POS_IN_CHUNK3)
 	for pos in PosInChunk:
 		unload_tile(pos)
 	RenderedChunks.erase(chunkPos)
