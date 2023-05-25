@@ -5,14 +5,14 @@
 extends GutTest
 
 ### ----------------------------------------------------
-# VARIABLES
+# Variables
 ### ----------------------------------------------------
 
 const SAV_FOLDER := "res://Temp/"
 const SAV_NAME := "UnitTest"
 
 ### ----------------------------------------------------
-# FUNCTIONS
+# Functions
 ### ----------------------------------------------------
 
 func fill_MapData(MD:MapData, size:int) -> Dictionary:

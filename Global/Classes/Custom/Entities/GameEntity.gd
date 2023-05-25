@@ -6,7 +6,7 @@ extends Sprite2D
 class_name GameEntity
 
 ### ----------------------------------------------------
-# VARIABLES
+# Variables
 ### ----------------------------------------------------
 
 var Saver := ObjectSaver.new(self, ["MapPosition"])
@@ -21,7 +21,7 @@ func _set_MapPosition(posV3:Vector3i):
 var TexturePos := Vector2i(0,0)
 
 ### ----------------------------------------------------
-# FUNCTIONS
+# Functions
 ### ----------------------------------------------------
 
 func _ready() -> void:

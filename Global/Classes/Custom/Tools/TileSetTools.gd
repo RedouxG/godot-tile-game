@@ -6,7 +6,7 @@ extends Script
 class_name TileSetTools
 
 ### ----------------------------------------------------
-# FUNCTIONS
+# Functions
 ### ----------------------------------------------------
 
 static func get_sources(TS:TileSet) -> Array[TileSetAtlasSource]:

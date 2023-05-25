@@ -5,7 +5,7 @@
 extends Node
 
 ### ----------------------------------------------------
-# VARIABLES
+# Variables
 ### ----------------------------------------------------
 
 enum LAYERS {Background, Foreground, Enviroment}
@@ -15,7 +15,7 @@ var DictionaryDB := {}  # Database of all records {terrainName:TerrainData}
 var TerrainSystem := {} # {LayerID:{terrainID:terrainName}}
 
 ### ----------------------------------------------------
-# FUNCTIONS
+# Functions
 ### ----------------------------------------------------
 
 func _ready() -> void:

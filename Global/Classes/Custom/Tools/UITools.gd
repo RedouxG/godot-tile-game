@@ -1,12 +1,12 @@
 ### ----------------------------------------------------
-### Extends on input functions
+### Extends on input Functions
 ### ----------------------------------------------------
 
 extends Script
 class_name UITools
 
 ### ----------------------------------------------------
-### FUNCTIONS
+### Functions
 ### ----------------------------------------------------
 
 # Tells if mouse is on UI (Control node) element

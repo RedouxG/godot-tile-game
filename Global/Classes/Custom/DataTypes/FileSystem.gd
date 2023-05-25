@@ -6,7 +6,7 @@ extends RefCounted
 class_name FileSystem
 
 ### ----------------------------------------------------
-### VARIABLES
+### Variables
 ### ----------------------------------------------------
 
 # Dir system dictionary with FileData keys
@@ -16,7 +16,7 @@ var DictFileData := {}
 var DictFileNames := {}
 
 ### ----------------------------------------------------
-### FUNCTIONS
+### Functions
 ### ----------------------------------------------------
 
 func _init(dictFileData:Dictionary) -> void:

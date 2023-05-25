@@ -6,7 +6,7 @@ extends RefCounted
 class_name FileData
 
 ### ----------------------------------------------------
-# VARIABLES
+# Variables
 ### ----------------------------------------------------
 
 var name:String
@@ -16,7 +16,7 @@ var isDir:bool
 var isFile:bool
 
 ### ----------------------------------------------------
-# FUNCTIONS
+# Functions
 ### ----------------------------------------------------
 
 func _init(filePath:String) -> void:

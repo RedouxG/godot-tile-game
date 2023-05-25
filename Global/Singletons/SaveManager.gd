@@ -8,7 +8,7 @@
 extends Node
 
 ### ----------------------------------------------------
-# VARIABLES
+# Variables
 ### ----------------------------------------------------
 
 const TEMP_FOLDER := "res://Resources/Maps/Templates/"

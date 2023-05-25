@@ -7,7 +7,7 @@ extends RefCounted
 class_name StateMachine
 
 ### ----------------------------------------------------
-# VARIABLES
+# Variables
 ### ----------------------------------------------------
 
 const ERROR = "ERROR_DEFAULT"
@@ -24,7 +24,7 @@ var DefaultState:SMState
 var StateTable:Array[SMState] = []
 
 ### ----------------------------------------------------
-# FUNCTIONS
+# Functions
 ### ----------------------------------------------------
 
 func _init(verbosity:bool = false) -> void:

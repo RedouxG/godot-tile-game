@@ -1,12 +1,12 @@
 ### ----------------------------------------------------
-### Template state, every state in inherited Statemachine should have these functions
+### Template state, every state in inherited Statemachine should have these Functions
 ### ----------------------------------------------------
 
 extends RefCounted
 class_name SMState
 
 ### ----------------------------------------------------
-# VARIABLES
+# Variables
 ### ----------------------------------------------------
 
 # Caller aka StateMachine source class
@@ -18,10 +18,10 @@ var StateMaster
 var Name:String = "Unnamed State"
 
 ### ----------------------------------------------------
-# FUNCTIONS
+# Functions
 ### ----------------------------------------------------
 
-# Automatically assigns variables in State to variables in parent (by reference)
+# Automatically assigns Variables in State to Variables in parent (by reference)
 func _init(caller:Node, name:String) -> void:
 	Name = name
 	Caller = caller

@@ -6,7 +6,7 @@ extends Script
 class_name Logger
 
 ### ----------------------------------------------------
-# VARIABLES
+# Variables
 ### ----------------------------------------------------
 
 const LOG_FOLDER_PATH = "res://Temp/"
@@ -16,7 +16,7 @@ const LOG_MARK = "[LOG] "
 const ERR_MARK = "[ERR] "
 
 ### ----------------------------------------------------
-# FUNCTIONS
+# Functions
 ### ----------------------------------------------------
 
 static func log_session_start() -> void:

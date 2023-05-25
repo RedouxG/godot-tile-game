@@ -5,7 +5,7 @@
 extends Node2D
 
 ### ----------------------------------------------------
-# VARIABLES
+# Variables
 ### ----------------------------------------------------
 
 @onready var TM:TileMap = $TileMapManager
@@ -14,7 +14,7 @@ extends Node2D
 var GameFocusEntity:GameEntity
 
 ### ----------------------------------------------------
-# FUNCTIONS
+# Functions
 ### ----------------------------------------------------
 
 func start() -> bool:

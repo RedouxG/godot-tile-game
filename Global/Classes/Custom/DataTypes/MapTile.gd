@@ -6,7 +6,7 @@ extends RefCounted
 class_name MapTile
 
 ### ----------------------------------------------------
-# VARIABLES
+# Variables
 ### ----------------------------------------------------
 
 var Saver := ObjectSaver.new(self, ["EntityData", "TerrainsData"])
@@ -18,7 +18,7 @@ var EntityData:String = ""
 var TerrainsData:Dictionary = {}
 
 ### ----------------------------------------------------
-# FUNCTIONS
+# Functions
 ### ----------------------------------------------------
 
 func set_terrain(layerID:int, terrainID:int) -> void:

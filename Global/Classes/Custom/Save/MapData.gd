@@ -6,7 +6,7 @@ extends Resource
 class_name MapData
 
 ### ----------------------------------------------------
-# VARIABLES
+# Variables
 ### ----------------------------------------------------
 
 var Saver := ObjectSaver.new(self, ["Data", "MapName"])

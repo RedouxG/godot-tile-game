@@ -6,14 +6,14 @@ extends RefCounted
 class_name STimer
 
 ### ----------------------------------------------------
-### VARIABLES
+### Variables
 ### ----------------------------------------------------
 
 # Time at which timer started
 var startTime:int
 
 ### ----------------------------------------------------
-### FUNCTIONS
+### Functions
 ### ----------------------------------------------------
 
 func _init() -> void:

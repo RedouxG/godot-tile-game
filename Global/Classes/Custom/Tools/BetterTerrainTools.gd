@@ -6,7 +6,7 @@ extends Script
 class_name BetterTerrainTools
 
 ### ----------------------------------------------------
-# FUNCTIONS
+# Functions
 ### ----------------------------------------------------
 
 # Returns all terrains metadata indexed by their id

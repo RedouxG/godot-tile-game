@@ -6,7 +6,7 @@ extends Script
 class_name VectorTools
 
 ### ----------------------------------------------------
-# FUNCTIONS
+# Functions
 ### ----------------------------------------------------
 
 static func vec3i_get_range_2d(atPos:Vector3i, squareRange:int) -> Array[Vector3i]:

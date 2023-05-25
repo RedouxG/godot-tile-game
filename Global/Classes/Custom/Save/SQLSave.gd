@@ -12,7 +12,7 @@ extends RefCounted
 class_name SQLSave
 
 ### ----------------------------------------------------
-# VARIABLES
+# Variables
 ### ----------------------------------------------------
 
 # Names of all tables that need to be created
@@ -41,7 +41,7 @@ var FILE_DIR:String         # Database file dir
 var beVerbose:bool          # For debug purposes
 
 ### ----------------------------------------------------
-# FUNCTIONS
+# Functions
 ### ----------------------------------------------------
 
 func _init(fileDir:String, fileName:String, verbose = false) -> void:

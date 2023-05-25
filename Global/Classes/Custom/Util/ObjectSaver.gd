@@ -1,5 +1,5 @@
 ### ----------------------------------------------------
-### Used to get variables from an object and load them to another
+### Used to get Variables from an object and load them to another
 ### ----------------------------------------------------
 
 extends RefCounted

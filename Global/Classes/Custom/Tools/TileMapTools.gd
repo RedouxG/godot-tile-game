@@ -6,7 +6,7 @@ extends Node
 class_name TileMapTools
 
 ### ----------------------------------------------------
-# FUNCTIONS
+# Functions
 ### ----------------------------------------------------
 
 static func get_layers(TM:TileMap) -> Array[int]:

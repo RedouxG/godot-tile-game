@@ -7,7 +7,7 @@ extends RefCounted
 class_name SQLiteWrapper
 
 ### ----------------------------------------------------
-# VARIABLES
+# Variables
 ### ----------------------------------------------------
 
 const SQLCOMPRESSION = 2
@@ -15,7 +15,7 @@ var SQL_GLOBAL := SQLite.new()
 var path:String
 
 ### ----------------------------------------------------
-# FUNCTIONS
+# Functions
 ### ----------------------------------------------------
 
 func _init(pathToDB:String, verbosity:int) -> void:

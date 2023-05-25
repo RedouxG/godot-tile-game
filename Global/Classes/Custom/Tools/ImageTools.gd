@@ -6,7 +6,7 @@ extends Script
 class_name ImageTools
 
 ### ----------------------------------------------------
-# FUNCTIONS
+# Functions
 ### ----------------------------------------------------
 
 # Puts Outline texture on top of interpolated BG texture

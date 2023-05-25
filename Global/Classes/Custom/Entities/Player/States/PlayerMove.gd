@@ -6,7 +6,7 @@ extends SMState
 class_name PlayerMove
 
 ### ----------------------------------------------------
-# VARIABLES
+# Variables
 ### ----------------------------------------------------
 
 const MOVE_UU = Vector2.UP
@@ -24,7 +24,7 @@ const INPUT_COOLDOWN := 150
 var InputDelayer := STimer.new()
 
 ### ----------------------------------------------------
-# FUNCTIONS
+# Functions
 ### ----------------------------------------------------
 
 func _init(caller:Node2D, name:String) -> void:

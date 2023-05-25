@@ -6,7 +6,7 @@ extends Script
 class_name FileTools
 
 ### ----------------------------------------------------
-# VARIABLES
+# Variables
 ### ----------------------------------------------------
 
 const NEW_LINE = "\n"
@@ -14,7 +14,7 @@ const SKIP_LINE = "\n\n"
 const TAB = "\t"
 
 ### ----------------------------------------------------
-# FUNCTIONS
+# Functions
 ### ----------------------------------------------------
 
 static func get_base_dir(path:String) -> String:

@@ -1,12 +1,12 @@
 ### ----------------------------------------------------
-### Extends on input functions
+### Extends on input Functions
 ### ----------------------------------------------------
 
 extends Script
 class_name InputTools
 
 ### ----------------------------------------------------
-### FUNCTIONS
+### Functions
 ### ----------------------------------------------------
 
 # SHOULD NOT BE USED IN GAME - physical keys vary between keyboards

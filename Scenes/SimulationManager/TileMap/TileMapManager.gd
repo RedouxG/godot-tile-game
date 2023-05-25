@@ -5,7 +5,7 @@
 extends TileMap
 
 ### ----------------------------------------------------
-# VARIABLES
+# Variables
 ### ----------------------------------------------------
 
 var PRE_POS_IN_CHUNK3:Array[Vector3i] = VectorTools.vec3i_get_pos_in_chunk(Vector3i(0,0,0), GLOBAL.TILEMAPS.CHUNK_SIZE)
@@ -15,7 +15,7 @@ var PRE_POS_IN_CHUNK2:Array[Vector2i] = VectorTools.vec2i_get_pos_in_chunk(Vecto
 var RenderedChunks:Array[Vector3i] = []
 
 ### ----------------------------------------------------
-# FUNCTIONS
+# Functions
 ### ----------------------------------------------------
 
 # Loads a chunk to TileMap

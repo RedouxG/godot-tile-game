@@ -6,12 +6,12 @@ extends Script
 class_name ScriptGenerator
 
 ### ----------------------------------------------------
-# FUNCTIONS
+# Functions
 ### ----------------------------------------------------
 
 
-# Function generates multiple variables or const depending on input
-static func create_variables_str(types:Array, varNames:Array, values:Array, marker:String) -> String:
+# Function generates multiple Variables or const depending on input
+static func create_Variables_str(types:Array, varNames:Array, values:Array, marker:String) -> String:
 	var result:String = ""
 	var check = varNames.size() == values.size() and varNames.size() == types.size()
 	assert(check) #,"Amount of types, varNames and values must be the same")

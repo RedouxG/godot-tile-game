@@ -8,10 +8,10 @@
 ### 	F       - Add filter to listed tiles
 ### ----------------------------------------------------
 
-extends Node2D
+extends DrawNode
 
 ### ----------------------------------------------------
-# VARIABLES
+# Variables
 ### ----------------------------------------------------
 
 const EDITOR_SAVE_NAME := "EDITOR"
@@ -48,7 +48,7 @@ var EditorStateMachine := StateMachine.new()
 @onready var GoToState := GOTO_STATE.new(self, "GOTO_STATE")
 
 ### ----------------------------------------------------
-# FUNCTIONS
+# Functions
 ### ----------------------------------------------------
 
 func _ready() -> void:
@@ -82,45 +82,48 @@ func _ready() -> void:
 func _input(event:InputEvent) -> void:
 	EditorStateMachine.update_state_input(event)
 	if(event is InputEventMouseMotion):
+		_draw_loaded_chunks()
+		_draw_selected_chunk()
+		_draw_selected_tile()
 		queue_redraw()
 
-func _draw():
-	var mousePos:Vector2 = get_global_mouse_position()
-	_draw_loaded_chunks()
-	_draw_selected_chunk(mousePos)
-	_draw_selected_tile(mousePos)
-
 # Draws a square to indicate current cell pointed by mouse cursor
-func _draw_selected_tile(mousePos:Vector2) -> void:
-	var cellPos:Vector2i = VectorTools.scale_down_vec2i(mousePos, GLOBAL.TILEMAPS.BASE_SCALE)
+func _draw_selected_tile() -> void:
+	var cellPos:Vector2i = VectorTools.scale_down_vec2i(
+		get_global_mouse_position(), GLOBAL.TILEMAPS.BASE_SCALE)
 	var rect := Rect2i(cellPos * GLOBAL.TILEMAPS.BASE_SCALE, GLOBAL.TILEMAPS.TILE_SIZE)
 	UIElement.CellText.text = "Cell: " + str(cellPos)
-	draw_rect(rect, Color.CRIMSON, false, 1)
+	add_function_to_DrawQueue(Callable(self, "draw_rect").bindv([rect, Color.CRIMSON, false, 1]))
 
 # Draws a square to indicate current chunk pointed by mouse cursor
-func _draw_selected_chunk(mousePos:Vector2) -> void:
-	var chunkPos:Vector2i = VectorTools.scale_down_vec2i(mousePos, GLOBAL.TILEMAPS.CHUNK_SIZE * GLOBAL.TILEMAPS.BASE_SCALE)
+func _draw_selected_chunk() -> void:
+	var chunkPos:Vector2i = VectorTools.scale_down_vec2i(
+		get_global_mouse_position(), GLOBAL.TILEMAPS.CHUNK_SIZE * GLOBAL.TILEMAPS.BASE_SCALE)
 	var rect := Rect2i(chunkPos * CHUNK_PIXEL_SIZE, CHUNK_SIZE_VECTOR)
 	UIElement.ChunkText.text = "Chunk: " + str(chunkPos)
-	draw_rect(rect, Color.BLACK, false, 1)
+	add_function_to_DrawQueue(Callable(self, "draw_rect").bindv([rect, Color.BLACK, false, 1]))
 
 # Draws squares around all loaded chunks
 func _draw_loaded_chunks():
 	for pos in $TileMapManager.RenderedChunks:
-		draw_rect(Rect2i(VectorTools.vec3i_vec2i(pos) * CHUNK_PIXEL_SIZE, CHUNK_SIZE_VECTOR), Color.GRAY, false, 1)
+		var rect := Rect2i(VectorTools.vec3i_vec2i(pos) * CHUNK_PIXEL_SIZE, CHUNK_SIZE_VECTOR)
+		add_function_to_DrawQueue(Callable(self, "draw_rect").bindv([rect, Color.GRAY, false, 1]))
 
 ### ----------------------------------------------------
-# FUNCTIONS
+# Functions
 ### ----------------------------------------------------
 
 # Default editor state
 class TILE_STATE extends SMState:
 	enum DRAW_MODE {Single, Multiple}
 	var currentDrawMode:int = DRAW_MODE.Single
+	var DrawSelector:Selector
 	
 	var TM:TileMap
 	var TS:TileSet
 	var Cam:Camera2D
+
+	var KeyInputHandler:InputHandler = InputHandler.new()
 	
 	var MAX_LAYERS:int = 0
 	
@@ -137,9 +140,22 @@ class TILE_STATE extends SMState:
 		Cam = caller.get_node("Cam")
 		MAX_LAYERS = TM.get_layers_count()
 		for index in MAX_LAYERS:
-			Caller.UIElement.TerrainSelect.add_item(
-				TM.get_layer_name(index) + " (" + str(index) + ")",
-				index)
+			Caller.UIElement.TerrainSelect.add_item(TM.get_layer_name(index) + " (" + str(index) + ")",index)
+		DrawSelector = Selector.new(caller)
+	
+	func _state_set() -> void:
+		KeyInputHandler.add_function(KEY_E, Callable(self, "add_currentLayerID").bindv([1]))
+		KeyInputHandler.add_function(KEY_Q, Callable(self, "add_currentLayerID").bindv([-1]))
+		KeyInputHandler.add_function(KEY_X, Callable(self, "add_terrainIndex").bindv([1]))
+		KeyInputHandler.add_function(KEY_Z, Callable(self, "add_terrainIndex").bindv([-1]))
+		KeyInputHandler.add_function(KEY_MINUS, Callable(self, "change_elevation").bindv([-1]))
+		KeyInputHandler.add_function(KEY_EQUAL, Callable(self, "change_elevation").bindv([1]))
+		KeyInputHandler.add_function(KEY_1, Callable(self, "set_draw_mode").bindv([DRAW_MODE.Single]))
+		KeyInputHandler.add_function(KEY_2, Callable(self, "set_draw_mode").bindv([DRAW_MODE.Multiple]))
+		KeyInputHandler.add_function(KEY_F, Callable(StateMaster, "set_state").bindv([Caller.FilterState]))
+		KeyInputHandler.add_function(KEY_CTRL, Callable(StateMaster, "set_state").bindv([Caller.SaveState]))
+		KeyInputHandler.add_function(KEY_ALT, Callable(StateMaster, "set_state").bindv([Caller.LoadState]))
+		KeyInputHandler.add_function(KEY_G, Callable(StateMaster, "set_state").bindv([Caller.GoToState]))
 	
 	func tile_place_input(event:InputEvent) -> void:
 		if(not (event is InputEventMouseButton or event is InputEventMouseMotion)):
@@ -150,8 +166,14 @@ class TILE_STATE extends SMState:
 		if(currentDrawMode == DRAW_MODE.Single):
 			if(event.button_mask == MOUSE_BUTTON_MASK_LEFT):  
 				set_selected_tile(ShownTerrains[terrainIndex])
-			if(event.button_mask == MOUSE_BUTTON_MASK_RIGHT): 
-				set_selected_tile(-1)
+		if(currentDrawMode == DRAW_MODE.Multiple):
+			if(event.is_action_pressed("LeftClick")):  
+				print("hold")
+			if(event.is_action_released("LeftClick")):
+				print("drop")
+
+		if(event.button_mask == MOUSE_BUTTON_MASK_RIGHT): 
+			set_selected_tile(-1)
 	
 	func camera_movement_input(event:InputEvent) -> void:
 		if(event is InputEventMouseButton):
@@ -169,35 +191,14 @@ class TILE_STATE extends SMState:
 		if(not UITools.is_mouse_on_ui(Caller.UIElement.SelectionUI, Caller.UIElement.UIRoot)):
 			camera_movement_input(event)
 			tile_place_input(event)
-		
-		if(InputTools.is_key_pressed(event, KEY_E)):
-			add_currentLayerID(1)
-		elif(InputTools.is_key_pressed(event, KEY_Q)): 
-			add_currentLayerID(-1)
-		elif(InputTools.is_key_pressed(event, KEY_X)):
-			add_terrainIndex(1)
-		elif(InputTools.is_key_pressed(event, KEY_Z)): 
-			add_terrainIndex(-1)
-		elif(InputTools.is_key_pressed(event, KEY_MINUS)):
-			change_elevation(-1)
-		elif(InputTools.is_key_pressed(event, KEY_EQUAL)):
-			change_elevation(1)
-		elif(InputTools.is_key_pressed(event, KEY_F)):
-			StateMaster.set_state(Caller.FilterState)
-		elif(InputTools.is_key_pressed(event, KEY_CTRL)):
-			StateMaster.set_state(Caller.SaveState)
-		elif(InputTools.is_key_pressed(event, KEY_ALT)):
-			StateMaster.set_state(Caller.LoadState)
-		elif(InputTools.is_key_pressed(event, KEY_G)):
-			StateMaster.set_state(Caller.GoToState)
+		KeyInputHandler.handle_input_keycode(event)
 	
+	func set_draw_mode(drawMode:int) -> void:
+		currentDrawMode = drawMode
+
 	func add_currentLayerID(value:int) -> void:
 		currentLayerID += value
-		currentLayerID = clamp(currentLayerID, 0, MAX_LAYERS - 1)
-		fill_item_list()
-		terrainIndex = 0
-		Caller.UIElement.TerrainSelect.select(currentLayerID)
-		Caller.UIElement.TileItemList.select(terrainIndex)
+		change_currentLayerID(currentLayerID)
 	
 	func change_currentLayerID(value:int) -> void:
 		currentLayerID = value
@@ -205,7 +206,8 @@ class TILE_STATE extends SMState:
 		fill_item_list()
 		terrainIndex = 0
 		Caller.UIElement.TerrainSelect.select(currentLayerID)
-		Caller.UIElement.TileItemList.select(terrainIndex)
+		if(ShownTerrains.size() < 0): 
+			Caller.UIElement.TileItemList.select(terrainIndex)
 	
 	func add_terrainIndex(value:int) -> void:
 		terrainIndex += value
@@ -307,7 +309,6 @@ class LOAD_STATE extends SMState:
 			Logger.log_err(["Failed to load: ", mapName])
 		Caller.TM.refresh_all_chunks()
 		
-	
 	func end_state() -> void:
 		Caller.get_node("TileMapManager").unload_all()
 		Caller._hide_lineEdit(Caller.UIElement.LoadInput)

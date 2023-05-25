@@ -6,7 +6,7 @@ extends GameEntity
 class_name PlayerEntity
 
 ### ----------------------------------------------------
-# VARIABLES
+# Variables
 ### ----------------------------------------------------
 
 var PlayerStateMachine := StateMachine.new()
@@ -14,7 +14,7 @@ var Movement := PlayerMove.new(self, "PlayerMove")
 var Inventory := {}
 
 ### ----------------------------------------------------
-# FUNCTIONS
+# Functions
 ### ----------------------------------------------------
 
 func _init() -> void:
