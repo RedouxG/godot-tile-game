@@ -34,6 +34,7 @@ const CHUNK_SIZE_VECTOR = Vector2i(CHUNK_PIXEL_SIZE, CHUNK_PIXEL_SIZE)
 	FilterText =     $UIElements/MC/GC/Info/FilterInput,
 	ChunkText =      $UIElements/MC/GC/Info/ChunkText,
 	ElevationText =  $UIElements/MC/GC/Info/ElevationText,
+	DrawModeText =   $UIElements/MC/GC/Info/DrawMode,
 }
 
 @onready var TM:TileMap = $TileMapManager
@@ -123,7 +124,7 @@ class TILE_STATE extends SMState:
 	var TS:TileSet
 	var Cam:Camera2D
 
-	var KeyInputHandler:InputHandler = InputHandler.new()
+	var KeyInputHandler = InputHandler.new()
 	
 	var MAX_LAYERS:int = 0
 	
@@ -141,7 +142,7 @@ class TILE_STATE extends SMState:
 		MAX_LAYERS = TM.get_layers_count()
 		for index in MAX_LAYERS:
 			Caller.UIElement.TerrainSelect.add_item(TM.get_layer_name(index) + " (" + str(index) + ")",index)
-		DrawSelector = Selector.new(caller)
+		DrawSelector = DrawNode.Selector.new(caller)
 	
 	func _state_set() -> void:
 		KeyInputHandler.add_function(KEY_E, Callable(self, "add_currentLayerID").bindv([1]))
@@ -168,9 +169,11 @@ class TILE_STATE extends SMState:
 				set_selected_tile(ShownTerrains[terrainIndex])
 		if(currentDrawMode == DRAW_MODE.Multiple):
 			if(event.is_action_pressed("LeftClick")):  
-				print("hold")
+				DrawSelector.start(Caller.get_global_mouse_position())
 			if(event.is_action_released("LeftClick")):
-				print("drop")
+				DrawSelector.end()
+			if(DrawSelector.isActive):
+				DrawSelector.draw_selected_area(Caller.get_global_mouse_position())
 
 		if(event.button_mask == MOUSE_BUTTON_MASK_RIGHT): 
 			set_selected_tile(-1)
@@ -194,7 +197,10 @@ class TILE_STATE extends SMState:
 		KeyInputHandler.handle_input_keycode(event)
 	
 	func set_draw_mode(drawMode:int) -> void:
+		if(not drawMode in DRAW_MODE.values()):
+			return
 		currentDrawMode = drawMode
+		Caller.UIElement.DrawModeText.text = DRAW_MODE.keys()[drawMode] + " selection mode"
 
 	func add_currentLayerID(value:int) -> void:
 		currentLayerID += value

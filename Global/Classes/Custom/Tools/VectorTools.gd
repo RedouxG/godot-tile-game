@@ -101,3 +101,8 @@ static func vec3i_get_precomputed_pos_in_chunk(chunk:Vector3i, precomputedArr:Ar
 	for index in arrcopy.size():
 		arrcopy[index] += chunk * arrSize
 	return arrcopy
+
+static func get_pos_in_rect2i_chunk(rect:Rect2i, chunkSize:int) -> Array[Vector2i]:
+	var packedPositions :Array[Vector3i] = []
+
+	return []
