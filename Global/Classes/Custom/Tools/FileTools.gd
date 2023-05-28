@@ -14,29 +14,71 @@ const SKIP_LINE = "\n\n"
 const TAB = "\t"
 
 ### ----------------------------------------------------
+# Class
+### ----------------------------------------------------
+
+# Represents a single file
+class FileData extends RefCounted:
+	var name:String
+	var basePath:String
+	var fullPath:String
+	var extension:String
+
+	var isDir:bool
+	var isFile:bool
+
+	func _init(filePath:String) -> void:
+		fullPath = filePath
+		isDir = DirAccess.dir_exists_absolute(filePath)
+		isFile = FileAccess.file_exists(filePath)
+		basePath = FileTools.get_base_dir(fullPath)
+		name = filePath.get_file()
+		extension = filePath.get_extension()
+
+	func _to_string() -> String:
+		return "(FileData) " + name
+
+class FileSystem extends RefCounted:
+	# Dir system dictionary with FileData keys
+	var DictFileData := {}
+
+	# Dir system dictionary with file/dir name keys
+	var DictFileNames := {}
+
+	func _init(dictFileData:Dictionary) -> void:
+		DictFileData = dictFileData
+		DictFileNames = _convert_to_DictFileNames(dictFileData)
+
+	func _convert_to_DictFileNames(dictFileData:Dictionary) -> Dictionary:
+		var dictFileNames := {}
+		for fileData in dictFileData:
+			if(dictFileData[fileData] != null):
+				dictFileNames[fileData.name] = _convert_to_DictFileNames(dictFileData[fileData])
+			else:
+				dictFileNames[fileData.name] = null
+		return dictFileNames
+
+### ----------------------------------------------------
 # Functions
 ### ----------------------------------------------------
 
 static func get_base_dir(path:String) -> String:
 	return path.get_base_dir() + '/'
 
-static func save_as_str(content:String,path:String) -> int:
+static func save_string_to_file(content:String, path:String) -> int:
 	var file := FileAccess.open(path, FileAccess.WRITE)
 	file.store_string(content)
 	return file.get_error()
 
-# Loading resource as string, returns empty string on failure
-static func load_as_str(path:String) -> String:
+static func load_file_as_string(path:String) -> String:
 	var file := FileAccess.open(path, FileAccess.READ)
 	if(not file.get_error() == OK): return ""
 	var content = file.get_as_text()
 	return content
 
-# Shortcut to copy file from path to another path
 static func copy_file(from:String, to:String) -> int:
 	return DirAccess.copy_absolute(from, to)
 
-# Creates empty file
 static func create_empty_file(path:String) -> int:
 	var file := FileAccess.open(path, FileAccess.WRITE)
 	return file.get_error()
@@ -44,7 +86,6 @@ static func create_empty_file(path:String) -> int:
 static func create_dir(path:String) -> int:
 	return DirAccess.make_dir_absolute(path)
 
-# Deletes a file
 static func delete_file(path:String) -> int:
 	return DirAccess.remove_absolute(path)
 
@@ -52,16 +93,24 @@ static func delete_dir(path:String) -> int:
 	return DirAccess.remove_absolute(path)
 
 static func delete_dir_recursive(path:String) -> int:
-	for fileData in get_dirs_FileData(path):
+	for fileData in get_directories_as_FileData_at(path):
 		var err := delete_dir_recursive(fileData.path)
 		if(err!=OK): return err
 	
-	for fileData in get_files_FileData(path):
+	for fileData in get_files_as_FileData_at(path):
 		var err := delete_file(fileData.path)
 		if(err!=OK): return err
 	return DirAccess.remove_absolute(path)
 
-static func get_dirs_FileData(path:String) -> Array[FileData]:
+static func get_directories_at(path:String) -> Array[String]:
+	var result:Array[String] = []
+	if path[-1] != '/':
+			path += '/'
+	for dirName in DirAccess.get_directories_at(path):
+		result.append(path+dirName)
+	return result
+
+static func get_directories_as_FileData_at(path:String) -> Array[FileData]:
 	var result:Array[FileData] = []
 	if path[-1] != '/':
 			path += '/'
@@ -69,7 +118,7 @@ static func get_dirs_FileData(path:String) -> Array[FileData]:
 		result.append(FileData.new(path+dirName))
 	return result
 
-static func get_files(path:String, ommitImport = true) -> Array[String]:
+static func get_files_at(path:String, ommitImport = true) -> Array[String]:
 	var result:Array[String] = []
 	for fileName in DirAccess.get_files_at(path):
 		if(ommitImport and "import" in fileName):
@@ -77,7 +126,7 @@ static func get_files(path:String, ommitImport = true) -> Array[String]:
 		result.append(fileName)
 	return result
 
-static func get_files_FileData(path:String, ommitImport = true) -> Array[FileData]:
+static func get_files_as_FileData_at(path:String, ommitImport = true) -> Array[FileData]:
 	var result:Array[FileData] = []
 	if path[-1] != '/':
 			path += '/'
@@ -109,9 +158,9 @@ static func get_dir_system_recursive(path:String) -> Dictionary:
 	if(not dir_exists(path)):
 		return DirSystem
 	
-	for fileData in get_dirs_FileData(path):
+	for fileData in get_directories_as_FileData_at(path):
 		DirSystem[fileData] = get_dir_system_recursive(fileData.fullPath)
-	for fileData in get_files_FileData(path):
+	for fileData in get_files_as_FileData_at(path):
 		DirSystem[fileData] = null
 	return DirSystem
 

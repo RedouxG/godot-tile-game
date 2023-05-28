@@ -36,16 +36,18 @@ class Selector extends RefCounted:
         StartingPos = startPos
         isActive = true
 
-    func draw_selected_area(pos:Vector2i) -> void:
-        var rect := Rect2i(StartingPos, pos - StartingPos)
-        Caller.add_function_to_DrawQueue(Callable(Caller, "draw_rect").bindv([rect, _color, _fill, _width]))
+    func draw_selected_area(endPos:Vector2i) -> void:
+        Caller.add_function_to_DrawQueue(
+            Callable(Caller, "draw_rect").bindv([get_selection_rect(endPos), _color, _fill, _width]))
     
+    func get_selection_rect(endPos:Vector2i) -> Rect2i:
+        return Rect2i(StartingPos, endPos - StartingPos)
+
     func end() -> void:
         isActive = false
     
-    func get_positions_in_selected(pos:Vector2i, chunkSize:int) -> Array[Vector2i]:
-        
-        return []
+    func get_cells_in_selected_area(endPos:Vector2i, cellSize:int) -> Array[Vector2i]:
+        return VectorTools.get_cells_in_rect2i(get_selection_rect(endPos), cellSize)
 
 
 ### ----------------------------------------------------

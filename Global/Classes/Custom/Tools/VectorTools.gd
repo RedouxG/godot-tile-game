@@ -102,7 +102,14 @@ static func vec3i_get_precomputed_pos_in_chunk(chunk:Vector3i, precomputedArr:Ar
 		arrcopy[index] += chunk * arrSize
 	return arrcopy
 
-static func get_pos_in_rect2i_chunk(rect:Rect2i, chunkSize:int) -> Array[Vector2i]:
-	var packedPositions :Array[Vector3i] = []
-
-	return []
+static func get_cells_in_rect2i(rectLocal:Rect2i, cellSize:int) -> Array[Vector2i]:
+	var packedPositions:Array[Vector2i] = []
+	var xRange := range(rectLocal.position.x, rectLocal.end.x, cellSize) \
+		if rectLocal.position.x < rectLocal.end.x else range(rectLocal.end.x, rectLocal.position.x, cellSize)
+	var yRange := range(rectLocal.position.y, rectLocal.end.y, cellSize) \
+		if rectLocal.position.y < rectLocal.end.y else range(rectLocal.end.y, rectLocal.position.y, cellSize)
+	
+	for x in xRange:
+		for y in yRange:
+			packedPositions.append(scale_down_vec2i(Vector2i(x,y), cellSize))
+	return packedPositions
