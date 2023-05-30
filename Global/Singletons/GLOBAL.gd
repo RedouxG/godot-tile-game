@@ -10,6 +10,10 @@ extends Node
 # Variables
 ### ----------------------------------------------------
 
+class GAME:
+	const MAX_ELEVATION = 100
+	const MIN_ELEVATION = -100
+
 class SIMULATION:
 	const SIM_RANGE = 1   # How far (chunks) world will generate 
 
