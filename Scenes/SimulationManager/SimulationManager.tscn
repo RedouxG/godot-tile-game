@@ -1,9 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://d3bholxtgfyne"]
-
-[ext_resource type="Script" path="res://Scenes/SimulationManager/SimulationManager.gd" id="1_4hfrs"]
-[ext_resource type="PackedScene" uid="uid://dv4r7nrdv28sg" path="res://Scenes/SimulationManager/TileMap/TileMapManager.tscn" id="1_mj0vp"]
-
-[node name="SimulationMananger" type="Node2D"]
-script = ExtResource("1_4hfrs")
-
-[node name="TileMapManager" parent="." instance=ExtResource("1_mj0vp")]

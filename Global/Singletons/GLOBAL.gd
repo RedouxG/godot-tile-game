@@ -11,19 +11,19 @@ extends Node
 ### ----------------------------------------------------
 
 class GAME:
+	const SIM_RANGE = 1   # How far (chunks) world will generate 
 	const MAX_ELEVATION = 100
 	const MIN_ELEVATION = -100
 
-class SIMULATION:
-	const SIM_RANGE = 1   # How far (chunks) world will generate 
-
-class TILEMAPS: # Stores data regardning map, TileMaps ect
+class TILEMAPS:
 	const CHUNK_SIZE = 8  # Keep it 2^x (min 8,max 32 - for both performance and drawing reasons)
 	const BASE_SCALE = 16 # Pixel size of tiles
 	const TILE_SIZE = Vector2i(BASE_SCALE, BASE_SCALE) # Size of a tile
 
 class TEXTURES:
 	const ENTITY_SET_PATH = "res://Resources/Textures/EntitySet.png"
+
+var ChunkManager := ChunkHandler.new(GAME.SIM_RANGE)
 
 func _enter_tree() -> void:
 	Logger.log_session_start()

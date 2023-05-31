@@ -18,6 +18,17 @@ var RenderedChunks:Array[Vector3i] = []
 # Functions
 ### ----------------------------------------------------
 
+func update(ChunksToRender:Array[Vector3i]) -> void:
+	# Loading chunks that are not yet rendered
+	for chunkPos in ChunksToRender:
+		if(RenderedChunks.has(chunkPos)): continue
+		load_chunk(chunkPos)
+	
+	# Unload old chunks that are not meant to be seen
+	for i in range(RenderedChunks.size() - 1, -1, -1):
+		if(ChunksToRender.has(RenderedChunks[i])): continue
+		unload_chunk(RenderedChunks[i])
+
 # Loads a chunk to TileMap
 func load_chunk(chunkPos:Vector3i) -> void:
 	var ChunkData := SaveManager.get_chunk(chunkPos, GLOBAL.TILEMAPS.CHUNK_SIZE)

@@ -45,7 +45,6 @@ const GOTO_STATE = preload("res://DevTools/MapEditor/States/GotoState.gd")
 
 @onready var TM:TileMap = $TileMapManager
 @onready var TS:TileSet = $TileMapManager.tile_set
-@onready var PREC_RENDER_RANGE := VectorTools.vec3i_get_range_2d(Vector3i(0,0,0), GLOBAL.SIMULATION.SIM_RANGE)
 
 var EditorStateMachine := StateMachine.new()
 @onready var TileState := TILE_STATE.new(self, "TILE_STATE")
@@ -60,6 +59,7 @@ var EditorStateMachine := StateMachine.new()
 
 func _ready() -> void:
 	RenderingServer.set_default_clear_color(Color.DARK_SLATE_BLUE)
+	GLOBAL.ChunkManager.add_listener_function(Callable(TM, "update"))
 	
 	var isOK := true
 	EditorStateMachine.add_state(TileState)
@@ -149,20 +149,7 @@ func _on_goto_input_text_submitted(new_text: String) -> void:
 # Renders chunks as in normal game based on camera position (as simulated entity)
 func update_EditedMap_chunks() -> void:
 	var camChunk := VectorTools.scale_down_vec2i($Cam.global_position, GLOBAL.TILEMAPS.CHUNK_SIZE*GLOBAL.TILEMAPS.BASE_SCALE)
-	var chunksToRender := VectorTools.vec3i_get_precomputed_range(
-		VectorTools.vec2i_vec3i(camChunk, TileState.currentElevation),
-		PREC_RENDER_RANGE)
-
-	# Loading chunks that are not yet rendered
-	for chunkPos in chunksToRender:
-		if(TM.RenderedChunks.has(chunkPos)): continue
-		TM.load_chunk(chunkPos)
-	
-	# Unload old chunks that are not meant to be seen
-	for i in range(TM.RenderedChunks.size() - 1, -1, -1):
-		var chunkPos:Vector3i = TM.RenderedChunks[i]
-		if(chunksToRender.has(chunkPos)): continue
-		TM.unload_chunk(chunkPos)
+	GLOBAL.ChunkManager.update(VectorTools.vec2i_vec3i(camChunk, TileState.currentElevation))
 
 ### ----------------------------------------------------
 # MISC
