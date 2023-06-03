@@ -11,7 +11,7 @@ class_name ObjectSaver
 
 # List of variable names that will be get and set from owner
 var PropertyNames:Array[String]
-var Owner
+var Owner:Variant
 
 ### ----------------------------------------------------
 ### Functions

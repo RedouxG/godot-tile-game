@@ -148,7 +148,7 @@ func decrement_elevation() -> void:
 func change_elevation(e:int) -> void:
 	currentElevation = e
 	Caller.UIElement.ElevationText.text = "Elevation: " + str(currentElevation)
-	TM.unload_all()
+	TM.refresh_all_chunks()
 
 # Fills item list with TileMap tiles
 func fill_item_list() -> void:

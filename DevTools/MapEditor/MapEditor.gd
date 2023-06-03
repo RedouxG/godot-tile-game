@@ -146,9 +146,13 @@ func _on_goto_input_text_submitted(new_text: String) -> void:
 # Update chunks
 ### ----------------------------------------------------
 
+var prevCamChunk:Vector2i
 # Renders chunks as in normal game based on camera position (as simulated entity)
 func update_EditedMap_chunks() -> void:
 	var camChunk := VectorTools.scale_down_vec2i($Cam.global_position, GLOBAL.TILEMAPS.CHUNK_SIZE*GLOBAL.TILEMAPS.BASE_SCALE)
+	if(camChunk == prevCamChunk):
+		return
+	prevCamChunk = camChunk
 	GLOBAL.ChunkManager.update(VectorTools.vec2i_vec3i(camChunk, TileState.currentElevation))
 
 ### ----------------------------------------------------

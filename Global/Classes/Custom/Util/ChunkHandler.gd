@@ -25,7 +25,6 @@ func add_listener_function(function:Callable) -> void:
 	_ListenerFunctions.append(function)
 
 func update(focusPosition:Vector3) -> void:
-	ChunksInRange = VectorTools.vec3i_get_precomputed_range(
-		focusPosition, _PREC_RENDER_RANGE)
+	ChunksInRange = VectorTools.vec3i_get_precomputed_range(focusPosition, _PREC_RENDER_RANGE)
 	for function in _ListenerFunctions:
 		function.call(ChunksInRange)

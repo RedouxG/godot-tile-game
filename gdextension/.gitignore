@@ -1,0 +1,8 @@
+.sconsign.dblite
+godot-cpp
+bin/*.dll
+bin/*.exp
+bin/*.lib
+.vscode
+
+src/*.obj

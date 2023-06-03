@@ -38,10 +38,8 @@ func load_chunk(chunkPos:Vector3i) -> void:
 		for layerID in MT.TerrainsData:
 			BetterTerrain.set_cell(self, layerID, VectorTools.vec3i_vec2i(pos), MT.get_terrain(layerID))
 	
-	for layerID in get_layers_count():
-		BetterTerrain.update_terrain_cells(self, layerID,
-			VectorTools.vec2i_get_precomputed_pos_in_chunk(VectorTools.vec3i_vec2i(chunkPos), PRE_POS_IN_CHUNK2))
-	
+	_update_tiles_bitmask(VectorTools.vec3i_get_precomputed_pos_in_chunk(chunkPos, PRE_POS_IN_CHUNK3))
+
 	if(not RenderedChunks.has(chunkPos)):
 		RenderedChunks.append(chunkPos)
 
@@ -75,9 +73,13 @@ func refresh_all_chunks() -> void:
 func refresh_tile(pos:Vector3i) -> void:
 	unload_tile(pos)
 	load_tile(pos)
-	for layerID in get_layers_count():
-		BetterTerrain.update_terrain_cell(self, layerID, VectorTools.vec3i_vec2i(pos))
+	_update_tiles_bitmask([pos])
 
 func unload_all() -> void:
 	clear()
 	RenderedChunks.clear()
+
+func _update_tiles_bitmask(positions:Array[Vector3i]) -> void:
+	for pos in positions:
+		for layerID in get_layers_count():
+			BetterTerrain.update_terrain_cell(self, layerID, VectorTools.vec3i_vec2i(pos))
