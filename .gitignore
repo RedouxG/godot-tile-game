@@ -4,6 +4,7 @@ addons/gut
 addons/godot-sqlite
 addons/better-terrain
 ./vscode
+.vscode
 .gut_editor_config.json
 
 # Godot 4+ specific ignores
