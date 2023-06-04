@@ -19,7 +19,7 @@ void initialize_util_module(ModuleInitializationLevel p_level) {
 	if (p_level != MODULE_INITIALIZATION_LEVEL_EDITOR) {
 		return;
 	}
-	ClassDB::register_class<VectorUtils>();
+	ClassDB::register_abstract_class<VectorUtils>();
 }
 
 void uninitialize_util_module(ModuleInitializationLevel p_level) {
@@ -35,7 +35,7 @@ GDExtensionBool GDE_EXPORT util_library_init(const GDExtensionInterface *p_inter
 
 	init_obj.register_initializer(initialize_util_module);
 	init_obj.register_terminator(uninitialize_util_module);
-	init_obj.set_minimum_library_initialization_level(MODULE_INITIALIZATION_LEVEL_SCENE);
+	init_obj.set_minimum_library_initialization_level(MODULE_INITIALIZATION_LEVEL_EDITOR);
 
 	return init_obj.init();
 }
