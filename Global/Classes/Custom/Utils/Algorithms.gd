@@ -1,16 +1,15 @@
 ### ----------------------------------------------------
-### Class for casting vision on a tilemap
-### Source: http://www.roguebasin.com/index.php/FOV_using_recursive_shadowcasting#Shadowcasting
+### Handles formatting numbers to readable string
 ### ----------------------------------------------------
 
 extends Script
-class_name VisionCast
+class_name Algorithms
 
 ### ----------------------------------------------------
-# Variables
+### Variables
 ### ----------------------------------------------------
 
-const MULT := [
+const _VISION_MULTIPLICATION_MATRIX := [
 	[1,  0,  0, -1, -1,  0,  0,  1],
 	[0,  1, -1,  0,  0, -1,  1,  0],
 	[0,  1,  1,  0,  0, -1, -1,  0],
@@ -18,9 +17,18 @@ const MULT := [
 ]
 
 ### ----------------------------------------------------
-# Functions
+### Scripts
 ### ----------------------------------------------------
 
+# Compresses string and saves bytes as base64 string
+static func compress_str(Str:String, CMode:int) -> String:
+	var B64Str := Marshalls.utf8_to_base64(Str)
+	return Marshalls.raw_to_base64(Marshalls.base64_to_raw(B64Str).compress(CMode))
+
+# Decompresses string
+static func decompress_str(B64C:String, CMode:int, DCSize:int) -> String:
+	var B64DC := Marshalls.raw_to_base64(Marshalls.base64_to_raw(B64C).decompress(DCSize,CMode))
+	return Marshalls.base64_to_utf8(B64DC)
 
 # WallMap { pos:isTransparent }
 static func get_visible_points(vantagePoint:Vector2, WallMap:Dictionary, maxDistance:int = 30) -> Array:
@@ -34,10 +42,10 @@ static func _cast_light(losCache:Array[Vector2], WallMap:Dictionary, cx:float, c
 	start:float, end:float, radius:int, region:int) -> void:
 	if(start < end): return
 	
-	var xx:int = MULT[0][region]
-	var xy:int = MULT[1][region]
-	var yx:int = MULT[2][region]
-	var yy:int = MULT[3][region]
+	var xx:int = _VISION_MULTIPLICATION_MATRIX[0][region]
+	var xy:int = _VISION_MULTIPLICATION_MATRIX[1][region]
+	var yx:int = _VISION_MULTIPLICATION_MATRIX[2][region]
+	var yy:int = _VISION_MULTIPLICATION_MATRIX[3][region]
 	var radius_squared := radius*radius
 	
 	for j in range(row, radius+1):

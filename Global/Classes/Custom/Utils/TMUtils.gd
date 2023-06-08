@@ -3,7 +3,7 @@
 ### ----------------------------------------------------
 
 extends Node
-class_name TileMapTools
+class_name TMUtils
 
 ### ----------------------------------------------------
 # Functions

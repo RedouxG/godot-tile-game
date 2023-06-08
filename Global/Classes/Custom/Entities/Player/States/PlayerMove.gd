@@ -34,8 +34,8 @@ func move_player(direction:Vector2) -> void:
 	if(not InputDelayer.time_from_start(INPUT_COOLDOWN)):
 		return
 	
-	Caller.MapPosition += VectorTools.vec2_vec3(direction * GLOBAL.TILEMAPS.BASE_SCALE)
-	emit_signal("PlayerMoved", VectorTools.vec3_vec2(Caller.MapPosition))
+	Caller.MapPosition += VectorUtils.vec2_vec3(direction * GLOBAL.TILEMAPS.BASE_SCALE)
+	emit_signal("PlayerMoved", VectorUtils.vec3_vec2(Caller.MapPosition))
 	InputDelayer.start()
 
 func update_input(_event:InputEvent) -> void:

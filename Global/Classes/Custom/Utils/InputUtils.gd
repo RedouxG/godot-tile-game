@@ -3,7 +3,7 @@
 ### ----------------------------------------------------
 
 extends Script
-class_name InputTools
+class_name InputUtils
 
 ### ----------------------------------------------------
 ### Functions

@@ -11,7 +11,7 @@
 #include <godot_cpp/core/defs.hpp>
 #include <godot_cpp/godot.hpp>
 
-#include "VectorUtils.h"
+#include "VectorUtilsExt.h"
 
 using namespace godot;
 
@@ -19,7 +19,7 @@ void initialize_util_module(ModuleInitializationLevel p_level) {
 	if (p_level != MODULE_INITIALIZATION_LEVEL_EDITOR) {
 		return;
 	}
-	ClassDB::register_abstract_class<VectorUtils>();
+	ClassDB::register_class<VectorUtilsExt>();
 }
 
 void uninitialize_util_module(ModuleInitializationLevel p_level) {

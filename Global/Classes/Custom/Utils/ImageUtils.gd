@@ -3,7 +3,7 @@
 ### ----------------------------------------------------
 
 extends Script
-class_name ImageTools
+class_name ImageUtils
 
 ### ----------------------------------------------------
 # Functions

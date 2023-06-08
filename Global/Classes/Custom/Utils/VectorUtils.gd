@@ -3,7 +3,7 @@
 ### ----------------------------------------------------
 
 extends Script
-class_name VectorTools
+class_name VectorUtils
 
 ### ----------------------------------------------------
 # Functions
@@ -104,6 +104,8 @@ static func vec3i_get_precomputed_pos_in_chunk(chunk:Vector3i, precomputedArr:Ar
 
 static func get_cells_in_rect2i(rectLocal:Rect2i, cellSize:int) -> Array[Vector2i]:
 	var packedPositions:Array[Vector2i] = []
+	if(rectLocal.size == Vector2i(0,0)): 
+		return packedPositions
 	var xRange := range(rectLocal.position.x, rectLocal.end.x, cellSize) \
 		if rectLocal.position.x < rectLocal.end.x else range(rectLocal.end.x, rectLocal.position.x, cellSize)
 	var yRange := range(rectLocal.position.y, rectLocal.end.y, cellSize) \

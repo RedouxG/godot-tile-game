@@ -47,7 +47,7 @@ class Selector extends RefCounted:
         isActive = false
     
     func get_cells_in_selected_area(endPos:Vector2i, cellSize:int) -> Array[Vector2i]:
-        return VectorTools.get_cells_in_rect2i(get_selection_rect(endPos), cellSize)
+        return VectorUtilsExt.get_cells_in_rect2i(get_selection_rect(endPos), cellSize)
 
 
 ### ----------------------------------------------------

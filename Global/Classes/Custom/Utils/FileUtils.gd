@@ -3,7 +3,7 @@
 ### ----------------------------------------------------
 
 extends Script
-class_name FileTools
+class_name FileUtils
 
 ### ----------------------------------------------------
 # Variables
@@ -31,7 +31,7 @@ class FileData extends RefCounted:
 		fullPath = filePath
 		isDir = DirAccess.dir_exists_absolute(filePath)
 		isFile = FileAccess.file_exists(filePath)
-		basePath = FileTools.get_base_dir(fullPath)
+		basePath = FileUtils.get_base_dir(fullPath)
 		name = filePath.get_file()
 		extension = filePath.get_extension()
 

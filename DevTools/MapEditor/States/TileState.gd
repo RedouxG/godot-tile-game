@@ -69,7 +69,7 @@ func tile_place_input(event:InputEvent) -> void:
 		if(event.is_action_released("LeftClick")):
 			DrawSelector.end()
 			for cellPos in DrawSelector.get_cells_in_selected_area(Caller.get_global_mouse_position(), GLOBAL.TILEMAPS.BASE_SCALE):
-				_set_tile_on_pos(VectorTools.vec2i_vec3i(cellPos, currentElevation), ShownTerrains[terrainIndex])
+				_set_tile_on_pos(VectorUtils.vec2i_vec3i(cellPos, currentElevation), ShownTerrains[terrainIndex])
 		if(DrawSelector.isActive):
 			DrawSelector.draw_selected_area(Caller.get_global_mouse_position())
 
@@ -89,7 +89,7 @@ func camera_movement_input(event:InputEvent) -> void:
 
 # This could be an input map but doing it with ifs is good enough
 func update_input(event:InputEvent) -> void:
-	if(not UITools.is_mouse_on_ui(Caller.UIElement.SelectionUI)):
+	if(not UIUtils.is_mouse_on_ui(Caller.UIElement.SelectionUI)):
 		camera_movement_input(event)
 		tile_place_input(event)
 	KeyInputHandler.handle_input_keycode(event)
@@ -131,7 +131,7 @@ func change_terrain(value:int) -> void:
 	Caller.UIElement.TileItemList.select(terrainIndex)
 
 func set_selected_tile(terrainID:int) -> void:
-	var tilePos:Vector3i = VectorTools.vec2i_vec3i(
+	var tilePos:Vector3i = VectorUtils.vec2i_vec3i(
 		TM.local_to_map(Caller.get_global_mouse_position()), currentElevation)
 	_set_tile_on_pos(tilePos, terrainID)
 
@@ -162,13 +162,13 @@ func fill_item_list() -> void:
 			if(not Caller.FilterState.filter.to_lower() in terrainName.to_lower()): 
 				continue
 		
-		var TerrainImage := BetterTerrainTools.get_terrain_image(TS, terrainID)
+		var TerrainImage := BetterTerrainUtils.get_terrain_image(TS, terrainID)
 		var TerrainTexture:Texture2D = ImageTexture.create_from_image(TerrainImage)
 		Caller.UIElement.TileItemList.add_item(terrainName, TerrainTexture, true)
 		ShownTerrains.append(terrainID)
 
 func _set_tile_on_pos(tilePos:Vector3i, terrainID:int) -> void:
-	var chunkPos:Vector3i = VectorTools.scale_down_vec3i_noZ(tilePos, GLOBAL.TILEMAPS.CHUNK_SIZE)
+	var chunkPos:Vector3i = VectorUtils.scale_down_vec3i_noZ(tilePos, GLOBAL.TILEMAPS.CHUNK_SIZE)
 	if(not chunkPos in TM.RenderedChunks): 
 		return
 	if(terrainID == -1):

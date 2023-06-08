@@ -96,7 +96,7 @@ func _input(event:InputEvent) -> void:
 
 # Draws a square to indicate current cell pointed by mouse cursor
 func _draw_selected_tile() -> void:
-	var cellPos:Vector2i = VectorTools.scale_down_vec2i(
+	var cellPos:Vector2i = VectorUtils.scale_down_vec2i(
 		get_global_mouse_position(), GLOBAL.TILEMAPS.BASE_SCALE)
 	var rect := Rect2i(cellPos * GLOBAL.TILEMAPS.BASE_SCALE, GLOBAL.TILEMAPS.TILE_SIZE)
 	UIElement.CellText.text = "Cell: " + str(cellPos)
@@ -104,7 +104,7 @@ func _draw_selected_tile() -> void:
 
 # Draws a square to indicate current chunk pointed by mouse cursor
 func _draw_selected_chunk() -> void:
-	var chunkPos:Vector2i = VectorTools.scale_down_vec2i(
+	var chunkPos:Vector2i = VectorUtils.scale_down_vec2i(
 		get_global_mouse_position(), GLOBAL.TILEMAPS.CHUNK_SIZE * GLOBAL.TILEMAPS.BASE_SCALE)
 	var rect := Rect2i(chunkPos * CHUNK_PIXEL_SIZE, CHUNK_SIZE_VECTOR)
 	UIElement.ChunkText.text = "Chunk: " + str(chunkPos)
@@ -113,7 +113,7 @@ func _draw_selected_chunk() -> void:
 # Draws squares around all loaded chunks
 func _draw_loaded_chunks():
 	for pos in $TileMapManager.RenderedChunks:
-		var rect := Rect2i(VectorTools.vec3i_vec2i(pos) * CHUNK_PIXEL_SIZE, CHUNK_SIZE_VECTOR)
+		var rect := Rect2i(VectorUtils.vec3i_vec2i(pos) * CHUNK_PIXEL_SIZE, CHUNK_SIZE_VECTOR)
 		add_function_to_DrawQueue(Callable(self, "draw_rect").bindv([rect, Color.GRAY, false, 1]))
 
 ### ----------------------------------------------------
@@ -124,7 +124,7 @@ func _on_terrain_select_item_selected(index: int) -> void:
 	EditorStateMachine.force_call(TileState, "change_currentLayerID", [index])
 
 func _on_item_list_item_selected(index: int) -> void:
-	EditorStateMachine.force_call(TileState, "change_terrainIndex", [index])
+	EditorStateMachine.force_call(TileState, "change_terrain", [index])
 
 func _on_filter_input_text_submitted(new_text: String) -> void:
 	EditorStateMachine.redirect_signal(FilterState, "change_filter", [new_text])
@@ -149,11 +149,11 @@ func _on_goto_input_text_submitted(new_text: String) -> void:
 var prevCamChunk:Vector2i
 # Renders chunks as in normal game based on camera position (as simulated entity)
 func update_EditedMap_chunks() -> void:
-	var camChunk := VectorTools.scale_down_vec2i($Cam.global_position, GLOBAL.TILEMAPS.CHUNK_SIZE*GLOBAL.TILEMAPS.BASE_SCALE)
+	var camChunk := VectorUtils.scale_down_vec2i($Cam.global_position, GLOBAL.TILEMAPS.CHUNK_SIZE*GLOBAL.TILEMAPS.BASE_SCALE)
 	if(camChunk == prevCamChunk):
 		return
 	prevCamChunk = camChunk
-	GLOBAL.ChunkManager.update(VectorTools.vec2i_vec3i(camChunk, TileState.currentElevation))
+	GLOBAL.ChunkManager.update(VectorUtils.vec2i_vec3i(camChunk, TileState.currentElevation))
 
 ### ----------------------------------------------------
 # MISC

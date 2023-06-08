@@ -24,18 +24,18 @@ func _init(pathToDB:String, verbosity:int) -> void:
 	path = pathToDB
 
 func has_file() -> bool:
-	return FileTools.file_exists(path)
+	return FileUtils.file_exists(path)
 
 func delete_file() -> int:
-	return FileTools.delete_file(path)
+	return FileUtils.delete_file(path)
 
 func create_new_file() -> int:
-	return FileTools.create_empty_file(path)
+	return FileUtils.create_empty_file(path)
 
 # Compresses and saves data in sqlite db
 # Designed to compress big data chunks
 func sql_save_compressed(Str:String, tableName:String, KeyVar) -> void:
-	var B64C := CompressTools.compress_str(Str, SQLCOMPRESSION)
+	var B64C := Algorithms.compress_str(Str, SQLCOMPRESSION)
 	var values:String = "'" + str(KeyVar) + "','" + B64C + "','" + str(Str.length()) + "'"
 	do_query("REPLACE INTO "+tableName+" (Key,CData,DCSize) VALUES("+values+");")
 
@@ -43,7 +43,7 @@ func sql_save_compressed(Str:String, tableName:String, KeyVar) -> void:
 func sql_load_compressed(tableName:String, KeyVar) -> String:
 	if (not row_exists(tableName, "Key", str(KeyVar))): return ""
 	var queryResult := get_query_result("SELECT CData,DCSize FROM "+tableName+" WHERE Key='"+str(KeyVar)+"';")
-	return CompressTools.decompress_str(queryResult[0]["CData"], SQLCOMPRESSION, queryResult[0]["DCSize"])
+	return Algorithms.decompress_str(queryResult[0]["CData"], SQLCOMPRESSION, queryResult[0]["DCSize"])
 
 # Tries to get dict form saved data, returns empty dict on fail
 func get_dict_from_table(tableName:String, keyVar) -> Dictionary:
@@ -112,7 +112,7 @@ func do_query(query:String) -> void:
 
 # Deletes an sql DB
 static func delete_SQLDB_file(folderPath:String ,dbName:String) -> int:
-	return FileTools.delete_file(folderPath + dbName + ".db")
+	return FileUtils.delete_file(folderPath + dbName + ".db")
 
 static func do_query_on_path(pathToDB:String, query:String) -> void:
 	var sqlite = SQLite.new()

@@ -30,5 +30,5 @@ func end_state() -> void:
     StateMaster.set_default_state()
 
 func update_input(event:InputEvent) -> void:
-    if(InputTools.is_key_pressed(event, KEY_ESCAPE)):
+    if(InputUtils.is_key_pressed(event, KEY_ESCAPE)):
         end_state()

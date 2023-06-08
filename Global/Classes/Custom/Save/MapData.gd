@@ -49,7 +49,7 @@ func set_terrain_on(pos:Vector3i, layerID:int, terrainID:int) -> void:
 # Returns chunk of given size
 func get_chunk(chunkPos:Vector3i, chunkSize:int) -> Dictionary:
 	var result := {}
-	for pos in VectorTools.vec3i_get_pos_in_chunk(chunkPos, chunkSize):
+	for pos in VectorUtils.vec3i_get_pos_in_chunk(chunkPos, chunkSize):
 		if(not Data.has(pos)):
 			result[pos] = null
 			continue
@@ -72,7 +72,7 @@ func from_string(data:String) -> MapData:
 ### ----------------------------------------------------
 
 static func load_MapData_from_path(path:String) -> MapData:
-	if(not FileTools.file_exists(path)):
+	if(not FileUtils.file_exists(path)):
 		Logger.log_err(["MapData file doesnt exist in path: ", path])
 		return null
 	var TempRef = ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE)

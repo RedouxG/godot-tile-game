@@ -93,7 +93,7 @@ func Load() -> bool:
 	if(not SQL_DB_DEST.has_file()):
 		Logger.log_err(["Tried to init non existing save: ", SQL_DB_DEST.path])
 		return false
-	if(FileTools.copy_file(SQL_DB_DEST.path, SQL_DB_TEMP.path) != OK):
+	if(FileUtils.copy_file(SQL_DB_DEST.path, SQL_DB_TEMP.path) != OK):
 		Logger.log_err(["Failed to copy db from dest to temp: ", SQL_DB_DEST.path, " -> ", SQL_DB_TEMP.path])
 		return false
 	Logger.log_msg(["Loaded SQLSave: ", SQL_DB_DEST.path])
@@ -102,12 +102,12 @@ func Load() -> bool:
 # Save everything, leave savePath empty if you want to overwrite save
 func Save(savePath:String = "") -> bool:
 	if(savePath == ""): savePath = SQL_DB_DEST.path
-	if(FileTools.file_exists(savePath)):
+	if(FileUtils.file_exists(savePath)):
 		if(OS.move_to_trash(ProjectSettings.globalize_path(savePath)) != OK):
 			Logger.log_err(["Unable to delete SQLSave save file: ", savePath])
 			return false
 	
-	var result := FileTools.copy_file(SQL_DB_TEMP.path, savePath)
+	var result := FileUtils.copy_file(SQL_DB_TEMP.path, savePath)
 	if(not result == OK):
 		Logger.log_err(["Failed to copy db from temp to save: ", SQL_DB_TEMP.path, " -> ", savePath, ", result: ", result])
 		return false
@@ -127,7 +127,7 @@ func close() -> int:
 
 func delete() -> int:
 	var result:int
-	if(FileTools.file_exists(SQL_DB_TEMP.path)):
+	if(FileUtils.file_exists(SQL_DB_TEMP.path)):
 		result = close()
 		if(result != OK):
 			Logger.log_err(["Failed to delete SQLSave on close: ", SQL_DB_DEST.path, ", err: ", result])
@@ -189,7 +189,7 @@ func set_map(MapRef:MapData) -> void:
 # Cleans all temp files from save folders (Dont call when a save is used!)
 static func clean_TEMP(folderPath:String) -> bool:
 	var isOK := true
-	for fileData in FileTools.get_dirs_FileData(folderPath):
+	for fileData in FileUtils.get_dirs_FileData(folderPath):
 		if TEMP_MARKER in fileData.name:
-			isOK = isOK and (FileTools.delete_file(fileData.path) == OK)
+			isOK = isOK and (FileUtils.delete_file(fileData.path) == OK)
 	return isOK
