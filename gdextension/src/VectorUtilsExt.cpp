@@ -15,6 +15,8 @@ void VectorUtilsExt::_bind_methods()
     ClassDB::bind_static_method("VectorUtilsExt", 
         D_METHOD("vec2i_get_positions_in_chunk", "vec", "chunkSize"), &VectorUtilsExt::vec2i_get_positions_in_chunk);
     ClassDB::bind_static_method("VectorUtilsExt", 
+        D_METHOD("vec3i_get_positions_in_chunk", "vec", "chunkSize"), &VectorUtilsExt::vec3i_get_positions_in_chunk);
+    ClassDB::bind_static_method("VectorUtilsExt", 
         D_METHOD("vec3i_get_positions_in_chunk_no_z", "vec", "chunkSize"), &VectorUtilsExt::vec3i_get_positions_in_chunk_no_z);
     ClassDB::bind_static_method("VectorUtilsExt", 
         D_METHOD("vec2i_move_array", "vec", "moveBy"), &VectorUtilsExt::vec2i_move_array);
@@ -24,6 +26,12 @@ void VectorUtilsExt::_bind_methods()
         D_METHOD("vec3i_move_array", "vec", "moveBy"), &VectorUtilsExt::vec3i_move_array);
     ClassDB::bind_static_method("VectorUtilsExt", 
         D_METHOD("vec3i_move_array_multiply", "vec", "moveBy", "mul"), &VectorUtilsExt::vec3i_move_array_multiply);
+    ClassDB::bind_static_method("VectorUtilsExt", 
+        D_METHOD("vec2i_get_positions_in_range", "arr", "range"), &VectorUtilsExt::vec2i_get_positions_in_range);
+    ClassDB::bind_static_method("VectorUtilsExt", 
+        D_METHOD("vec3i_get_positions_in_range", "arr", "range"), &VectorUtilsExt::vec3i_get_positions_in_range);
+    ClassDB::bind_static_method("VectorUtilsExt", 
+        D_METHOD("vec3i_get_positions_in_range_no_z", "arr", "range"), &VectorUtilsExt::vec3i_get_positions_in_range_no_z);
     ClassDB::bind_static_method("VectorUtilsExt", 
         D_METHOD("get_cells_in_rect2i", "rect", "cellSize"), &VectorUtilsExt::get_cells_in_rect2i);
 }
@@ -56,11 +64,26 @@ TypedArray<Vector2i> VectorUtilsExt::vec2i_get_positions_in_chunk(
     const Vector2i &vec, int32_t chunkSize)
 {
     TypedArray<Vector2i> output = TypedArray<Vector2i>();
-    for(size_t x=0; x<chunkSize; x++)
+    for(int32_t x=0; x<chunkSize; x++)
     {
-        for(size_t y=0; y<chunkSize; y++)
+        for(int32_t y=0; y<chunkSize; y++)
         {
             output.append(Vector2i(vec.x*chunkSize + x, vec.y*chunkSize + y));
+        }
+    }
+    return output;
+}
+
+TypedArray<Vector3i> VectorUtilsExt::vec3i_get_positions_in_chunk(
+    const Vector3i &vec, int32_t chunkSize)
+{
+    TypedArray<Vector3i> output = TypedArray<Vector3i>();
+    for(int32_t x=0; x<chunkSize; x++)
+    {
+        for(int32_t y=0; y<chunkSize; y++)
+        {
+            for(int32_t z=0; z<chunkSize; z++)
+            { output.append(Vector3i(vec.x*chunkSize + x, vec.y*chunkSize + y, vec.z*chunkSize + z)); }
         }
     }
     return output;
@@ -70,9 +93,9 @@ TypedArray<Vector3i> VectorUtilsExt::vec3i_get_positions_in_chunk_no_z(
     const Vector3i &vec, int32_t chunkSize)
 {
     TypedArray<Vector3i> output = TypedArray<Vector3i>();
-    for(size_t x=0; x<chunkSize; x++)
+    for(int32_t x=0; x<chunkSize; x++)
     {
-        for(size_t y=0; y<chunkSize; y++)
+        for(int32_t y=0; y<chunkSize; y++)
         {
             output.append(Vector3i(vec.x*chunkSize + x, vec.y*chunkSize + y, vec.z));
         }
@@ -84,11 +107,26 @@ TypedArray<Vector2i> VectorUtilsExt::vec2i_get_positions_in_range(
     const Vector2i &vec, int32_t range)
 {
     TypedArray<Vector2i> output = TypedArray<Vector2i>();
-    for(size_t x=-range; x<range+1; x++)
+    for(int32_t x=-range; x<range+1; x++)
     {
-        for(size_t y=-range; y<range+1; y++)
+        for(int32_t y=-range; y<range+1; y++)
         {
             output.append(Vector2i(x, y) + vec);
+        }
+    }
+    return output;
+}
+
+TypedArray<Vector3i> VectorUtilsExt::vec3i_get_positions_in_range(
+    const Vector3i &vec, int32_t range)
+{
+    TypedArray<Vector3i> output = TypedArray<Vector3i>();
+    for(int32_t x=-range; x<range+1; x++)
+    {
+        for(int32_t y=-range; y<range+1; y++)
+        {
+            for(int32_t z=-range; z<range+1; z++)
+            { output.append(Vector3i(x, y, z) + vec); }
         }
     }
     return output;
@@ -98,9 +136,9 @@ TypedArray<Vector3i> VectorUtilsExt::vec3i_get_positions_in_range_no_z(
     const Vector3i &vec, int32_t range)
 {
     TypedArray<Vector3i> output = TypedArray<Vector3i>();
-    for(size_t x=-range; x<range+1; x++)
+    for(int32_t x=-range; x<range+1; x++)
     {
-        for(size_t y=-range; y<range+1; y++)
+        for(int32_t y=-range; y<range+1; y++)
         {
             output.append(Vector3i(x, y, 0) + vec);
         }

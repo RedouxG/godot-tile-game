@@ -73,8 +73,8 @@ func _ready() -> void:
 		push_error("Failed to init EditorStateMachine")
 		get_tree().quit()
 	
-	SaveManager.MapTemp = MapData.get_new(EDITOR_SAVE_NAME)
-	SaveManager.MapEdit = MapData.get_new(EDITOR_SAVE_NAME)
+	SAVE_MANAGER.MapTemp = MapData.get_new(EDITOR_SAVE_NAME)
+	SAVE_MANAGER.MapEdit = MapData.get_new(EDITOR_SAVE_NAME)
 	
 	if(EditorStateMachine.force_call(TileState, "fill_item_list", []) == StateMachine.ERROR):
 		push_error("Failed to init EditorStateMachine")
@@ -96,16 +96,16 @@ func _input(event:InputEvent) -> void:
 
 # Draws a square to indicate current cell pointed by mouse cursor
 func _draw_selected_tile() -> void:
-	var cellPos:Vector2i = VectorUtils.scale_down_vec2i(
-		get_global_mouse_position(), GLOBAL.TILEMAPS.BASE_SCALE)
+	var cellPos:Vector2i = VectorUtilsExt.scale_down_vec2i(
+		Vector2i(get_global_mouse_position()), GLOBAL.TILEMAPS.BASE_SCALE)
 	var rect := Rect2i(cellPos * GLOBAL.TILEMAPS.BASE_SCALE, GLOBAL.TILEMAPS.TILE_SIZE)
 	UIElement.CellText.text = "Cell: " + str(cellPos)
 	add_function_to_DrawQueue(Callable(self, "draw_rect").bindv([rect, Color.CRIMSON, false, 1]))
 
 # Draws a square to indicate current chunk pointed by mouse cursor
 func _draw_selected_chunk() -> void:
-	var chunkPos:Vector2i = VectorUtils.scale_down_vec2i(
-		get_global_mouse_position(), GLOBAL.TILEMAPS.CHUNK_SIZE * GLOBAL.TILEMAPS.BASE_SCALE)
+	var chunkPos:Vector2i = VectorUtilsExt.scale_down_vec2i(
+		Vector2i(get_global_mouse_position()), GLOBAL.TILEMAPS.CHUNK_SIZE * GLOBAL.TILEMAPS.BASE_SCALE)
 	var rect := Rect2i(chunkPos * CHUNK_PIXEL_SIZE, CHUNK_SIZE_VECTOR)
 	UIElement.ChunkText.text = "Chunk: " + str(chunkPos)
 	add_function_to_DrawQueue(Callable(self, "draw_rect").bindv([rect, Color.BLACK, false, 1]))
@@ -113,7 +113,7 @@ func _draw_selected_chunk() -> void:
 # Draws squares around all loaded chunks
 func _draw_loaded_chunks():
 	for pos in $TileMapManager.RenderedChunks:
-		var rect := Rect2i(VectorUtils.vec3i_vec2i(pos) * CHUNK_PIXEL_SIZE, CHUNK_SIZE_VECTOR)
+		var rect := Rect2i(VectorUtilsExt.vec3i_vec2i(pos) * CHUNK_PIXEL_SIZE, CHUNK_SIZE_VECTOR)
 		add_function_to_DrawQueue(Callable(self, "draw_rect").bindv([rect, Color.GRAY, false, 1]))
 
 ### ----------------------------------------------------
@@ -146,14 +146,15 @@ func _on_goto_input_text_submitted(new_text: String) -> void:
 # Update chunks
 ### ----------------------------------------------------
 
-var prevCamChunk:Vector2i
+var prevCamChunk:Vector2i = Vector2i(Algorithms.INT_MAX,Algorithms.INT_MAX)
 # Renders chunks as in normal game based on camera position (as simulated entity)
 func update_EditedMap_chunks() -> void:
-	var camChunk := VectorUtils.scale_down_vec2i($Cam.global_position, GLOBAL.TILEMAPS.CHUNK_SIZE*GLOBAL.TILEMAPS.BASE_SCALE)
+	var camChunk := VectorUtilsExt.scale_down_vec2i(
+		Vector2i($Cam.global_position), GLOBAL.TILEMAPS.CHUNK_SIZE*GLOBAL.TILEMAPS.BASE_SCALE)
 	if(camChunk == prevCamChunk):
 		return
 	prevCamChunk = camChunk
-	GLOBAL.ChunkManager.update(VectorUtils.vec2i_vec3i(camChunk, TileState.currentElevation))
+	GLOBAL.ChunkManager.update(VectorUtilsExt.vec2i_vec3i(camChunk, TileState.currentElevation))
 
 ### ----------------------------------------------------
 # MISC
@@ -167,8 +168,8 @@ func _hide_lineEdit(LENode:Control) -> void:
 	LENode.hide()
 
 func editor_save_map(mapName:String) -> bool:
-	var path := SaveManager.TEMP_FOLDER + mapName + ".res"
-	var result := MapData.save_MapData_to_path(path, SaveManager.MapEdit)
+	var path := SAVE_MANAGER.TEMP_FOLDER + mapName + ".res"
+	var result := MapData.save_MapData_to_path(path, SAVE_MANAGER.MapEdit)
 	if(result != OK):
 		Logger.log_err(["Failed to save map to path: ", path])
 		return false
@@ -176,11 +177,11 @@ func editor_save_map(mapName:String) -> bool:
 	return true
 
 func editor_load_map(mapName:String) -> bool:
-	var path := SaveManager.TEMP_FOLDER + mapName + ".res"
+	var path := SAVE_MANAGER.TEMP_FOLDER + mapName + ".res"
 	var TempResult := MapData.load_MapData_from_path(path)
 	if(TempResult == null):
 		Logger.log_err(["Failed to load map from path: ", path])
 		return false
-	SaveManager.MapEdit = TempResult
+	SAVE_MANAGER.MapEdit = TempResult
 	Logger.log_msg(["Loaded map: ", mapName])
 	return true

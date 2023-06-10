@@ -67,10 +67,10 @@ func test_SQLSave() -> void:
 	assert_true(SQLS.delete() == OK, "Failed to delete save file")
 
 func test_SaveManager():
-	assert_true(SaveManager._create_new_MapTemp("Test"), "Faied to make new MapTemp")
-	assert_true(SaveManager.create_new_save("TestSave"), "Faied to make new Save")
-	assert_true(SaveManager.load_current_save("TestSave"), "Faied to load Save")
-	assert_true(SaveManager.change_map("Test"), "Failed to change map")
+	assert_true(SAVE_MANAGER._create_new_MapTemp("Test"), "Faied to make new MapTemp")
+	assert_true(SAVE_MANAGER.create_new_save("TestSave"), "Faied to make new Save")
+	assert_true(SAVE_MANAGER.load_current_save("TestSave"), "Faied to load Save")
+	assert_true(SAVE_MANAGER.change_map("Test"), "Failed to change map")
 	
-	assert_true(SaveManager._delete_MapTemp("Test"), "Failed to delete MapTemp")
-	assert_true(SaveManager.SQLSaveDB.delete() == OK, "Failed to delete save file")
+	assert_true(SAVE_MANAGER._delete_MapTemp("Test"), "Failed to delete MapTemp")
+	assert_true(SAVE_MANAGER.SQLSaveDB.delete() == OK, "Failed to delete save file")

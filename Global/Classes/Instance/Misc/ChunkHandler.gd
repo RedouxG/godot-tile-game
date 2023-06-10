@@ -19,12 +19,12 @@ var _ListenerFunctions:Array[Callable] = []
 ### ----------------------------------------------------
 
 func _init(chunkRange:int) -> void:
-	_PREC_RENDER_RANGE = VectorUtils.vec3i_get_range_2d(Vector3i(0,0,0), chunkRange)
+	_PREC_RENDER_RANGE = VectorUtilsExt.vec3i_get_positions_in_range(Vector3i(0,0,0), chunkRange)
 
 func add_listener_function(function:Callable) -> void:
 	_ListenerFunctions.append(function)
 
 func update(focusPosition:Vector3) -> void:
-	ChunksInRange = VectorUtils.vec3i_get_precomputed_range(focusPosition, _PREC_RENDER_RANGE)
+	ChunksInRange = VectorUtilsExt.vec3i_move_array(_PREC_RENDER_RANGE, focusPosition)
 	for function in _ListenerFunctions:
 		function.call(ChunksInRange)

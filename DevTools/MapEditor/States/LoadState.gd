@@ -15,7 +15,7 @@ func _state_set() -> void:
     Caller._show_lineEdit(Caller.UIElement.LoadInput)
 
 func load_map(mapName:String) -> void:
-    var Temp := SQLSave.new(mapName, SaveManager.TEMP_FOLDER)
+    var Temp := SQLSave.new(mapName, SAVE_MANAGER.TEMP_FOLDER)
     if(not Caller.editor_load_map(mapName)):
         Logger.log_err(["Failed to load: ", mapName])
     Caller.TM.refresh_all_chunks()

@@ -26,10 +26,14 @@ public:
     static Vector3i scale_down_vec3i_no_z(const Vector3 &vec, int32_t scale);
     static TypedArray<Vector2i> vec2i_get_positions_in_chunk(
         const Vector2i &vec, int32_t chunkSize);
+    static TypedArray<Vector3i> vec3i_get_positions_in_chunk(
+        const Vector3i &vec, int32_t chunkSize);
     static TypedArray<Vector3i> vec3i_get_positions_in_chunk_no_z(
         const Vector3i &vec, int32_t chunkSize);
     static TypedArray<Vector2i> vec2i_get_positions_in_range(
         const Vector2i &vec, int32_t range);
+    static TypedArray<Vector3i> vec3i_get_positions_in_range(
+        const Vector3i &vec, int32_t range);
     static TypedArray<Vector3i> vec3i_get_positions_in_range_no_z(
         const Vector3i &vec, int32_t range);
     static TypedArray<Vector2i> vec2i_move_array(

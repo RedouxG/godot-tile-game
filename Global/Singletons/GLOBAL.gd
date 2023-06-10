@@ -16,7 +16,7 @@ class GAME:
 	const MIN_ELEVATION = -100
 
 class TILEMAPS:
-	const CHUNK_SIZE = 8  # Keep it 2^x (min 8,max 32 - for both performance and drawing reasons)
+	const CHUNK_SIZE = 10
 	const BASE_SCALE = 16 # Pixel size of tiles
 	const TILE_SIZE = Vector2i(BASE_SCALE, BASE_SCALE) # Size of a tile
 

@@ -50,7 +50,7 @@ func check_database_compatible() -> bool:
 			isOK = false
 	
 	for layerID in LAYERS.values():
-		if(not layerID in TMUtils.get_layers(TM)):
+		if(not layerID in TileMapUtils.get_layers(TM)):
 			Logger.log_err(["layerID does not exist in TileMap: ", layerID])
 			isOK = false
 	

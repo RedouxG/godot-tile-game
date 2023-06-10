@@ -25,9 +25,9 @@ static func get_terrains(TS:TileSet) -> Array[String]:
 # Returns coords of terrain with center bitmask (single tile)
 # Vector(-1, -1) if not found
 static func get_terrain_representative_coords(TS:TileSet, terrainID:int) -> Vector2i:
-	var Sources := TSUtils.get_sources(TS)
+	var Sources := TileSetUtils.get_sources(TS)
 	for source in Sources:
-		var TileDataCoords := TSUtils.get_tiledatas_coords(source)
+		var TileDataCoords := TileSetUtils.get_tiledatas_coords(source)
 		for coords in TileDataCoords:
 			var meta:Dictionary = BetterTerrain._get_tile_meta(TileDataCoords[coords][0])
 			if(meta.size() == 1 and meta.type == terrainID):
@@ -35,10 +35,10 @@ static func get_terrain_representative_coords(TS:TileSet, terrainID:int) -> Vect
 	return Vector2i(-1,-1)
 
 static func get_terrain_sourceID(TS:TileSet, terrainID:int) -> int:
-	var Sources := TSUtils.get_sources(TS)
+	var Sources := TileSetUtils.get_sources(TS)
 	var sourceIndex:int = 0
 	for source in Sources:
-		var TileDataCoords := TSUtils.get_tiledatas_coords(source)
+		var TileDataCoords := TileSetUtils.get_tiledatas_coords(source)
 		for coords in TileDataCoords:
 			var meta:Dictionary = BetterTerrain._get_tile_meta(TileDataCoords[coords][0])
 			if(meta.type == terrainID):
@@ -52,4 +52,4 @@ static func get_terrain_id(TS:TileSet, terrainName:String) -> int:
 	return get_terrains(TS).find(terrainName)
 
 static func get_terrain_image(TS:TileSet, terrainID:int) -> Image:
-	return TSUtils.get_tile_image(TS, get_terrain_sourceID(TS, terrainID), get_terrain_representative_coords(TS,terrainID))
+	return TileSetUtils.get_tile_image(TS, get_terrain_sourceID(TS, terrainID), get_terrain_representative_coords(TS,terrainID))

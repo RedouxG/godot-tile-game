@@ -30,12 +30,13 @@ var InputDelayer := STimer.new()
 func _init(caller:Node2D, name:String) -> void:
 	super(caller, name)
 
-func move_player(direction:Vector2) -> void:
+func move_player(direction:Vector2i) -> void:
 	if(not InputDelayer.time_from_start(INPUT_COOLDOWN)):
 		return
 	
-	Caller.MapPosition += VectorUtils.vec2_vec3(direction * GLOBAL.TILEMAPS.BASE_SCALE)
-	emit_signal("PlayerMoved", VectorUtils.vec3_vec2(Caller.MapPosition))
+	Caller.MapPosition += VectorUtilsExt.vec2i_vec3i(
+		direction * GLOBAL.TILEMAPS.BASE_SCALE, 0)
+	emit_signal("PlayerMoved", VectorUtilsExt.vec3i_vec2i(Caller.MapPosition))
 	InputDelayer.start()
 
 func update_input(_event:InputEvent) -> void:

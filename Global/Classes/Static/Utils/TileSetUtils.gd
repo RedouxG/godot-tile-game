@@ -3,7 +3,7 @@
 ### ----------------------------------------------------
 
 extends Script
-class_name TSUtils
+class_name TileSetUtils
 
 ### ----------------------------------------------------
 # Functions

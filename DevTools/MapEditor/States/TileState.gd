@@ -69,7 +69,7 @@ func tile_place_input(event:InputEvent) -> void:
 		if(event.is_action_released("LeftClick")):
 			DrawSelector.end()
 			for cellPos in DrawSelector.get_cells_in_selected_area(Caller.get_global_mouse_position(), GLOBAL.TILEMAPS.BASE_SCALE):
-				_set_tile_on_pos(VectorUtils.vec2i_vec3i(cellPos, currentElevation), ShownTerrains[terrainIndex])
+				_set_tile_on_pos(VectorUtilsExt.vec2i_vec3i(cellPos, currentElevation), ShownTerrains[terrainIndex])
 		if(DrawSelector.isActive):
 			DrawSelector.draw_selected_area(Caller.get_global_mouse_position())
 
@@ -101,11 +101,11 @@ func set_draw_mode(drawMode:int) -> void:
 	Caller.UIElement.DrawModeText.text = DRAW_MODE.keys()[drawMode] + " selection mode"
 
 func decrement_layer() -> void:
-	currentLayerID = NumberFormatter.clamp_decrement_int(currentLayerID, 0, MAX_LAYERS - 1)
+	currentLayerID = Algorithms.clamp_decrement_int(currentLayerID, 0, MAX_LAYERS - 1)
 	change_layer(currentLayerID)
 
 func increment_layer() -> void:
-	currentLayerID = NumberFormatter.clamp_increment_int(currentLayerID, 0, MAX_LAYERS - 1)
+	currentLayerID = Algorithms.clamp_increment_int(currentLayerID, 0, MAX_LAYERS - 1)
 	change_layer(currentLayerID)
 
 func change_layer(value:int) -> void:
@@ -118,11 +118,11 @@ func change_layer(value:int) -> void:
 		Caller.UIElement.TileItemList.select(terrainIndex)
 
 func increment_terrain() -> void:
-	terrainIndex = NumberFormatter.clamp_increment_int(terrainIndex, 0, Caller.UIElement.TileItemList.get_item_count()-1)
+	terrainIndex = Algorithms.clamp_increment_int(terrainIndex, 0, Caller.UIElement.TileItemList.get_item_count()-1)
 	change_terrain(terrainIndex)
 
 func decrement_terrain() -> void:
-	terrainIndex = NumberFormatter.clamp_decrement_int(terrainIndex, 0, Caller.UIElement.TileItemList.get_item_count()-1)
+	terrainIndex = Algorithms.clamp_decrement_int(terrainIndex, 0, Caller.UIElement.TileItemList.get_item_count()-1)
 	change_terrain(terrainIndex)
 
 func change_terrain(value:int) -> void:
@@ -131,17 +131,17 @@ func change_terrain(value:int) -> void:
 	Caller.UIElement.TileItemList.select(terrainIndex)
 
 func set_selected_tile(terrainID:int) -> void:
-	var tilePos:Vector3i = VectorUtils.vec2i_vec3i(
+	var tilePos:Vector3i = VectorUtilsExt.vec2i_vec3i(
 		TM.local_to_map(Caller.get_global_mouse_position()), currentElevation)
 	_set_tile_on_pos(tilePos, terrainID)
 
 func increment_elevation() -> void:
-	currentElevation = NumberFormatter.clamp_increment_int(
+	currentElevation = Algorithms.clamp_increment_int(
 		currentElevation, GLOBAL.GAME.MIN_ELEVATION, GLOBAL.GAME.MAX_ELEVATION)
 	change_elevation(currentElevation)
 
 func decrement_elevation() -> void:
-	currentElevation = NumberFormatter.clamp_decrement_int(
+	currentElevation = Algorithms.clamp_decrement_int(
 		currentElevation, GLOBAL.GAME.MIN_ELEVATION, GLOBAL.GAME.MAX_ELEVATION)
 	change_elevation(currentElevation)
 
@@ -168,11 +168,11 @@ func fill_item_list() -> void:
 		ShownTerrains.append(terrainID)
 
 func _set_tile_on_pos(tilePos:Vector3i, terrainID:int) -> void:
-	var chunkPos:Vector3i = VectorUtils.scale_down_vec3i_noZ(tilePos, GLOBAL.TILEMAPS.CHUNK_SIZE)
+	var chunkPos:Vector3i = VectorUtilsExt.scale_down_vec3i_no_z(tilePos, GLOBAL.TILEMAPS.CHUNK_SIZE)
 	if(not chunkPos in TM.RenderedChunks): 
 		return
 	if(terrainID == -1):
-		SaveManager.rem_terrain_on(tilePos, currentLayerID)
+		SAVE_MANAGER.rem_terrain_on(tilePos, currentLayerID)
 	else:
-		SaveManager.set_terrain_on(tilePos, currentLayerID, terrainID)
+		SAVE_MANAGER.set_terrain_on(tilePos, currentLayerID, terrainID)
 	TM.refresh_tile(tilePos)
