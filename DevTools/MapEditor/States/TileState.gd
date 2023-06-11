@@ -26,6 +26,8 @@ var currentLayerID := 0  # LayerID is the same as layerID
 
 var currentElevation:int = 0
 
+var previousCameraChunk := Vector3i(Algorithms.INT_MAX, Algorithms.INT_MAX, Algorithms.INT_MAX)
+
 ### ----------------------------------------------------
 # Functions
 ### ----------------------------------------------------
@@ -68,7 +70,7 @@ func tile_place_input(event:InputEvent) -> void:
 			DrawSelector.start(Caller.get_global_mouse_position())
 		if(event.is_action_released("LeftClick")):
 			DrawSelector.end()
-			for cellPos in DrawSelector.get_cells_in_selected_area(Caller.get_global_mouse_position(), GLOBAL.TILEMAPS.BASE_SCALE):
+			for cellPos in DrawSelector.get_cells_in_selected_area(Caller.get_global_mouse_position(), GLOBAL.MAP.TILE_PIXEL_SIZE):
 				_set_tile_on_pos(VectorUtilsExt.vec2i_vec3i(cellPos, currentElevation), ShownTerrains[terrainIndex])
 		if(DrawSelector.isActive):
 			DrawSelector.draw_selected_area(Caller.get_global_mouse_position())
@@ -85,7 +87,6 @@ func camera_movement_input(event:InputEvent) -> void:
 	if(event is InputEventMouseMotion):
 		if(event.button_mask == MOUSE_BUTTON_MASK_MIDDLE):
 			Cam.position -= event.relative * Cam.zoom
-			Caller.update_EditedMap_chunks()
 
 # This could be an input map but doing it with ifs is good enough
 func update_input(event:InputEvent) -> void:
@@ -93,6 +94,8 @@ func update_input(event:InputEvent) -> void:
 		camera_movement_input(event)
 		tile_place_input(event)
 	KeyInputHandler.handle_input_keycode(event)
+	
+	_update_EditedMap_chunks()
 
 func set_draw_mode(drawMode:int) -> void:
 	if(not drawMode in DRAW_MODE.values()):
@@ -148,7 +151,8 @@ func decrement_elevation() -> void:
 func change_elevation(e:int) -> void:
 	currentElevation = e
 	Caller.UIElement.ElevationText.text = "Elevation: " + str(currentElevation)
-	TM.refresh_all_chunks()
+	TM.unload_all()
+	_update_EditedMap_chunks(true)
 
 # Fills item list with TileMap tiles
 func fill_item_list() -> void:
@@ -168,7 +172,7 @@ func fill_item_list() -> void:
 		ShownTerrains.append(terrainID)
 
 func _set_tile_on_pos(tilePos:Vector3i, terrainID:int) -> void:
-	var chunkPos:Vector3i = VectorUtilsExt.scale_down_vec3i_no_z(tilePos, GLOBAL.TILEMAPS.CHUNK_SIZE)
+	var chunkPos:Vector3i = VectorUtilsExt.scale_down_vec3i_no_z(tilePos, GLOBAL.MAP.CHUNK_SIZE)
 	if(not chunkPos in TM.RenderedChunks): 
 		return
 	if(terrainID == -1):
@@ -176,3 +180,14 @@ func _set_tile_on_pos(tilePos:Vector3i, terrainID:int) -> void:
 	else:
 		SAVE_MANAGER.set_terrain_on(tilePos, currentLayerID, terrainID)
 	TM.refresh_tile(tilePos)
+
+# Renders chunks as in normal game based on camera position (as simulated entity)
+func _update_EditedMap_chunks(forceUpdate := false) -> void:
+	var camChunk := VectorUtilsExt.scale_down_vec3i_no_z(
+		VectorUtilsExt.vec2i_vec3i(Vector2i(Cam.global_position), currentElevation),
+		GLOBAL.MAP.CHUNK_PIXEL_SIZE
+	)
+	if(previousCameraChunk == camChunk and not forceUpdate):
+		return
+	previousCameraChunk = camChunk
+	GLOBAL.ChunkManager.update(camChunk)

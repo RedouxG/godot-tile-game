@@ -15,10 +15,13 @@ class GAME:
 	const MAX_ELEVATION = 100
 	const MIN_ELEVATION = -100
 
-class TILEMAPS:
+class MAP:
+	const TILE_PIXEL_SIZE = 16
+	const TILE_PIXEL_SIZE_VECTOR = Vector2i(TILE_PIXEL_SIZE, TILE_PIXEL_SIZE)
+
 	const CHUNK_SIZE = 10
-	const BASE_SCALE = 16 # Pixel size of tiles
-	const TILE_SIZE = Vector2i(BASE_SCALE, BASE_SCALE) # Size of a tile
+	const CHUNK_PIXEL_SIZE = CHUNK_SIZE * TILE_PIXEL_SIZE
+	const CHUNK_PIXEL_SIZE_VECTOR = Vector2i(CHUNK_PIXEL_SIZE, CHUNK_PIXEL_SIZE)
 
 class TEXTURES:
 	const ENTITY_SET_PATH = "res://Resources/Textures/EntitySet.png"

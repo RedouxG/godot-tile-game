@@ -34,13 +34,14 @@ func _on_entity_ready() -> void:
 # Loads sprite from sprite set
 func set_sprite(spritePos:Vector2i, texturePath:String) -> void:
 	var setTexture:Texture2D = ResourceLoader.load(texturePath, "Texture2D")
-	texture = ImageUtils.get_sprite_from_texture(spritePos, GLOBAL.TILEMAPS.TILE_SIZE, setTexture)
-	offset = GLOBAL.TILEMAPS.TILE_SIZE/2
+	texture = ImageUtils.get_sprite_from_texture(
+		spritePos, 
+		GLOBAL.MAP.TILE_PIXEL_SIZE_VECTOR, 
+		setTexture
+	)
+	offset = GLOBAL.MAP.TILE_PIXEL_SIZE_VECTOR/2
 
-# Unloads itself into TileData and queue_free()
-func unload_entity(unloadedChunkV3:Vector3i) -> void:
-	if(not unloadedChunkV3 == VectorUtilsExt.scale_down_vec3i_no_z(MapPosition, GLOBAL.TILEMAPS.CHUNK_SIZE)): 
-		return
+func unload_entity() -> void:
 	if(not save_entity()):
 		Logger.log_err(["Failed to save entity data on unload, pos: ", MapPosition])
 	queue_free()

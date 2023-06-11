@@ -27,4 +27,4 @@ func add_listener_function(function:Callable) -> void:
 func update(focusPosition:Vector3) -> void:
 	ChunksInRange = VectorUtilsExt.vec3i_move_array(_PREC_RENDER_RANGE, focusPosition)
 	for function in _ListenerFunctions:
-		function.call(ChunksInRange)
+		function.call(ChunksInRange, focusPosition)

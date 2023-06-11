@@ -15,6 +15,21 @@ var DictionaryDB := {}  # Database of all records {terrainName:TerrainData}
 var TerrainSystem := {} # {LayerID:{terrainID:terrainName}}
 
 ### ----------------------------------------------------
+# Class
+### ----------------------------------------------------
+
+class TerrainData extends RefCounted:
+	var layerID:int
+	var description:String = "Not setup"
+
+	func _init(layer:int) -> void:
+		layerID = layer
+
+	func set_description(desc:String) -> TerrainData:
+		description = desc
+		return self
+
+### ----------------------------------------------------
 # Functions
 ### ----------------------------------------------------
 

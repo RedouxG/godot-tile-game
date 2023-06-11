@@ -15,7 +15,7 @@ extends DrawNode
 ### ----------------------------------------------------
 
 const EDITOR_SAVE_NAME := "EDITOR"
-const CHUNK_PIXEL_SIZE = GLOBAL.TILEMAPS.BASE_SCALE * GLOBAL.TILEMAPS.CHUNK_SIZE
+const CHUNK_PIXEL_SIZE = GLOBAL.MAP.TILE_PIXEL_SIZE * GLOBAL.MAP.CHUNK_SIZE
 const CHUNK_SIZE_VECTOR = Vector2i(CHUNK_PIXEL_SIZE, CHUNK_PIXEL_SIZE)
 
 const TILE_STATE = preload("res://DevTools/MapEditor/States/TileState.gd")
@@ -79,8 +79,6 @@ func _ready() -> void:
 	if(EditorStateMachine.force_call(TileState, "fill_item_list", []) == StateMachine.ERROR):
 		push_error("Failed to init EditorStateMachine")
 		get_tree().quit()
-	
-	update_EditedMap_chunks()
 
 ### ----------------------------------------------------
 # Drawing
@@ -93,19 +91,19 @@ func _input(event:InputEvent) -> void:
 		_draw_selected_chunk()
 		_draw_selected_tile()
 		queue_redraw()
-
+		
 # Draws a square to indicate current cell pointed by mouse cursor
 func _draw_selected_tile() -> void:
 	var cellPos:Vector2i = VectorUtilsExt.scale_down_vec2i(
-		Vector2i(get_global_mouse_position()), GLOBAL.TILEMAPS.BASE_SCALE)
-	var rect := Rect2i(cellPos * GLOBAL.TILEMAPS.BASE_SCALE, GLOBAL.TILEMAPS.TILE_SIZE)
+		Vector2i(get_global_mouse_position()), GLOBAL.MAP.TILE_PIXEL_SIZE)
+	var rect := Rect2i(cellPos * GLOBAL.MAP.TILE_PIXEL_SIZE, GLOBAL.MAP.TILE_PIXEL_SIZE_VECTOR)
 	UIElement.CellText.text = "Cell: " + str(cellPos)
 	add_function_to_DrawQueue(Callable(self, "draw_rect").bindv([rect, Color.CRIMSON, false, 1]))
 
 # Draws a square to indicate current chunk pointed by mouse cursor
 func _draw_selected_chunk() -> void:
 	var chunkPos:Vector2i = VectorUtilsExt.scale_down_vec2i(
-		Vector2i(get_global_mouse_position()), GLOBAL.TILEMAPS.CHUNK_SIZE * GLOBAL.TILEMAPS.BASE_SCALE)
+		Vector2i(get_global_mouse_position()), GLOBAL.MAP.CHUNK_SIZE * GLOBAL.MAP.TILE_PIXEL_SIZE)
 	var rect := Rect2i(chunkPos * CHUNK_PIXEL_SIZE, CHUNK_SIZE_VECTOR)
 	UIElement.ChunkText.text = "Chunk: " + str(chunkPos)
 	add_function_to_DrawQueue(Callable(self, "draw_rect").bindv([rect, Color.BLACK, false, 1]))
@@ -141,20 +139,6 @@ func _on_load_input_text_submitted(new_text: String) -> void:
 func _on_goto_input_text_submitted(new_text: String) -> void:
 	EditorStateMachine.redirect_signal(GoToState, "change_coords", [new_text])
 	EditorStateMachine.redirect_signal(GoToState, "end_state", [])
-
-### ----------------------------------------------------
-# Update chunks
-### ----------------------------------------------------
-
-var prevCamChunk:Vector2i = Vector2i(Algorithms.INT_MAX,Algorithms.INT_MAX)
-# Renders chunks as in normal game based on camera position (as simulated entity)
-func update_EditedMap_chunks() -> void:
-	var camChunk := VectorUtilsExt.scale_down_vec2i(
-		Vector2i($Cam.global_position), GLOBAL.TILEMAPS.CHUNK_SIZE*GLOBAL.TILEMAPS.BASE_SCALE)
-	if(camChunk == prevCamChunk):
-		return
-	prevCamChunk = camChunk
-	GLOBAL.ChunkManager.update(VectorUtilsExt.vec2i_vec3i(camChunk, TileState.currentElevation))
 
 ### ----------------------------------------------------
 # MISC

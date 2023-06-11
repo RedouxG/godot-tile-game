@@ -9,9 +9,9 @@ extends TileMap
 ### ----------------------------------------------------
 
 var PRE_POS_IN_CHUNK3:Array[Vector3i] = VectorUtilsExt.vec3i_get_positions_in_chunk_no_z(
-	Vector3i(0,0,0), GLOBAL.TILEMAPS.CHUNK_SIZE)
+	Vector3i(0,0,0), GLOBAL.MAP.CHUNK_SIZE)
 var PRE_POS_IN_CHUNK2:Array[Vector2i] = VectorUtilsExt.vec2i_get_positions_in_chunk(
-	Vector2i(0,0), GLOBAL.TILEMAPS.CHUNK_SIZE)
+	Vector2i(0,0), GLOBAL.MAP.CHUNK_SIZE)
 
 # Keeps track of rendered chunks
 var RenderedChunks:Array[Vector3i] = []
@@ -20,7 +20,9 @@ var RenderedChunks:Array[Vector3i] = []
 # Functions
 ### ----------------------------------------------------
 
-func update(ChunksToRender:Array[Vector3i]) -> void:
+func update(ChunksToRender:Array[Vector3i], focusPosition:Vector3i) -> void:
+	ChunksToRender = VectorUtilsExt.get_positions_on_z(ChunksToRender, focusPosition.z)
+
 	# Loading chunks that are not yet rendered
 	for chunkPos in ChunksToRender:
 		if(RenderedChunks.has(chunkPos)): continue
@@ -33,7 +35,7 @@ func update(ChunksToRender:Array[Vector3i]) -> void:
 
 # Loads a chunk to TileMap
 func load_chunk(chunkPos:Vector3i) -> void:
-	var ChunkData := SAVE_MANAGER.get_chunk(chunkPos, GLOBAL.TILEMAPS.CHUNK_SIZE)
+	var ChunkData := SAVE_MANAGER.get_chunk(chunkPos, GLOBAL.MAP.CHUNK_SIZE)
 	for pos in ChunkData:
 		var MT:MapTile = ChunkData.get(pos)
 		if(MT == null): continue
@@ -45,7 +47,7 @@ func load_chunk(chunkPos:Vector3i) -> void:
 		VectorUtilsExt.vec2i_move_array_multiply(
 			PRE_POS_IN_CHUNK2, 
 			VectorUtilsExt.vec3i_vec2i(chunkPos), 
-			GLOBAL.TILEMAPS.CHUNK_SIZE)
+			GLOBAL.MAP.CHUNK_SIZE)
 	)
 
 	if(not RenderedChunks.has(chunkPos)):
@@ -62,7 +64,7 @@ func load_tile(pos:Vector3i) -> void:
 # Unloads a single chunk from TileMaps
 func unload_chunk(chunkPos:Vector3i) -> void:
 	var PosInChunk := VectorUtilsExt.vec3i_move_array_multiply(
-		PRE_POS_IN_CHUNK3, chunkPos, GLOBAL.TILEMAPS.CHUNK_SIZE)
+		PRE_POS_IN_CHUNK3, chunkPos, GLOBAL.MAP.CHUNK_SIZE)
 	for pos in PosInChunk:
 		unload_tile(pos)
 	RenderedChunks.erase(chunkPos)
