@@ -9,7 +9,7 @@
 ### ----------------------------------------------------
 
 extends RefCounted
-class_name SQLSave
+class_name Save
 
 ### ----------------------------------------------------
 # Variables
@@ -33,17 +33,18 @@ const TEMP_MARKER = "_TEMP" # Added to ending of all temp files
 # since save is managed via sql it needs to edit a file
 # TEMP file is temporary file that is currently being used and edited
 # DEST file is destination file that holds final save
+var SQL_DB_CURR:SQLiteWrapper # Currently used save file
 var SQL_DB_TEMP:SQLiteWrapper # Temp save file
 var SQL_DB_DEST:SQLiteWrapper # The main save file 
 
 var FILE_NAME:String	    # Name of the database file
 var FILE_DIR:String         # Database file dir
-var beVerbose:bool          # For debug purposes
+var beVerbose:bool
 
 ### ----------------------------------------------------
 # Functions
 ### ----------------------------------------------------
-
+ 
 func _init(fileDir:String, fileName:String, verbose = false) -> void:
 	beVerbose = verbose
 	FILE_DIR = fileDir

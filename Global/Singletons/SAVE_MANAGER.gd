@@ -1,7 +1,7 @@
 ### ----------------------------------------------------
 # Manages save
 # Usage:
-# 1) Load SQLSaveDB via load_SQLSaveDB()
+# 1) Load SaveEdit via load_SaveEdit()
 # 2) Change current map via change_map()
 ### ----------------------------------------------------
 
@@ -15,7 +15,7 @@ const TEMP_FOLDER := "res://Resources/Maps/Templates/"
 const EDIT_FOLDER := "res://Resources/Maps/Saves/"
 
 # Currently loaded save
-var SQLSaveDB:SQLSave
+var SaveEdit:Save
 
 # Template of the map, not editable
 var MapTemp:MapData
@@ -60,14 +60,14 @@ func get_chunk(chunkPos:Vector3i, chunkSize:int) -> Dictionary:
 # Save Management
 ### ----------------------------------------------------
 
-func load_current_save(saveName:String) -> bool:
-	var result := _load_SQLSave(saveName)
+func load_game(saveName:String) -> bool:
+	var result := _load_save(saveName)
 	if(result == true):  Logger.log_msg(["Successfuly changed the save to: ", saveName])
 	if(result == false): Logger.log_err(["Failed to changed the save to: ", saveName])
 	return result
 
-func save_current_save(saveName:String) -> bool:
-	var result := _save_SQLSave(saveName)
+func save_game(saveName:String) -> bool:
+	var result := _save_save(saveName)
 	if(result == true):  Logger.log_msg(["Successfuly saved: ", saveName])
 	if(result == false): Logger.log_err(["Failed to save: ", saveName])
 	return result
@@ -80,21 +80,21 @@ func change_map(MapName:String) -> bool:
 	Logger.log_msg(["Successfuly changed map to: ", MapName])
 	return true
 
-func _load_SQLSave(saveName:String) -> bool:
-	var TempSave := SQLSave.new(EDIT_FOLDER, saveName)
+func _load_save(saveName:String) -> bool:
+	var TempSave := Save.new(EDIT_FOLDER, saveName)
 	if(not TempSave.Load()):
 		Logger.log_err(["Failed to load game save: ", saveName])
 		return false
-	if(SQLSaveDB != null):
-		SQLSaveDB.close()
-	SQLSaveDB = TempSave
+	if(SaveEdit != null):
+		SaveEdit.close()
+	SaveEdit = TempSave
 	Logger.log_msg(["Loaded game save: ", saveName])
 	return true
 
-func _save_SQLSave(saveName:String) -> bool:
+func _save_save(saveName:String) -> bool:
 	_save_MapEdit()
-	if(not SQLSaveDB.Save(EDIT_FOLDER + saveName + ".db")):
-		Logger.log_err(["Failed to save game save: ", SQLSaveDB.SQL_DB_DEST.path])
+	if(not SaveEdit.Save(EDIT_FOLDER + saveName + ".db")):
+		Logger.log_err(["Failed to save game save: ", SaveEdit.SQL_DB_DEST.path])
 		return false
 	Logger.log_msg(["Saved game save: ", saveName])
 	return true
@@ -120,11 +120,11 @@ func _save_MapTemp(MapName:String) -> bool:
 
 func _save_MapEdit() -> void:
 	if(MapEdit != null):
-		SQLSaveDB.set_map(MapEdit)
+		SaveEdit.set_map(MapEdit)
 	Logger.log_msg(["Saved MapEdit: ", MapEdit.MapName])
 
 func _load_MapEdit(MapName:String) -> void:
-	MapEdit = SQLSaveDB.get_map(MapName)
+	MapEdit = SaveEdit.get_map(MapName)
 	Logger.log_msg(["Loaded MapEdit: ", MapEdit.MapName])
 
 ### ----------------------------------------------------
@@ -132,11 +132,11 @@ func _load_MapEdit(MapName:String) -> void:
 ### ----------------------------------------------------
 
 func create_new_save(saveName:String) -> bool:
-	var TempSave := SQLSave.new(EDIT_FOLDER, saveName)
+	var TempSave := Save.new(EDIT_FOLDER, saveName)
 	return TempSave.create_new_save()
 
 func delete_save(saveName:String) -> bool:
-	var TempSave := SQLSave.new(EDIT_FOLDER, saveName)
+	var TempSave := Save.new(EDIT_FOLDER, saveName)
 	return TempSave.delete_save()
 
 func _create_new_MapTemp(MapName:String) -> bool:

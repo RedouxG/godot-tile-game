@@ -15,7 +15,7 @@ const SAV_NAME := "UnitTest"
 # Functions
 ### ----------------------------------------------------
 
-func fill_MapData(MD:MapData, size:int) -> Dictionary:
+func _fill_MapData(MD:MapData, size:int) -> Dictionary:
 	var savedData := {}
 	randomize()
 	for x in range(size): for y in range(size):
@@ -30,7 +30,7 @@ func test_MapData() -> void:
 	var MD := MapData.new()
 	var path := SAV_FOLDER + SAV_NAME + ".res"
 	
-	var SavedDict := fill_MapData(MD, 5)
+	var SavedDict := _fill_MapData(MD, 5)
 	
 	assert_true(
 		OK == MapData.save_MapData_to_path(path, MD),
@@ -43,22 +43,22 @@ func test_MapData() -> void:
 	assert_true(LMD.Data == SavedDict, "Saved dict differs from loaded")
 	assert_true(FileUtils.delete_file(path) == OK)
 
-func test_SQLSave() -> void:
-	var SQLS := SQLSave.new(SAV_FOLDER, SAV_NAME)
+func test_Save() -> void:
+	var SQLS := Save.new(SAV_FOLDER, SAV_NAME)
 	assert_true(SQLS.create_new_save(), "Failed to create new save file")
 	assert_true(SQLS.Load(), "Failed to load save")
 	
 	# Simulate creating save
 	var MD := MapData.new()
 	MD.MapName = "Test"
-	var SaveData := fill_MapData(MD,16)
+	var SaveData := _fill_MapData(MD,16)
 	SQLS.set_map(MD)
 	
 	assert_true(SQLS.Save(), "Failed to save")
 	assert_true(SQLS.close() == OK, "Failed to close")
 	
 	# Simulate loading save
-	SQLS = SQLSave.new(SAV_FOLDER, SAV_NAME)
+	SQLS = Save.new(SAV_FOLDER, SAV_NAME)
 	assert_true(SQLS.Load(), "Failed to load save")
 	var LoadedMD := SQLS.get_map("Test")
 	assert_not_null(LoadedMD, "Loaded map is null")
@@ -69,8 +69,7 @@ func test_SQLSave() -> void:
 func test_SaveManager():
 	assert_true(SAVE_MANAGER._create_new_MapTemp("Test"), "Faied to make new MapTemp")
 	assert_true(SAVE_MANAGER.create_new_save("TestSave"), "Faied to make new Save")
-	assert_true(SAVE_MANAGER.load_current_save("TestSave"), "Faied to load Save")
+	assert_true(SAVE_MANAGER.load_game("TestSave"), "Faied to load Save")
 	assert_true(SAVE_MANAGER.change_map("Test"), "Failed to change map")
-	
 	assert_true(SAVE_MANAGER._delete_MapTemp("Test"), "Failed to delete MapTemp")
-	assert_true(SAVE_MANAGER.SQLSaveDB.delete() == OK, "Failed to delete save file")
+	assert_true(SAVE_MANAGER.SaveEdit.delete() == OK, "Failed to delete save file")
