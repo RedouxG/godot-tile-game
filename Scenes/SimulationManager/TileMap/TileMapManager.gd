@@ -35,7 +35,7 @@ func update(ChunksToRender:Array[Vector3i], focusPosition:Vector3i) -> void:
 
 # Loads a chunk to TileMap
 func load_chunk(chunkPos:Vector3i) -> void:
-	var ChunkData := SAVE_MANAGER.get_chunk(chunkPos, GLOBAL.MAP.CHUNK_SIZE)
+	var ChunkData := SAVE_API.get_chunk(chunkPos, GLOBAL.MAP.CHUNK_SIZE)
 	for pos in ChunkData:
 		var MT:MapTile = ChunkData.get(pos)
 		if(MT == null): continue
@@ -55,7 +55,7 @@ func load_chunk(chunkPos:Vector3i) -> void:
 
 # Loads a single tile to TileMap
 func load_tile(pos:Vector3i) -> void:
-	var MT:MapTile = SAVE_MANAGER.get_on(pos)
+	var MT:MapTile = SAVE_API.get_on(pos)
 	if(MT == null): return
 	for layerID in MT.TerrainsData:
 		BetterTerrain.set_cell(self, layerID, VectorUtilsExt.vec3i_vec2i(pos), MT.get_terrain(layerID))

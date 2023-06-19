@@ -48,7 +48,7 @@ func unload_entity() -> void:
 
 # Saves this entity
 func save_entity() -> bool:
-	return SAVE_MANAGER.add_Entity_to_TileData(MapPosition, self)
+	return SAVE_API.add_Entity_to_TileData(MapPosition, self)
 	
 ### ----------------------------------------------------
 # Utils

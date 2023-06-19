@@ -49,11 +49,36 @@ static func log_msg(message:Array, logTime = false, logToFile = false) -> void:
 	message.push_front(LOG_MARK)
 	output_log(_format_log_msg(message), false, logToFile)
 
-# log_err(["This is an error message])
 static func log_err(message:Array, logTime = false, logToFile = false) -> void:
 	if logTime: message.push_front(get_time())
 	message.push_front(ERR_MARK)
 	output_log(_format_log_msg(message), true, logToFile)
+
+# in:
+# 	log_result(isOK, ["Doing x"])
+# out:
+#	Doing x | result: failed/success
+static func log_result(isOK:bool, Message:Array) -> void:
+	var add := " | result: "
+	if(isOK):
+		add += "success!"
+		Message.append(add)
+		log_msg(Message)
+	else:
+		add += "failed!"
+		Message.append(add)
+		log_err(Message)
+
+static func log_result_code(result:int, Message:Array) -> void:
+	var add := " | result: "
+	if(result == OK):
+		add += "success!"
+		Message.append(add)
+		log_msg(Message)
+	else:
+		add += "failed!"
+		Message.append(add)
+		log_err(Message)
 
 static func output_log(message:String, isErr = false, logToFile = false) -> void:
 	if(isErr):

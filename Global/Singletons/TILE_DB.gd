@@ -57,20 +57,20 @@ func get_terrains_on_layer(layerID:int) -> Dictionary:
 # Checks if database has records for all existing terrains in tileset
 func check_database_compatible() -> bool:
 	var TM:TileMap = preload("res://Scenes/SimulationManager/TileMap/TileMapManager.tscn").instantiate()
-	var isOK := true
+	var isOk := true
 	var Terrains := BetterTerrainUtils.get_terrains(TS)
 	for terrainName in Terrains:
 		if(get_record(terrainName) == null):
 			Logger.log_err(["Database is missing record for: ", terrainName])
-			isOK = false
+			isOk = false
 	
 	for layerID in LAYERS.values():
 		if(not layerID in TileMapUtils.get_layers(TM)):
 			Logger.log_err(["layerID does not exist in TileMap: ", layerID])
-			isOK = false
+			isOk = false
 	
 	TM.queue_free()
-	return isOK
+	return isOk
 
 func _setup_TerrainSystem() -> void:
 	for terrainName in DictionaryDB:

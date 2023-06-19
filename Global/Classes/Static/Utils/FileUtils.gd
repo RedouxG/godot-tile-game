@@ -98,7 +98,7 @@ static func delete_dir_recursive(path:String) -> int:
 		if(err!=OK): return err
 	
 	for fileData in get_files_as_FileData_at(path):
-		var err := delete_file(fileData.path)
+		var err := delete_file(fileData.fullPath)
 		if(err!=OK): return err
 	return DirAccess.remove_absolute(path)
 

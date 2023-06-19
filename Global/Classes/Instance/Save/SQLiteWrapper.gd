@@ -11,6 +11,11 @@ class_name SQLiteWrapper
 ### ----------------------------------------------------
 
 const SQLCOMPRESSION = 2
+
+var TABLE_KEY:String
+var TABLE_COMPRESSED_DATA:String
+var TABLE_DECOMPRESSED_SIZE:String
+
 var SQL_GLOBAL := SQLite.new()
 var path:String
 
@@ -18,9 +23,22 @@ var path:String
 # Functions
 ### ----------------------------------------------------
 
-func _init(pathToDB:String, verbosity:int) -> void:
+func _init(
+	pathToDB:String, 
+	tableKeyColumnName:String,
+	tableCompressedDataColumnName:String,
+	tableCompressedDataSizeColumnName:String,
+	verbosity:int, 
+	isReadOnly:bool
+) -> void:
 	SQL_GLOBAL.verbosity_level = verbosity
 	SQL_GLOBAL.path = pathToDB
+	SQL_GLOBAL.read_only = isReadOnly
+
+	TABLE_KEY = tableKeyColumnName
+	TABLE_COMPRESSED_DATA = tableCompressedDataColumnName
+	TABLE_DECOMPRESSED_SIZE = tableCompressedDataSizeColumnName
+
 	path = pathToDB
 
 func has_file() -> bool:
@@ -34,16 +52,16 @@ func create_new_file() -> int:
 
 # Compresses and saves data in sqlite db
 # Designed to compress big data chunks
-func sql_save_compressed(Str:String, tableName:String, KeyVar) -> void:
+func sql_save_compressed(Str:String, tableName:String, Key:String) -> void:
 	var B64C := Algorithms.compress_str(Str, SQLCOMPRESSION)
-	var values:String = "'" + str(KeyVar) + "','" + B64C + "','" + str(Str.length()) + "'"
-	do_query("REPLACE INTO "+tableName+" (Key,CData,DCSize) VALUES("+values+");")
+	var values:String = "'" + Key + "','" + B64C + "','" + str(Str.length()) + "'"
+	do_query("REPLACE INTO "+tableName+" ("+TABLE_KEY+","+TABLE_COMPRESSED_DATA+","+TABLE_DECOMPRESSED_SIZE+") VALUES("+values+");")
 
 # Loads chunk from save, returns empty string if position not saved
-func sql_load_compressed(tableName:String, KeyVar) -> String:
-	if (not row_exists(tableName, "Key", str(KeyVar))): return ""
-	var queryResult := get_query_result("SELECT CData,DCSize FROM "+tableName+" WHERE Key='"+str(KeyVar)+"';")
-	return Algorithms.decompress_str(queryResult[0]["CData"], SQLCOMPRESSION, queryResult[0]["DCSize"])
+func sql_load_compressed(tableName:String, KeyVar:String) -> String:
+	if (not row_exists(tableName, TABLE_KEY, str(KeyVar))): return ""
+	var queryResult := get_query_result("SELECT "+TABLE_COMPRESSED_DATA+","+TABLE_DECOMPRESSED_SIZE+" FROM "+tableName+" WHERE "+TABLE_KEY+"='"+KeyVar+"';")
+	return Algorithms.decompress_str(queryResult[0][TABLE_COMPRESSED_DATA], SQLCOMPRESSION, queryResult[0][TABLE_DECOMPRESSED_SIZE])
 
 # Tries to get dict form saved data, returns empty dict on fail
 func get_dict_from_table(tableName:String, keyVar) -> Dictionary:
@@ -59,15 +77,15 @@ func get_dict_from_table(tableName:String, keyVar) -> Dictionary:
 # tableDict format:
 # { columnName:{"data_type":"text", "not_null": true}, ... }
 func add_table(tableName:String, tableDict:Dictionary) -> bool:
-	var isOK := true
+	var isOk := true
 	SQL_GLOBAL.open_db()
-	isOK = SQL_GLOBAL.create_table(tableName, tableDict) and isOK
+	isOk = SQL_GLOBAL.create_table(tableName, tableDict) and isOk
 	SQL_GLOBAL.close_db()
 
-	if(not isOK):
+	if(not isOk):
 		Logger.log_err(["Unable to create table: ", tableName])
 		return false
-	return isOK
+	return isOk
 
 func table_exists(tableName:String) -> bool:
 	var QuerryResult := get_query_result("SELECT name FROM sqlite_master WHERE type='table' AND name='" + tableName + "';")
@@ -111,7 +129,7 @@ func do_query(query:String) -> void:
 ### ----------------------------------------------------
 
 # Deletes an sql DB
-static func delete_SQLDB_file(folderPath:String ,dbName:String) -> int:
+static func delete_SQLDB_file(folderPath:String, dbName:String) -> int:
 	return FileUtils.delete_file(folderPath + dbName + ".db")
 
 static func do_query_on_path(pathToDB:String, query:String) -> void:

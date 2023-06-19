@@ -61,20 +61,20 @@ func _ready() -> void:
 	RenderingServer.set_default_clear_color(Color.DARK_SLATE_BLUE)
 	GLOBAL.ChunkManager.add_listener_function(Callable(TM, "update"))
 	
-	var isOK := true
+	var isOk := true
 	EditorStateMachine.add_state(TileState)
 	EditorStateMachine.add_state(FilterState)
 	EditorStateMachine.add_state(SaveState)
 	EditorStateMachine.add_state(LoadState)
 	EditorStateMachine.add_state(GoToState)
-	isOK = isOK and EditorStateMachine.set_state(TileState)
-	isOK = isOK and EditorStateMachine.add_default_state(TileState)
-	if(not isOK):
+	isOk = isOk and EditorStateMachine.set_state(TileState)
+	isOk = isOk and EditorStateMachine.add_default_state(TileState)
+	if(not isOk):
 		push_error("Failed to init EditorStateMachine")
 		get_tree().quit()
 	
-	SAVE_MANAGER.MapTemp = MapData.get_new(EDITOR_SAVE_NAME)
-	SAVE_MANAGER.MapEdit = MapData.get_new(EDITOR_SAVE_NAME)
+	SAVE_API.MapTemp = MapData.get_new(EDITOR_SAVE_NAME)
+	SAVE_API.MapEdit = MapData.get_new(EDITOR_SAVE_NAME)
 	
 	if(EditorStateMachine.force_call(TileState, "fill_item_list", []) == StateMachine.ERROR):
 		push_error("Failed to init EditorStateMachine")
@@ -152,8 +152,8 @@ func _hide_lineEdit(LENode:Control) -> void:
 	LENode.hide()
 
 func editor_save_map(mapName:String) -> bool:
-	var path := SAVE_MANAGER.TEMP_FOLDER + mapName + ".res"
-	var result := MapData.save_MapData_to_path(path, SAVE_MANAGER.MapEdit)
+	var path := SAVE_API.TEMP_FOLDER + mapName + ".res"
+	var result := MapData.save_MapData_to_path(path, SAVE_API.MapEdit)
 	if(result != OK):
 		Logger.log_err(["Failed to save map to path: ", path])
 		return false
@@ -161,11 +161,11 @@ func editor_save_map(mapName:String) -> bool:
 	return true
 
 func editor_load_map(mapName:String) -> bool:
-	var path := SAVE_MANAGER.TEMP_FOLDER + mapName + ".res"
+	var path := SAVE_API.TEMP_FOLDER + mapName + ".res"
 	var TempResult := MapData.load_MapData_from_path(path)
 	if(TempResult == null):
 		Logger.log_err(["Failed to load map from path: ", path])
 		return false
-	SAVE_MANAGER.MapEdit = TempResult
+	SAVE_API.MapEdit = TempResult
 	Logger.log_msg(["Loaded map: ", mapName])
 	return true
