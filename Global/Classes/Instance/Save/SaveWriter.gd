@@ -2,7 +2,7 @@
 # Manages SQLite
 # 	Stores save data which consists of:
 # 	- PlayerData (GAMEDATA_TABLE -> PLAYER_DATA)
-# 	- EditedMaps (GAMEDATA_TABLE -> MapName)
+# 	- EditedMaps (GAMEDATA_TABLE -> mapName)
 # To setup a save use create_new_save() and initialize()
 # To load use open()
 # To save use Save()
@@ -16,7 +16,7 @@ class_name SaveWriter
 ### ----------------------------------------------------
 
 const TEMP_MARKER = "_TEMP" # Added to ending of all temp files
-var isLoaded := false
+var isOpen := false
  
 ### ----------------------------------------------------
 # Functions
@@ -88,7 +88,7 @@ func open() -> bool:
 		Logger.log_err(["Failed to copy db from dest to temp: ", SQL_DB_DEST.path, " -> ", SQL_DB_TEMP.path])
 		return false
 	Logger.log_msg(["Loaded SQLSave: ", SQL_DB_DEST.path])
-	isLoaded = true
+	isOpen = true
 	return true
 
 # Save everything, leave savePath empty if you want to overwrite save
@@ -112,7 +112,7 @@ func Save(savePath:String = "") -> bool:
 func close() -> int:
 	var result := SQL_DB_TEMP.delete_file()
 	Logger.log_result_code(result, ["Trying to close SQLite: ", SQL_DB_DEST.path])
-	isLoaded = false
+	isOpen = false
 	return result
 
 func delete() -> int:
@@ -125,25 +125,30 @@ func delete() -> int:
 	
 	result = SQL_DB_DEST.delete_file()
 	Logger.log_result_code(result, ["Trying to delete SQLite: ", SQL_DB_DEST.path])
-	isLoaded = false
+	isOpen = false
 	return result
 
 ### ----------------------------------------------------
 # GameData control
 ### ----------------------------------------------------
 
-func set_PlayerEntity(Player:PlayerEntity) -> bool:
+func set_PlayerEntity(Player:PlayerEntity) -> void:
 	SQL_DB_TEMP.sql_save_compressed( 
 		Player.to_string(),
 		TABLE_NAMES.keys()[TABLE_NAMES.GAMEDATA_TABLE],
-		GAMEDATA_KEYS.keys()[GAMEDATA_KEYS.PLAYER_DATA])
-	return true
+		GAMEDATA_KEYS.keys()[GAMEDATA_KEYS.PLAYER_DATA]
+	)
 
 func set_map(MapRef:MapData) -> void:
 	SQL_DB_TEMP.sql_save_compressed(
 		MapRef.to_string(),
 		TABLE_NAMES.keys()[TABLE_NAMES.MAPDATA_TABLE],
-		MapRef.MapName)
+		MapRef.mapName
+	)
+
+func set_new_empty_map(mapName:String) -> void:
+	var map := MapData.get_new(mapName)
+	set_map(map)
 
 ### ----------------------------------------------------
 # STATIC

@@ -2,7 +2,7 @@
 # Manages SQLite in read only mode
 # 	File that stores save data which consists of:
 # 	- PlayerData (GAMEDATA_TABLE -> PLAYER_DATA)
-# 	- EditedMaps (GAMEDATA_TABLE -> MapName)
+# 	- EditedMaps (GAMEDATA_TABLE -> mapName)
 ### ----------------------------------------------------
 
 extends RefCounted
@@ -79,21 +79,24 @@ func get_PlayerEntity() -> PlayerEntity:
 	)
 	return PlayerEntity.new().from_str(PlayerEntityStr)
 
-func get_map_exists(MapName:String) -> bool:
+func get_map_exists(mapName:String) -> bool:
 	var result := SQL_DB_TEMP.row_exists(
 		TABLE_NAMES.keys()[TABLE_NAMES.MAPDATA_TABLE],
 		TABLE_KEY, 
-		MapName
+		mapName
 	)
 	return result
 
-func get_map(MapName:String) -> MapData:
-	if(not get_map_exists(MapName)):
-		Logger.log_err(["Map: ", MapName, ", doesn't exist."])
+func get_map(mapName:String) -> MapData:
+	if(not get_map_exists(mapName)):
+		Logger.log_err(["Map: ", mapName, ", doesn't exist."])
 		return null
 	
 	var loadStr := SQL_DB_TEMP.sql_load_compressed(
 		TABLE_NAMES.keys()[TABLE_NAMES.MAPDATA_TABLE],
-		MapName
+		mapName
 	)
 	return MapData.new().from_string(loadStr)
+
+func _to_string() -> String:
+	return FILE_DIR + FILE_NAME + ".db"

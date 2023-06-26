@@ -34,4 +34,4 @@ func _physics_process(delta: float) -> void:
 
 # Saves this entity
 func save_entity() -> bool:
-	return SAVE_API.set_PlayerEntity(self)
+	return SAVE.set_PlayerEntity(self)

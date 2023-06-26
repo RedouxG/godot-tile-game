@@ -18,7 +18,7 @@ config/features=PackedStringArray("4.0")
 GLOBAL="*res://Global/Singletons/GLOBAL.gd"
 TILE_DB="*res://Global/Singletons/TILE_DB.gd"
 BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
-SAVE_API="*res://Global/Singletons/SAVE_API.gd"
+SAVE="*res://Global/Singletons/SAVE.gd"
 
 [debug]
 

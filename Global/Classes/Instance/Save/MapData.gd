@@ -9,10 +9,10 @@ class_name MapData
 # Variables
 ### ----------------------------------------------------
 
-var Saver := ObjectSaver.new(self, ["Data", "MapName"])
+var Saver := ObjectSaver.new(self, ["Data", "mapName"])
 
 @export var Data := Dictionary() # { pos:MapTileStr }
-@export var MapName := "Default"
+@export var mapName := "Default"
 
 ### ----------------------------------------------------
 # API
@@ -85,5 +85,5 @@ static func save_MapData_to_path(path:String, Map:MapData) -> int:
 
 static func get_new(name:String) -> MapData:
 	var NewMap := MapData.new()
-	NewMap.MapName = name
+	NewMap.mapName = name
 	return NewMap
