@@ -176,9 +176,9 @@ func _set_tile_on_pos(tilePos:Vector3i, terrainID:int) -> void:
 	if(not chunkPos in TM.RenderedChunks): 
 		return
 	if(terrainID == -1):
-		SAVE.rem_terrain_on(tilePos, currentLayerID)
+		SAVE_MANAGER.rem_terrain_on(tilePos, currentLayerID)
 	else:
-		SAVE.set_terrain_on(tilePos, currentLayerID, terrainID)
+		SAVE_MANAGER.set_terrain_on(tilePos, currentLayerID, terrainID)
 	TM.refresh_tile(tilePos)
 
 # Renders chunks as in normal game based on camera position (as simulated entity)

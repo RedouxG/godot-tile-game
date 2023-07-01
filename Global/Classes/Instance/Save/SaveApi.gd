@@ -24,11 +24,11 @@ func load_map(EditableSource:SaveReader, TemplateSource:SaveReader, mapName:Stri
 	var TemplateMap := TemplateSource.get_map(mapName)
 
 	if(EditableMap == null):
-		Logger.log_err(["Failed to load editable map: ", mapName])
+		Logger.log_err(["Failed to load editable map (doesn't exist): ", mapName])
 		return false
 	
 	if(TemplateMap == null):
-		Logger.log_err(["Failed to load template map: ", mapName])
+		Logger.log_err(["Failed to load template map (doesn't exist): ", mapName])
 		return false
 	
 	_TemplateMap = TemplateMap

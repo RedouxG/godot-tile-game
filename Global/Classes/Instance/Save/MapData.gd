@@ -57,7 +57,7 @@ func get_chunk(chunkPos:Vector3i, chunkSize:int) -> Dictionary:
 	return result
 
 ### ----------------------------------------------------
-# SAVE
+# SAVE_MANAGER
 ### ----------------------------------------------------
 
 func _to_string() -> String:

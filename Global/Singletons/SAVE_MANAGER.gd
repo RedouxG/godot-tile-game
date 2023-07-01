@@ -13,7 +13,7 @@ extends Node
 
 var TEMPLATE_FOLDER := "res://Resources/Maps/Templates/":
 	set(val):
-		Logger.log_msg(["Changed SAVE.TEMPLATE_FOLDER to: ", val])
+		Logger.log_msg(["Changed SAVE_MANAGER.TEMPLATE_FOLDER to: ", val])
 		TEMPLATE_FOLDER = val
 
 var TEMPLATE_FILE := "Template":
@@ -23,7 +23,7 @@ var TEMPLATE_FILE := "Template":
 
 var SAVE_FOLDER := "res://Resources/Maps/Saves/":
 	set(val):
-		Logger.log_msg(["Changed SAVE.EDIT_FOLDER to: ", val])
+		Logger.log_msg(["Changed SAVE_MANAGER.EDIT_FOLDER to: ", val])
 		SAVE_FOLDER = val
 
 var _EditableSave:SaveWriter
@@ -84,12 +84,23 @@ func add_empty_map_to_save(folderPath:String, saveName:String, mapName:String) -
 	if(not TempSave.open()):
 		return false
 	TempSave.set_new_empty_map(mapName)
+	TempSave.Save()
 	return true
 
-func create_new_save(folderPath:String, saveName:String) -> bool:
-	var TempSave := SaveWriter.new(folderPath, saveName)
+func create_new_save(saveName:String) -> bool:
+	var TempSave := SaveWriter.new(SAVE_FOLDER, saveName)
+	return TempSave.create_new_save()
+
+func create_new_template_save() -> bool:
+	var TempSave := SaveWriter.new(TEMPLATE_FOLDER, TEMPLATE_FILE)
 	return TempSave.create_new_save()
 
 func delete_save(folderPath:String, saveName:String) -> bool:
 	var TempSave := SaveWriter.new(folderPath, saveName)
 	return TempSave.delete_save()
+
+func clear_cached_save_data() -> void:
+	_EditableSave = null
+	_TemplateSave = null
+	API._TemplateMap = null
+	API._EditableMap = null

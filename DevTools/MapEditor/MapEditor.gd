@@ -73,8 +73,8 @@ func _ready() -> void:
 		push_error("Failed to init EditorStateMachine")
 		get_tree().quit()
 	
-	SAVE.MapTemp = MapData.get_new(EDITOR_SAVE_NAME)
-	SAVE.MapEdit = MapData.get_new(EDITOR_SAVE_NAME)
+	SAVE_MANAGER.MapTemp = MapData.get_new(EDITOR_SAVE_NAME)
+	SAVE_MANAGER.MapEdit = MapData.get_new(EDITOR_SAVE_NAME)
 	
 	if(EditorStateMachine.force_call(TileState, "fill_item_list", []) == StateMachine.ERROR):
 		push_error("Failed to init EditorStateMachine")
@@ -152,8 +152,8 @@ func _hide_lineEdit(LENode:Control) -> void:
 	LENode.hide()
 
 func editor_save_map(mapName:String) -> bool:
-	var path := SAVE.TEMP_FOLDER + mapName + ".res"
-	var result := MapData.save_MapData_to_path(path, SAVE.MapEdit)
+	var path := SAVE_MANAGER.TEMP_FOLDER + mapName + ".res"
+	var result := MapData.save_MapData_to_path(path, SAVE_MANAGER.MapEdit)
 	if(result != OK):
 		Logger.log_err(["Failed to save map to path: ", path])
 		return false
@@ -161,11 +161,11 @@ func editor_save_map(mapName:String) -> bool:
 	return true
 
 func editor_load_map(mapName:String) -> bool:
-	var path := SAVE.TEMP_FOLDER + mapName + ".res"
+	var path := SAVE_MANAGER.TEMP_FOLDER + mapName + ".res"
 	var TempResult := MapData.load_MapData_from_path(path)
 	if(TempResult == null):
 		Logger.log_err(["Failed to load map from path: ", path])
 		return false
-	SAVE.MapEdit = TempResult
+	SAVE_MANAGER.MapEdit = TempResult
 	Logger.log_msg(["Loaded map: ", mapName])
 	return true
