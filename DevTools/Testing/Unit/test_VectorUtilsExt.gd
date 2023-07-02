@@ -38,7 +38,7 @@ func test_vector_conversion() -> void:
 		)
 
 func test_vector_scale() -> void:
-	var SCALE = GLOBAL.MAP.CHUNK_SIZE
+	var SCALE = Settings.MAP.CHUNK_SIZE
 	for i in range(-3,3):
 		do_test_for_v2_and_v2i(
 			Callable(VectorUtilsExt, "scale_down_vec2i"),

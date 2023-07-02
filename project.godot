@@ -15,10 +15,10 @@ config/features=PackedStringArray("4.0")
 
 [autoload]
 
-GLOBAL="*res://Global/Singletons/GLOBAL.gd"
-TILE_DB="*res://Global/Singletons/TILE_DB.gd"
+Settings="*res://Global/Singletons/Settings.gd"
+TileDB="*res://Global/Singletons/TileDB.gd"
 BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
-SAVE_MANAGER="*res://Global/Singletons/SAVE_MANAGER.gd"
+SaveManager="*res://Global/Singletons/SaveManager.gd"
 
 [debug]
 

@@ -36,7 +36,7 @@ func is_empty() -> bool:
 	return TerrainsData.is_empty() and EntityData.is_empty()
 
 ### ----------------------------------------------------
-# SAVE_MANAGER
+# SaveManager
 ### ----------------------------------------------------
 
 func _to_string() -> String:

@@ -29,17 +29,17 @@ func _ready() -> void:
 
 # Function called on ready (to overwrite if needed)
 func _on_entity_ready() -> void:
-	set_sprite(TexturePos, GLOBAL.TEXTURES.ENTITY_SET_PATH)
+	set_sprite(TexturePos, Settings.TEXTURES.ENTITY_SET_PATH)
 
 # Loads sprite from sprite set
 func set_sprite(spritePos:Vector2i, texturePath:String) -> void:
 	var setTexture:Texture2D = ResourceLoader.load(texturePath, "Texture2D")
 	texture = ImageUtils.get_sprite_from_texture(
 		spritePos, 
-		GLOBAL.MAP.TILE_PIXEL_SIZE_VECTOR, 
+		Settings.MAP.TILE_PIXEL_SIZE_VECTOR, 
 		setTexture
 	)
-	offset = GLOBAL.MAP.TILE_PIXEL_SIZE_VECTOR/2
+	offset = Settings.MAP.TILE_PIXEL_SIZE_VECTOR/2
 
 func unload_entity() -> void:
 	if(not save_entity()):
@@ -48,7 +48,7 @@ func unload_entity() -> void:
 
 # Saves this entity
 func save_entity() -> bool:
-	return SAVE_MANAGER.add_Entity_to_TileData(MapPosition, self)
+	return SaveManager.add_Entity_to_TileData(MapPosition, self)
 	
 ### ----------------------------------------------------
 # Utils

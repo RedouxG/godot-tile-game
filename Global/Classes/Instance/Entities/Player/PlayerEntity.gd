@@ -21,7 +21,7 @@ func _init() -> void:
 	Saver = ObjectSaver.new(self, ["MapPosition", "Inventory"])
 
 func _on_entity_ready() -> void:
-	set_sprite(TexturePos, GLOBAL.TEXTURES.ENTITY_SET_PATH)
+	set_sprite(TexturePos, Settings.TEXTURES.ENTITY_SET_PATH)
 	PlayerStateMachine.add_state(Movement)
 	PlayerStateMachine.set_state(Movement)
 	PlayerStateMachine.add_default_state(Movement)
@@ -34,4 +34,4 @@ func _physics_process(delta: float) -> void:
 
 # Saves this entity
 func save_entity() -> bool:
-	return SAVE_MANAGER.set_PlayerEntity(self)
+	return SaveManager.set_PlayerEntity(self)

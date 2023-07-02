@@ -70,7 +70,7 @@ func tile_place_input(event:InputEvent) -> void:
 			DrawSelector.start(Caller.get_global_mouse_position())
 		if(event.is_action_released("LeftClick")):
 			DrawSelector.end()
-			for cellPos in DrawSelector.get_cells_in_selected_area(Caller.get_global_mouse_position(), GLOBAL.MAP.TILE_PIXEL_SIZE):
+			for cellPos in DrawSelector.get_cells_in_selected_area(Caller.get_global_mouse_position(), Settings.MAP.TILE_PIXEL_SIZE):
 				_set_tile_on_pos(VectorUtilsExt.vec2i_vec3i(cellPos, currentElevation), ShownTerrains[terrainIndex])
 		if(DrawSelector.isActive):
 			DrawSelector.draw_selected_area(Caller.get_global_mouse_position())
@@ -140,12 +140,12 @@ func set_selected_tile(terrainID:int) -> void:
 
 func increment_elevation() -> void:
 	currentElevation = Algorithms.clamp_increment_int(
-		currentElevation, GLOBAL.GAME.MIN_ELEVATION, GLOBAL.GAME.MAX_ELEVATION)
+		currentElevation, Settings.GAME.MIN_ELEVATION, Settings.GAME.MAX_ELEVATION)
 	change_elevation(currentElevation)
 
 func decrement_elevation() -> void:
 	currentElevation = Algorithms.clamp_decrement_int(
-		currentElevation, GLOBAL.GAME.MIN_ELEVATION, GLOBAL.GAME.MAX_ELEVATION)
+		currentElevation, Settings.GAME.MIN_ELEVATION, Settings.GAME.MAX_ELEVATION)
 	change_elevation(currentElevation)
 
 func change_elevation(e:int) -> void:
@@ -159,7 +159,7 @@ func fill_item_list() -> void:
 	ShownTerrains.clear()
 	Caller.UIElement.TileItemList.clear()
 
-	var TerrainSystemLayer := TILE_DB.get_terrains_on_layer(currentLayerID)
+	var TerrainSystemLayer := TileDB.get_terrains_on_layer(currentLayerID)
 	for terrainID in TerrainSystemLayer:
 		var terrainName:String = TerrainSystemLayer[terrainID]
 		if(Caller.FilterState.filter != ""):
@@ -172,22 +172,22 @@ func fill_item_list() -> void:
 		ShownTerrains.append(terrainID)
 
 func _set_tile_on_pos(tilePos:Vector3i, terrainID:int) -> void:
-	var chunkPos:Vector3i = VectorUtilsExt.scale_down_vec3i_no_z(tilePos, GLOBAL.MAP.CHUNK_SIZE)
+	var chunkPos:Vector3i = VectorUtilsExt.scale_down_vec3i_no_z(tilePos, Settings.MAP.CHUNK_SIZE)
 	if(not chunkPos in TM.RenderedChunks): 
 		return
 	if(terrainID == -1):
-		SAVE_MANAGER.rem_terrain_on(tilePos, currentLayerID)
+		SaveManager.rem_terrain_on(tilePos, currentLayerID)
 	else:
-		SAVE_MANAGER.set_terrain_on(tilePos, currentLayerID, terrainID)
+		SaveManager.set_terrain_on(tilePos, currentLayerID, terrainID)
 	TM.refresh_tile(tilePos)
 
 # Renders chunks as in normal game based on camera position (as simulated entity)
 func _update_EditedMap_chunks(forceUpdate := false) -> void:
 	var camChunk := VectorUtilsExt.scale_down_vec3i_no_z(
 		VectorUtilsExt.vec2i_vec3i(Vector2i(Cam.global_position), currentElevation),
-		GLOBAL.MAP.CHUNK_PIXEL_SIZE
+		Settings.MAP.CHUNK_PIXEL_SIZE
 	)
 	if(previousCameraChunk == camChunk and not forceUpdate):
 		return
 	previousCameraChunk = camChunk
-	GLOBAL.ChunkManager.update(camChunk)
+	Settings.ChunkManager.update(camChunk)

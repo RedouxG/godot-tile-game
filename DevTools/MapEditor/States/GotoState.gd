@@ -22,8 +22,8 @@ func change_coords(new_text:String) -> void:
         return
     
     Caller.get_node("Cam").global_position = Vector2(
-        int(coords[0]) * GLOBAL.MAP.TILE_PIXEL_SIZE,
-        int(coords[1]) * GLOBAL.MAP.TILE_PIXEL_SIZE)
+        int(coords[0]) * Settings.MAP.TILE_PIXEL_SIZE,
+        int(coords[1]) * Settings.MAP.TILE_PIXEL_SIZE)
 
 func end_state() -> void:
     Caller._hide_lineEdit(Caller.UIElement.GotoInput)

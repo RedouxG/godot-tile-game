@@ -35,7 +35,7 @@ func move_player(direction:Vector2i) -> void:
 		return
 	
 	Caller.MapPosition += VectorUtilsExt.vec2i_vec3i(
-		direction * GLOBAL.MAP.TILE_PIXEL_SIZE, 0)
+		direction * Settings.MAP.TILE_PIXEL_SIZE, 0)
 	emit_signal("PlayerMoved", VectorUtilsExt.vec3i_vec2i(Caller.MapPosition))
 	InputDelayer.start()
 

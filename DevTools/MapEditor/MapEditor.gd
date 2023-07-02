@@ -15,7 +15,7 @@ extends DrawNode
 ### ----------------------------------------------------
 
 const EDITOR_SAVE_NAME := "EDITOR"
-const CHUNK_PIXEL_SIZE = GLOBAL.MAP.TILE_PIXEL_SIZE * GLOBAL.MAP.CHUNK_SIZE
+const CHUNK_PIXEL_SIZE = Settings.MAP.TILE_PIXEL_SIZE * Settings.MAP.CHUNK_SIZE
 const CHUNK_SIZE_VECTOR = Vector2i(CHUNK_PIXEL_SIZE, CHUNK_PIXEL_SIZE)
 
 const TILE_STATE = preload("res://DevTools/MapEditor/States/TileState.gd")
@@ -59,7 +59,7 @@ var EditorStateMachine := StateMachine.new()
 
 func _ready() -> void:
 	RenderingServer.set_default_clear_color(Color.DARK_SLATE_BLUE)
-	GLOBAL.ChunkManager.add_listener_function(Callable(TM, "update"))
+	Settings.ChunkManager.add_listener_function(Callable(TM, "update"))
 	
 	var isOk := true
 	EditorStateMachine.add_state(TileState)
@@ -73,8 +73,8 @@ func _ready() -> void:
 		push_error("Failed to init EditorStateMachine")
 		get_tree().quit()
 	
-	SAVE_MANAGER.MapTemp = MapData.get_new(EDITOR_SAVE_NAME)
-	SAVE_MANAGER.MapEdit = MapData.get_new(EDITOR_SAVE_NAME)
+	SaveManager.MapTemp = MapData.get_new(EDITOR_SAVE_NAME)
+	SaveManager.MapEdit = MapData.get_new(EDITOR_SAVE_NAME)
 	
 	if(EditorStateMachine.force_call(TileState, "fill_item_list", []) == StateMachine.ERROR):
 		push_error("Failed to init EditorStateMachine")
@@ -95,15 +95,15 @@ func _input(event:InputEvent) -> void:
 # Draws a square to indicate current cell pointed by mouse cursor
 func _draw_selected_tile() -> void:
 	var cellPos:Vector2i = VectorUtilsExt.scale_down_vec2i(
-		Vector2i(get_global_mouse_position()), GLOBAL.MAP.TILE_PIXEL_SIZE)
-	var rect := Rect2i(cellPos * GLOBAL.MAP.TILE_PIXEL_SIZE, GLOBAL.MAP.TILE_PIXEL_SIZE_VECTOR)
+		Vector2i(get_global_mouse_position()), Settings.MAP.TILE_PIXEL_SIZE)
+	var rect := Rect2i(cellPos * Settings.MAP.TILE_PIXEL_SIZE, Settings.MAP.TILE_PIXEL_SIZE_VECTOR)
 	UIElement.CellText.text = "Cell: " + str(cellPos)
 	add_function_to_DrawQueue(Callable(self, "draw_rect").bindv([rect, Color.CRIMSON, false, 1]))
 
 # Draws a square to indicate current chunk pointed by mouse cursor
 func _draw_selected_chunk() -> void:
 	var chunkPos:Vector2i = VectorUtilsExt.scale_down_vec2i(
-		Vector2i(get_global_mouse_position()), GLOBAL.MAP.CHUNK_SIZE * GLOBAL.MAP.TILE_PIXEL_SIZE)
+		Vector2i(get_global_mouse_position()), Settings.MAP.CHUNK_SIZE * Settings.MAP.TILE_PIXEL_SIZE)
 	var rect := Rect2i(chunkPos * CHUNK_PIXEL_SIZE, CHUNK_SIZE_VECTOR)
 	UIElement.ChunkText.text = "Chunk: " + str(chunkPos)
 	add_function_to_DrawQueue(Callable(self, "draw_rect").bindv([rect, Color.BLACK, false, 1]))
@@ -152,8 +152,8 @@ func _hide_lineEdit(LENode:Control) -> void:
 	LENode.hide()
 
 func editor_save_map(mapName:String) -> bool:
-	var path := SAVE_MANAGER.TEMP_FOLDER + mapName + ".res"
-	var result := MapData.save_MapData_to_path(path, SAVE_MANAGER.MapEdit)
+	var path := SaveManager.TEMP_FOLDER + mapName + ".res"
+	var result := MapData.save_MapData_to_path(path, SaveManager.MapEdit)
 	if(result != OK):
 		Logger.log_err(["Failed to save map to path: ", path])
 		return false
@@ -161,11 +161,11 @@ func editor_save_map(mapName:String) -> bool:
 	return true
 
 func editor_load_map(mapName:String) -> bool:
-	var path := SAVE_MANAGER.TEMP_FOLDER + mapName + ".res"
+	var path := SaveManager.TEMP_FOLDER + mapName + ".res"
 	var TempResult := MapData.load_MapData_from_path(path)
 	if(TempResult == null):
 		Logger.log_err(["Failed to load map from path: ", path])
 		return false
-	SAVE_MANAGER.MapEdit = TempResult
+	SaveManager.MapEdit = TempResult
 	Logger.log_msg(["Loaded map: ", mapName])
 	return true
