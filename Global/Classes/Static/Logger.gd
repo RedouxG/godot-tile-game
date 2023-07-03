@@ -1,5 +1,5 @@
 ### ----------------------------------------------------
-### Singleton handles all logging procedures
+### Class handles all logging procedures
 ### ----------------------------------------------------
 
 extends Script
@@ -12,7 +12,7 @@ class_name Logger
 const LOG_FOLDER_PATH = "res://Temp/"
 const LOG_FILE_NAME = "log.txt"
 const LOG_FILE_PATH = LOG_FOLDER_PATH + LOG_FILE_NAME
-const LOG_MARK = "[LOG] "
+const LOG_MARK = "[MSG] "
 const ERR_MARK = "[ERR] "
 
 ### ----------------------------------------------------
@@ -55,12 +55,12 @@ static func log_err(message:Array, logTime = false, logToFile = false) -> void:
 	output_log(_format_log_msg(message), true, logToFile)
 
 # in:
-# 	log_result(isOK, ["Doing x"])
+# 	log_result(isOk, ["Doing x"])
 # out:
 #	Doing x | result: failed/success
-static func log_result(isOK:bool, Message:Array) -> void:
+static func log_result(isOk:bool, Message:Array) -> void:
 	var add := " | result: "
-	if(isOK):
+	if(isOk):
 		add += "success!"
 		Message.append(add)
 		log_msg(Message)

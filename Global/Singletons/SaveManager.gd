@@ -44,7 +44,7 @@ func load_game(saveName:String) -> bool:
 	var loadedTemplateSave := SaveReader.new(TEMPLATE_FOLDER, TEMPLATE_FILE)
 	var loadedEditableSave := SaveWriter.new(SAVE_FOLDER, saveName)
 
-	if(not loadedTemplateSave.exists()):
+	if(not loadedTemplateSave.has_file()):
 		Logger.log_err(["Failed to load template save file: ", loadedTemplateSave])
 		return false
 	

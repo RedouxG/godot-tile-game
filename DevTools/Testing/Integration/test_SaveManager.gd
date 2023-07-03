@@ -49,7 +49,7 @@ func test_SAVE_MANAGER_should_save_and_load_map() -> void:
 	var loadedGame := SaveManager.load_game(SAVE_NAME)
 	var changedMap := SaveManager.change_map(MAP_NAME)
 
-	SaveManager.API.set_on(pos, mapTile)
+	var setMapTile := SaveManager.API.set_on(pos, mapTile)
 	var savedGame := SaveManager.save_game(SAVE_NAME)
 	SaveManager.clear_cached_save_data()
 
@@ -63,6 +63,7 @@ func test_SAVE_MANAGER_should_save_and_load_map() -> void:
 	assert_true(addedMapToSaveTemplate)
 	assert_true(loadedGame)
 	assert_true(changedMap)
+	assert_true(setMapTile)
 	assert_true(savedGame)
 	assert_true(loadedGameAfterSave)
 	assert_true(changedMapAfterSave)

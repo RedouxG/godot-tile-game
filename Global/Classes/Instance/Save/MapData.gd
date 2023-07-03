@@ -9,7 +9,7 @@ class_name MapData
 # Variables
 ### ----------------------------------------------------
 
-var Saver := ObjectSaver.new(self, ["Data", "mapName"])
+var objectMapper := ObjectMapper.new(self, ["Data", "mapName"])
 
 @export var Data := Dictionary() # { pos:MapTileStr }
 @export var mapName := "Default"
@@ -61,11 +61,10 @@ func get_chunk(chunkPos:Vector3i, chunkSize:int) -> Dictionary:
 ### ----------------------------------------------------
 
 func _to_string() -> String:
-	return Saver.get_properties_str()
+	return objectMapper.get_str()
 
 func from_string(data:String) -> MapData:
-	Saver.set_properties_str(data)
-	return self
+	return objectMapper.set_str(data)
 
 ### ----------------------------------------------------
 # Static util
@@ -73,7 +72,6 @@ func from_string(data:String) -> MapData:
 
 static func load_MapData_from_path(path:String) -> MapData:
 	if(not FileUtils.file_exists(path)):
-		Logger.log_err(["MapData file doesnt exist in path: ", path])
 		return null
 	var TempRef = ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE)
 	if(not TempRef is MapData):

@@ -65,7 +65,7 @@ func _initialize(fileDir:String, fileName:String, verbose:bool) -> void:
 	
 	SQL_DB_TEMP = SQL_DB_DEST
 
-func exists() -> bool:
+func has_file() -> bool:
 	return SQL_DB_DEST.has_file()
 
 ### ----------------------------------------------------
@@ -73,6 +73,10 @@ func exists() -> bool:
 ### ----------------------------------------------------
 
 func get_PlayerEntity() -> PlayerEntity:
+	if(not has_file()):
+		Logger.log_err([Errors.NO_FILE(SQL_DB_DEST.path)])
+		return null
+
 	var PlayerEntityStr = SQL_DB_TEMP.sql_load_compressed(
 		TABLE_NAMES.keys()[TABLE_NAMES.GAMEDATA_TABLE],
 		GAMEDATA_KEYS.keys()[GAMEDATA_KEYS.PLAYER_DATA]
@@ -80,22 +84,24 @@ func get_PlayerEntity() -> PlayerEntity:
 	return PlayerEntity.new().from_str(PlayerEntityStr)
 
 func get_map_exists(mapName:String) -> bool:
-	var result := SQL_DB_TEMP.row_exists(
-		TABLE_NAMES.keys()[TABLE_NAMES.MAPDATA_TABLE],
-		TABLE_KEY, 
-		mapName
-	)
-	return result
+	if(not has_file()):
+		Logger.log_err([Errors.NO_FILE(SQL_DB_DEST.path)])
+		return false
+	
+	return SQL_DB_TEMP.row_exists(
+		TABLE_NAMES.keys()[TABLE_NAMES.MAPDATA_TABLE], TABLE_KEY, mapName)
 
 func get_map(mapName:String) -> MapData:
+	if(not has_file()):
+		Logger.log_err([Errors.NO_FILE(SQL_DB_DEST.path)])
+		return null
+	
 	if(not get_map_exists(mapName)):
 		Logger.log_err(["Map: ", mapName, ", doesn't exist."])
 		return null
 	
 	var loadStr := SQL_DB_TEMP.sql_load_compressed(
-		TABLE_NAMES.keys()[TABLE_NAMES.MAPDATA_TABLE],
-		mapName
-	)
+		TABLE_NAMES.keys()[TABLE_NAMES.MAPDATA_TABLE], mapName)
 	return MapData.new().from_string(loadStr)
 
 func _to_string() -> String:

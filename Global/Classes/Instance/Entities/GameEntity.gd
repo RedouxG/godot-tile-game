@@ -9,7 +9,7 @@ class_name GameEntity
 # Variables
 ### ----------------------------------------------------
 
-var Saver := ObjectSaver.new(self, ["MapPosition"])
+var objectMapper := ObjectMapper.new(self, ["MapPosition"])
 
 # Position on the game map
 var MapPosition := Vector3i(0,0,0): set = _set_MapPosition
@@ -55,8 +55,7 @@ func save_entity() -> bool:
 ### ----------------------------------------------------
 
 func _to_string() -> String:
-	return Saver.get_properties_str()
+	return objectMapper.get_str()
 
 func from_string(data:String) -> GameEntity:
-	Saver.set_properties_str(data)
-	return self
+	return objectMapper.set_str(data)

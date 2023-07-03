@@ -9,8 +9,6 @@ class_name SaveApi
 # Variables
 ### ----------------------------------------------------
 
-const NOT_LOADED_ERR_MSG = "Failed to perform operation because SaveApi map is not loaded!"
-
 # Not editable
 var _TemplateMap:MapData
 
@@ -39,24 +37,25 @@ func load_map(EditableSource:SaveReader, TemplateSource:SaveReader, mapName:Stri
 
 func save_map(EditableSource:SaveReader) -> bool:
 	if(not is_loaded()):
-		Logger.log_err([NOT_LOADED_ERR_MSG])
+		Logger.log_err([Errors.NOT_LOADED("save map", "SaveApi")])
 		return false
 	
 	EditableSource.set_map(_EditableMap)
 	return true
 
 # Sets MapTile in Data on pos
-func set_on(pos:Vector3i, mapTile:MapTile) -> void:
+func set_on(pos:Vector3i, mapTile:MapTile) -> bool:
 	if(not is_loaded()): 
-		Logger.log_err([NOT_LOADED_ERR_MSG])
-		return
+		Logger.log_err([Errors.NOT_LOADED("set map tile", "SaveApi")])
+		return false
 
 	_EditableMap.Data[pos] = str(mapTile)
+	return true
 
 # Gets MapTile on position from Data
 func get_on(pos:Vector3i) -> MapTile:
 	if(not is_loaded()): 
-		Logger.log_err([NOT_LOADED_ERR_MSG])
+		Logger.log_err([Errors.NOT_LOADED("get map tile", "SaveApi")])
 		return null
 	
 	if(_EditableMap.Data.has(pos)):
@@ -66,29 +65,31 @@ func get_on(pos:Vector3i) -> MapTile:
 # Removes position from Data
 func rem_on(pos:Vector3i) -> bool:
 	if(not is_loaded()): 
-		Logger.log_err([NOT_LOADED_ERR_MSG])
+		Logger.log_err([Errors.NOT_LOADED("remove map tile", "SaveApi")])
 		return false
 
 	return _EditableMap.rem_on(pos)
 
-func set_terrain_on(pos:Vector3i, layerID:int, terrainID:int) -> void:
+func set_terrain_on(pos:Vector3i, layerID:int, terrainID:int) -> bool:
 	if(not is_loaded()): 
-		Logger.log_err([NOT_LOADED_ERR_MSG])
-		return
+		Logger.log_err([Errors.NOT_LOADED("set terrain on tile", "SaveApi")])
+		return false
 
 	_EditableMap.set_terrain_on(pos, layerID, terrainID)
+	return true
 
-func rem_terrain_on(pos:Vector3i, layerID:int) -> void:
+func rem_terrain_on(pos:Vector3i, layerID:int) -> bool:
 	if(not is_loaded()): 
-		Logger.log_err([NOT_LOADED_ERR_MSG])
-		return 
+		Logger.log_err([Errors.NOT_LOADED("remove terrain on tile", "SaveApi")])
+		return false
 
 	_EditableMap.rem_terrain_on(pos, layerID)
+	return true
 
 # Returns chunk of given size
 func get_chunk(chunkPos:Vector3i, chunkSize:int) -> Dictionary:
 	if(not is_loaded()): 
-		Logger.log_err([NOT_LOADED_ERR_MSG])
+		Logger.log_err([Errors.NOT_LOADED("get chunk", "SaveApi")])
 		return {}
 
 	var MapEditChunk := _EditableMap.get_chunk(chunkPos, chunkSize)

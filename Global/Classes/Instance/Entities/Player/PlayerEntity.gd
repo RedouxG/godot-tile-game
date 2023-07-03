@@ -18,7 +18,7 @@ var Inventory := {}
 ### ----------------------------------------------------
 
 func _init() -> void:
-	Saver = ObjectSaver.new(self, ["MapPosition", "Inventory"])
+	objectMapper = ObjectMapper.new(self, ["MapPosition", "Inventory"])
 
 func _on_entity_ready() -> void:
 	set_sprite(TexturePos, Settings.TEXTURES.ENTITY_SET_PATH)

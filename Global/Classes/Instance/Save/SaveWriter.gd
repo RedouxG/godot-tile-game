@@ -16,8 +16,7 @@ class_name SaveWriter
 ### ----------------------------------------------------
 
 const TEMP_MARKER = "_TEMP" # Added to ending of all temp files
-var isOpen := false
- 
+
 ### ----------------------------------------------------
 # Functions
 ### ----------------------------------------------------
@@ -47,6 +46,9 @@ func _initialize(fileDir:String, fileName:String, verbose:bool) -> void:
 		SQLite.QUIET,
 		false
 	)
+
+func is_open() -> bool:
+	return SQL_DB_TEMP.has_file()
 
 # If save already exists, create a new one and delete old
 func create_new_save() -> bool:
@@ -81,19 +83,22 @@ func _init_GAMEDATA_TABLE() -> void:
 
 # Should be called after init before trying to acess data from save
 func open() -> bool:
-	if(not exists()):
+	if(not has_file()):
 		Logger.log_err(["Tried to init non existing save: ", SQL_DB_DEST.path])
 		return false
 	if(FileUtils.copy_file(SQL_DB_DEST.path, SQL_DB_TEMP.path) != OK):
 		Logger.log_err(["Failed to copy db from dest to temp: ", SQL_DB_DEST.path, " -> ", SQL_DB_TEMP.path])
 		return false
 	Logger.log_msg(["Loaded SQLSave: ", SQL_DB_DEST.path])
-	isOpen = true
 	return true
 
 # Save everything, leave savePath empty if you want to overwrite save
 func Save(savePath:String = "") -> bool:
 	if(savePath == ""): savePath = SQL_DB_DEST.path
+	if(not is_open()):
+		Logger.log_err([Errors.NO_ACCESS("set map", "save is not open")])
+		return false
+
 	if(FileUtils.file_exists(savePath)):
 		if(OS.move_to_trash(ProjectSettings.globalize_path(savePath)) != OK):
 			Logger.log_err(["Unable to delete SQLSave save file: ", savePath])
@@ -104,15 +109,14 @@ func Save(savePath:String = "") -> bool:
 		Logger.log_err(["Failed to copy db from temp to save: ", SQL_DB_TEMP.path, " -> ", savePath, ", result: ", result])
 		return false
 	
-	SQLiteWrapper.do_query_on_path(savePath, "VACUUM;")
-	Logger.log_msg(["Saved SQLSave: ", savePath])
-	return true
+	var isOk := SQLiteWrapper.do_query_on_path(savePath, "VACUUM;")
+	Logger.log_result(isOk, ["Trying to save: ", savePath])
+	return isOk
 
 # Deletes TEMP file
 func close() -> int:
 	var result := SQL_DB_TEMP.delete_file()
 	Logger.log_result_code(result, ["Trying to close SQLite: ", SQL_DB_DEST.path])
-	isOpen = false
 	return result
 
 func delete() -> int:
@@ -125,30 +129,35 @@ func delete() -> int:
 	
 	result = SQL_DB_DEST.delete_file()
 	Logger.log_result_code(result, ["Trying to delete SQLite: ", SQL_DB_DEST.path])
-	isOpen = false
 	return result
 
 ### ----------------------------------------------------
 # GameData control
 ### ----------------------------------------------------
 
-func set_PlayerEntity(Player:PlayerEntity) -> void:
-	SQL_DB_TEMP.sql_save_compressed( 
+func set_PlayerEntity(Player:PlayerEntity) -> bool:
+	if(not is_open()):
+		Logger.log_err([Errors.NO_ACCESS("set map", "save is not open")])
+		return false
+	
+	return SQL_DB_TEMP.sql_save_compressed(
 		Player.to_string(),
 		TABLE_NAMES.keys()[TABLE_NAMES.GAMEDATA_TABLE],
-		GAMEDATA_KEYS.keys()[GAMEDATA_KEYS.PLAYER_DATA]
-	)
+		GAMEDATA_KEYS.keys()[GAMEDATA_KEYS.PLAYER_DATA])
 
-func set_map(MapRef:MapData) -> void:
-	SQL_DB_TEMP.sql_save_compressed(
+func set_map(MapRef:MapData) -> bool:
+	if(not is_open()):
+		Logger.log_err([Errors.NO_ACCESS("set map", "save is not open")])
+		return false
+
+	return SQL_DB_TEMP.sql_save_compressed(
 		MapRef.to_string(),
 		TABLE_NAMES.keys()[TABLE_NAMES.MAPDATA_TABLE],
-		MapRef.mapName
-	)
+		MapRef.mapName)
 
-func set_new_empty_map(mapName:String) -> void:
+func set_new_empty_map(mapName:String) -> bool:
 	var map := MapData.get_new(mapName)
-	set_map(map)
+	return set_map(map)
 
 ### ----------------------------------------------------
 # STATIC
