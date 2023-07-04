@@ -74,7 +74,7 @@ func has_file() -> bool:
 
 func get_PlayerEntity() -> PlayerEntity:
 	if(not has_file()):
-		Logger.log_err([Errors.NO_FILE(SQL_DB_DEST.path)])
+		Logger.log_err([Logging.Errors.NO_FILE(SQL_DB_DEST.path)])
 		return null
 
 	var PlayerEntityStr = SQL_DB_TEMP.sql_load_compressed(
@@ -85,7 +85,7 @@ func get_PlayerEntity() -> PlayerEntity:
 
 func get_map_exists(mapName:String) -> bool:
 	if(not has_file()):
-		Logger.log_err([Errors.NO_FILE(SQL_DB_DEST.path)])
+		Logger.log_err([Logging.Errors.NO_FILE(SQL_DB_DEST.path)])
 		return false
 	
 	return SQL_DB_TEMP.row_exists(
@@ -93,7 +93,7 @@ func get_map_exists(mapName:String) -> bool:
 
 func get_map(mapName:String) -> MapData:
 	if(not has_file()):
-		Logger.log_err([Errors.NO_FILE(SQL_DB_DEST.path)])
+		Logger.log_err([Logging.Errors.NO_FILE(SQL_DB_DEST.path)])
 		return null
 	
 	if(not get_map_exists(mapName)):

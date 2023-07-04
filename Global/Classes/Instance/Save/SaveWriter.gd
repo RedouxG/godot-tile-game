@@ -96,7 +96,7 @@ func open() -> bool:
 func Save(savePath:String = "") -> bool:
 	if(savePath == ""): savePath = SQL_DB_DEST.path
 	if(not is_open()):
-		Logger.log_err([Errors.NO_ACCESS("set map", "save is not open")])
+		Logger.log_err([Logging.Errors.NO_ACCESS("set map", "save is not open")])
 		return false
 
 	if(FileUtils.file_exists(savePath)):
@@ -137,7 +137,7 @@ func delete() -> int:
 
 func set_PlayerEntity(Player:PlayerEntity) -> bool:
 	if(not is_open()):
-		Logger.log_err([Errors.NO_ACCESS("set map", "save is not open")])
+		Logger.log_err([Logging.Errors.NO_ACCESS("set map", "save is not open")])
 		return false
 	
 	return SQL_DB_TEMP.sql_save_compressed(
@@ -147,7 +147,7 @@ func set_PlayerEntity(Player:PlayerEntity) -> bool:
 
 func set_map(MapRef:MapData) -> bool:
 	if(not is_open()):
-		Logger.log_err([Errors.NO_ACCESS("set map", "save is not open")])
+		Logger.log_err([Logging.Errors.NO_ACCESS("set map", "save is not open")])
 		return false
 
 	return SQL_DB_TEMP.sql_save_compressed(

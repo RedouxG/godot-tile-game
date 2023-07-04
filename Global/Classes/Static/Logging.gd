@@ -3,7 +3,7 @@
 ### ----------------------------------------------------
 
 extends Script
-class_name Logger
+class_name Logging
 
 ### ----------------------------------------------------
 # Variables
@@ -14,6 +14,20 @@ const LOG_FILE_NAME = "log.txt"
 const LOG_FILE_PATH = LOG_FOLDER_PATH + LOG_FILE_NAME
 const LOG_MARK = "[MSG] "
 const ERR_MARK = "[ERR] "
+
+### ----------------------------------------------------
+# Classes
+### ----------------------------------------------------
+
+class Errors:
+	static func NO_FILE(path:String) -> String:
+		return "Missing file error! File: %s" % [path]
+	
+	static func NOT_LOADED(doWhat:String, inWhat:String) -> String:
+		return "Failed to perform %s operation because %s is not loaded!" % [doWhat, inWhat]
+	
+	static func NO_ACCESS(toWhat:String, why:String) -> String:
+		return "Unable to access %s because %s!" % [toWhat, why]
 
 ### ----------------------------------------------------
 # Functions
@@ -53,32 +67,6 @@ static func log_err(message:Array, logTime = false, logToFile = false) -> void:
 	if logTime: message.push_front(get_time())
 	message.push_front(ERR_MARK)
 	output_log(_format_log_msg(message), true, logToFile)
-
-# in:
-# 	log_result(isOk, ["Doing x"])
-# out:
-#	Doing x | result: failed/success
-static func log_result(isOk:bool, Message:Array) -> void:
-	var add := " | result: "
-	if(isOk):
-		add += "success!"
-		Message.append(add)
-		log_msg(Message)
-	else:
-		add += "failed!"
-		Message.append(add)
-		log_err(Message)
-
-static func log_result_code(result:int, Message:Array) -> void:
-	var add := " | result: "
-	if(result == OK):
-		add += "success!"
-		Message.append(add)
-		log_msg(Message)
-	else:
-		add += "failed!"
-		Message.append(add)
-		log_err(Message)
 
 static func output_log(message:String, isErr = false, logToFile = false) -> void:
 	if(isErr):

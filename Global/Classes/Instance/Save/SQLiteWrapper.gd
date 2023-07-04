@@ -69,7 +69,7 @@ func sql_load_compressed(tableName:String, KeyVar:String) -> String:
 # { columnName:{"data_type":"text", "not_null": true}, ... }
 func add_table(tableName:String, tableDict:Dictionary) -> bool:
 	if(not has_file()):
-		Logger.log_err([Errors.NO_FILE(path)])
+		Logger.log_err([Logging.Errors.NO_FILE(path)])
 		return false
 	
 	var isOk := true
@@ -83,7 +83,7 @@ func add_table(tableName:String, tableDict:Dictionary) -> bool:
 
 func table_exists(tableName:String) -> bool:
 	if(not has_file()):
-		Logger.log_err([Errors.NO_FILE(path)])
+		Logger.log_err([Logging.Errors.NO_FILE(path)])
 		return false
 	
 	var QuerryResult := get_query_result("SELECT name FROM sqlite_master WHERE type='table' AND name='" + tableName + "';")
@@ -91,7 +91,7 @@ func table_exists(tableName:String) -> bool:
 
 func column_exists(tableName:String, columnName:String) -> bool:
 	if(not has_file()):
-		Logger.log_err([Errors.NO_FILE(path)])
+		Logger.log_err([Logging.Errors.NO_FILE(path)])
 		return false
 	
 	if(not table_exists(tableName)):
@@ -109,7 +109,7 @@ func column_exists(tableName:String, columnName:String) -> bool:
 
 func row_exists(tableName:String, columnName:String, value:String) -> bool:
 	if(not has_file()):
-		Logger.log_err([Errors.NO_FILE(path)])
+		Logger.log_err([Logging.Errors.NO_FILE(path)])
 		return false
 	
 	if(not column_exists(tableName, columnName)):

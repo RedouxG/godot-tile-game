@@ -12,10 +12,6 @@ const SAVE_FOLDER := "res://UnitTestTemp/"
 const SAVE_NAME := "UnitTest"
 const MAP_NAME := "Test"
 
-var SQLS:SaveWriter
-var MD:MapData
-var savedMapData:Dictionary
-
 ### ----------------------------------------------------
 # Functions
 ### ----------------------------------------------------
@@ -26,40 +22,32 @@ func before_all() -> void:
 func before_each() -> void:
 	FileUtils.create_dir(SAVE_FOLDER)
 
-	SQLS = SaveWriter.new(SAVE_FOLDER, SAVE_NAME)
-	MD = MapData.get_new(MAP_NAME)
-	savedMapData = _fill_MapData(MD, 1)
-
 func after_each() -> void:
 	FileUtils.delete_dir_recursive(SAVE_FOLDER)
 
-func test_SaveWriter_set_map() -> void:
-	var createdMap := SQLS.create_new_save()
-	
-	SQLS.set_map(MD)
-
-	var SetMap := SQLS.get_map(MAP_NAME)
-	assert_not_null(SetMap)
-	if(SetMap != null):
-		assert_eq(SetMap.Data, savedMapData, "Comparing data")
-
-func test_SaveWriter_save() -> void:
-	assert_true(SQLS.create_new_save(), "Creating new save file")
-	assert_true(SQLS.Save(), "Saving")
-	assert_file_exists(SAVE_FOLDER + SAVE_NAME + ".db")
-
 func test_SaveWriter_save_map() -> void:
-	assert_true(SQLS.create_new_save(), "Creating new save file")
-	SQLS.set_map(MD)
+	# Given
+	var saveWriter = SaveWriter.new(SAVE_FOLDER, SAVE_NAME)
+	var mapData = MapData.get_new(MAP_NAME)
+	var savedMapData = _fill_MapData(mapData, 1)
 
-	assert_true(SQLS.Save(), "Saving")
-	assert_true(SQLS.close() == OK)
+	# When
+	var createdNewSave := saveWriter.create_new_save()
+	var mapWasSet := saveWriter.set_map(mapData)
+	var ableToSave := saveWriter.Save()
+	var ableToClose := saveWriter.close() == OK
+	var ableToOpenAfterClose := saveWriter.open()
+	var recievedMap := saveWriter.get_map(MAP_NAME)
 
-	assert_true(SQLS.open())
-	var SetMap := SQLS.get_map(MAP_NAME)
-	assert_not_null(SetMap)
-	if(SetMap != null):
-		assert_eq(SetMap.Data, savedMapData, "Comparing data")
+	# Then
+	assert_true(createdNewSave)
+	assert_true(mapWasSet)
+	assert_true(ableToSave)
+	assert_true(ableToClose)
+	assert_true(ableToOpenAfterClose)
+	assert_not_null(recievedMap)
+	if(recievedMap != null):
+		assert_eq(recievedMap.Data, savedMapData, "Comparing data")
 
 func _fill_MapData(mapData:MapData, size:int) -> Dictionary:
 	var result := {}
