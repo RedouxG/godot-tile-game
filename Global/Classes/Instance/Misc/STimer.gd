@@ -17,16 +17,16 @@ var startTime:int
 ### ----------------------------------------------------
 
 func _init() -> void:
-	start()
+    start()
 
 # get time stamp of start
 func start() -> void:
-	startTime = Time.get_ticks_msec()
+    startTime = Time.get_ticks_msec()
 
 # Returns time in ms from timer start
 func get_result() -> int:
-	return (Time.get_ticks_msec() - startTime)
+    return (Time.get_ticks_msec() - startTime)
 
 # Answers if time in ms from start has passed
 func time_passed(timeToPass:int) -> bool:
-	return (get_result() > timeToPass)
+    return (get_result() > timeToPass)

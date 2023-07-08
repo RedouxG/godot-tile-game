@@ -8,7 +8,7 @@ extends Node
 # Variables
 ### ----------------------------------------------------
 
-const SUPRESSED_INDICATOR = " [SUPRESSED ERR] "
+const SUPRESSED_INDICATOR = "[SUPRESSED ERR] "
 
 var supressErrors := false
 var logTime := false
@@ -50,9 +50,6 @@ func log_result_code(result:int, message:Array) -> void:
         message.append(add)
         Logging.log_err(message, logTime, logToFile)
 
-func log_session_start() -> void:
-    Logging.log_session_start()
-
 func set_default_settings() -> void:
     supressErrors = false
     logTime = false
@@ -62,3 +59,6 @@ func set_test_settings() -> void:
     supressErrors = true
     logTime = false
     logToFile = false
+
+func _enter_tree() -> void:
+    Logging.log_session_start()

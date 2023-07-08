@@ -18,20 +18,20 @@ var Inventory := {}
 ### ----------------------------------------------------
 
 func _init() -> void:
-	objectMapper = ObjectMapper.new(self, ["MapPosition", "Inventory"])
+    objectMapper = ObjectMapper.new(self, ["MapPosition", "Inventory"])
 
 func _on_entity_ready() -> void:
-	set_sprite(TexturePos, Settings.TEXTURES.ENTITY_SET_PATH)
-	PlayerStateMachine.add_state(Movement)
-	PlayerStateMachine.set_state(Movement)
-	PlayerStateMachine.add_default_state(Movement)
+    set_sprite(TexturePos, Settings.TEXTURES.ENTITY_SET_PATH)
+    PlayerStateMachine.add_state(Movement)
+    PlayerStateMachine.set_state(Movement)
+    PlayerStateMachine.add_default_state(Movement)
 
 func _input(event:InputEvent) -> void:
-	PlayerStateMachine.update_state_input(event)
+    PlayerStateMachine.update_state_input(event)
 
 func _physics_process(delta: float) -> void:
-	PlayerStateMachine.update_state_delta(delta)
+    PlayerStateMachine.update_state_delta(delta)
 
 # Saves this entity
 func save_entity() -> bool:
-	return SaveManager.set_PlayerEntity(self)
+    return SaveManager.set_PlayerEntity(self)

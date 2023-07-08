@@ -16,28 +16,28 @@
 using namespace godot;
 
 void initialize_util_module(ModuleInitializationLevel p_level) {
-	if (p_level != MODULE_INITIALIZATION_LEVEL_EDITOR) {
-		return;
-	}
-	ClassDB::register_class<VectorUtilsExt>();
+    if (p_level != MODULE_INITIALIZATION_LEVEL_EDITOR) {
+        return;
+    }
+    ClassDB::register_class<VectorUtilsExt>();
 }
 
 void uninitialize_util_module(ModuleInitializationLevel p_level) {
-	if (p_level != MODULE_INITIALIZATION_LEVEL_EDITOR) {
-		return;
-	}
+    if (p_level != MODULE_INITIALIZATION_LEVEL_EDITOR) {
+        return;
+    }
 }
 
 extern "C" {
 // Initialization.
-GDExtensionBool GDE_EXPORT util_library_init(const GDExtensionInterface *p_interface, GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization) {
-	godot::GDExtensionBinding::InitObject init_obj(p_interface, p_library, r_initialization);
+GDExtensionBool GDE_EXPORT util_library_init(GDExtensionInterfaceGetProcAddress p_get_proc_address, GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization) {
+    godot::GDExtensionBinding::InitObject init_obj(p_get_proc_address, p_library, r_initialization);
 
-	init_obj.register_initializer(initialize_util_module);
-	init_obj.register_terminator(uninitialize_util_module);
-	init_obj.set_minimum_library_initialization_level(MODULE_INITIALIZATION_LEVEL_EDITOR);
+    init_obj.register_initializer(initialize_util_module);
+    init_obj.register_terminator(uninitialize_util_module);
+    init_obj.set_minimum_library_initialization_level(MODULE_INITIALIZATION_LEVEL_EDITOR);
 
-	return init_obj.init();
+    return init_obj.init();
 }
 }
 
